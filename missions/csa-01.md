@@ -27,6 +27,9 @@ Aquestes dades han estat capturades en directe durant el vol mitjançant el nost
 | **Durada de Vol Registrada** | **321,2 segons (5m 21s)** |
 | **Velocitat de Descens amb Paracaigudes** | **12,8 m/s** |
 
+### Gràfica de Vol (Altitud i Velocitat vs Temps)
+![Gràfica de Telemetria CSA-01](../assets/csa-01_telemetry_plot.svg)
+
 ---
 
 ## 📝 Resum del Vol
