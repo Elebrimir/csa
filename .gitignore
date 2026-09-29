@@ -1,0 +1,9 @@
+# OS / Editors
+.DS_Store
+*.swp
+*~
+.vscode/
+
+# Build / Output
+dist/
+node_modules/
