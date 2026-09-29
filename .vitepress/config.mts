@@ -9,6 +9,7 @@ export default defineConfig({
     siteTitle: "CSA Operations",
     nav: [
       { text: "Inici", link: "/" },
+      { text: "Vehicles", link: "/vehicles/corolt-1" },
       { text: "Missions", link: "/missions/template_mission" },
       { text: "Comunicats", link: "/social_media/template_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
@@ -18,6 +19,12 @@ export default defineConfig({
         text: "Agència Espacial",
         items: [
           { text: "Manifest i Objectius", link: "/" },
+        ]
+      },
+      {
+        text: "Flota de Vehicles",
+        items: [
+          { text: "Corolt-I (Coet Sonda)", link: "/vehicles/corolt-1" },
         ]
       },
       {
