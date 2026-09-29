@@ -79,8 +79,12 @@ def record_flight(mission_name="CSA-TestFlight", interval=0.5):
         try:
             while True:
                 req = urllib.request.Request(f"{TELEMACHUS_URL}{QUERY_API}", headers={'User-Agent': 'CSA-Telemetry'})
-                with urllib.request.urlopen(req, timeout=1.0) as resp:
-                    data = json.loads(resp.read().decode())
+                try:
+                    with urllib.request.urlopen(req, timeout=3.0) as resp:
+                        data = json.loads(resp.read().decode())
+                except Exception:
+                    time.sleep(interval)
+                    continue
                 
                 now = time.time()
                 if start_time is None:

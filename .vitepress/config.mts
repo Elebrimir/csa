@@ -10,7 +10,7 @@ export default defineConfig({
     nav: [
       { text: "Inici", link: "/" },
       { text: "Vehicles", link: "/vehicles/corolt-1" },
-      { text: "Missions", link: "/missions/template_mission" },
+      { text: "Missions", link: "/missions/csa-01" },
       { text: "Comunicats", link: "/social_media/template_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
@@ -30,6 +30,7 @@ export default defineConfig({
       {
         text: "Diari de Vol",
         items: [
+          { text: "CSA-01: Vol Inaugural", link: "/missions/csa-01" },
           { text: "Plantilla de Missió", link: "/missions/template_mission" },
         ]
       },
