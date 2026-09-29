@@ -1,0 +1,25 @@
+{
+  "name": "corolt_space_agency",
+  "version": "1.0.0",
+  "description": "> *\"Ad Astra Per Scientiam\"* — Cap a les estrelles a través de la ciència.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vitepress build",
+    "dev": "vitepress dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elebrimir/csa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Elebrimir/csa/issues"
+  },
+  "homepage": "https://github.com/Elebrimir/csa#readme",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}
