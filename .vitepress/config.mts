@@ -9,9 +9,9 @@ export default defineConfig({
     siteTitle: "CSA Operations",
     nav: [
       { text: "Inici", link: "/" },
-      { text: "Vehicles", link: "/vehicles/corolt-1" },
-      { text: "Missions", link: "/missions/csa-01" },
-      { text: "Comunicats", link: "/social_media/template_post" },
+      { text: "Vehicles", link: "/vehicles/corolt-1b" },
+      { text: "Missions", link: "/missions/csa-02" },
+      { text: "Comunicats", link: "/social_media/csa-02_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -25,19 +25,23 @@ export default defineConfig({
         text: "Flota de Vehicles",
         items: [
           { text: "Corolt-I (Coet Sonda)", link: "/vehicles/corolt-1" },
+          { text: "Corolt-Ib (Coet Sonda Millorat)", link: "/vehicles/corolt-1b" },
         ]
       },
       {
         text: "Diari de Vol",
         items: [
           { text: "CSA-01: Vol Inaugural", link: "/missions/csa-01" },
+          { text: "CSA-02: Vol Operatiu Corolt-Ib", link: "/missions/csa-02" },
           { text: "Plantilla de Missió", link: "/missions/template_mission" },
         ]
       },
       {
         text: "Prensa i Xarxes",
         items: [
-          { text: "Comunicats de Premsa", link: "/social_media/template_post" },
+          { text: "Comunicat CSA-01", link: "/social_media/csa-01_post" },
+          { text: "Comunicat CSA-02", link: "/social_media/csa-02_post" },
+          { text: "Plantilla de Comunicat", link: "/social_media/template_post" },
         ]
       }
     ],
