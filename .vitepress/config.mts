@@ -34,6 +34,7 @@ export default defineConfig({
         items: [
           { text: "CSA-01: Vol Inaugural", link: "/missions/csa-01" },
           { text: "CSA-02: Vol Operatiu Corolt-Ib", link: "/missions/csa-02" },
+          { text: "CSA-03: Assalt Estratosfèric", link: "/missions/csa-03" },
           { text: "Plantilla de Missió", link: "/missions/template_mission" },
         ]
       },
@@ -42,6 +43,7 @@ export default defineConfig({
         items: [
           { text: "Comunicat CSA-01", link: "/social_media/csa-01_post" },
           { text: "Comunicat CSA-02", link: "/social_media/csa-02_post" },
+          { text: "Comunicat CSA-03", link: "/social_media/csa-03_post" },
           { text: "Plantilla de Comunicat", link: "/social_media/template_post" },
         ]
       }
