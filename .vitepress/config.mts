@@ -26,6 +26,7 @@ export default defineConfig({
         items: [
           { text: "Corolt-I (Coet Sonda)", link: "/vehicles/corolt-1" },
           { text: "Corolt-Ib (Coet Sonda Millorat)", link: "/vehicles/corolt-1b" },
+          { text: "Corolt-II (Multietapa Espacial)", link: "/vehicles/corolt-2" },
         ]
       },
       {
