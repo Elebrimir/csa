@@ -9,9 +9,9 @@ export default defineConfig({
     siteTitle: "CSA Operations",
     nav: [
       { text: "Inici", link: "/" },
-      { text: "Vehicles", link: "/vehicles/corolt-1b" },
-      { text: "Missions", link: "/missions/csa-02" },
-      { text: "Comunicats", link: "/social_media/csa-02_post" },
+      { text: "Vehicles", link: "/vehicles/corolt-2b" },
+      { text: "Missions", link: "/missions/csa-04" },
+      { text: "Comunicats", link: "/social_media/csa-04_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -27,6 +27,7 @@ export default defineConfig({
           { text: "Corolt-I (Coet Sonda)", link: "/vehicles/corolt-1" },
           { text: "Corolt-Ib (Coet Sonda Millorat)", link: "/vehicles/corolt-1b" },
           { text: "Corolt-II (Multietapa Espacial)", link: "/vehicles/corolt-2" },
+          { text: "Corolt-IIb (Variant Radial)", link: "/vehicles/corolt-2b" },
         ]
       },
       {
@@ -35,6 +36,7 @@ export default defineConfig({
           { text: "CSA-01: Vol Inaugural", link: "/missions/csa-01" },
           { text: "CSA-02: Vol Operatiu Corolt-Ib", link: "/missions/csa-02" },
           { text: "CSA-03: Assalt Estratosfèric", link: "/missions/csa-03" },
+          { text: "CSA-04: El Desafiament Corolt-IIb", link: "/missions/csa-04" },
           { text: "Plantilla de Missió", link: "/missions/template_mission" },
         ]
       },
@@ -44,6 +46,7 @@ export default defineConfig({
           { text: "Comunicat CSA-01", link: "/social_media/csa-01_post" },
           { text: "Comunicat CSA-02", link: "/social_media/csa-02_post" },
           { text: "Comunicat CSA-03", link: "/social_media/csa-03_post" },
+          { text: "Comunicat CSA-04", link: "/social_media/csa-04_post" },
           { text: "Plantilla de Comunicat", link: "/social_media/template_post" },
         ]
       }

@@ -3,6 +3,7 @@
 Corolt Space Agency (CSA) - Live Telemetry Recorder
 Connects to Telemachus in Kerbal Space Program (http://127.0.0.1:8085).
 Records real-time flight data to CSV and generates a mission report summary.
+Converts Universal Time (UT) to Kerbin calendar date (6h days, 426d years).
 """
 
 import urllib.request
@@ -31,32 +32,64 @@ QUERY_API = (
     "&stage=s.stage"
 )
 
+def ut_to_kerbin_date(ut):
+    """Converts KSP Universal Time in seconds to Kerbin calendar date."""
+    SECONDS_IN_HOUR = 3600
+    HOURS_IN_DAY = 6
+    SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY
+    DAYS_IN_YEAR = 426
+    SECONDS_IN_YEAR = SECONDS_IN_DAY * DAYS_IN_YEAR
+
+    year = int(ut // SECONDS_IN_YEAR) + 1
+    rem_year = ut % SECONDS_IN_YEAR
+    day = int(rem_year // SECONDS_IN_DAY) + 1
+    rem_day = rem_year % SECONDS_IN_DAY
+    hour = int(rem_day // SECONDS_IN_HOUR)
+    rem_hour = rem_day % SECONDS_IN_HOUR
+    minute = int(rem_hour // 60)
+    second = int(rem_hour % 60)
+
+    return f"Any {year}, Dia {day} ({hour:02d}h {minute:02d}m {second:02d}s)"
+
 def check_connection():
     try:
         req = urllib.request.Request(f"{TELEMACHUS_URL}?test=v.altitude", headers={'User-Agent': 'CSA-Telemetry'})
         with urllib.request.urlopen(req, timeout=1.5) as resp:
-            return resp.status == 200
+            data = json.loads(resp.read().decode())
+            return "errors" not in data
     except Exception:
         return False
 
-def record_flight(mission_name="CSA-TestFlight", interval=0.5):
+def record_flight(mission_name="CSA-03", interval=0.5):
     print(f"\n========================================================")
     print(f"       COROLT SPACE AGENCY (CSA) - TELEMETRY RECORDER   ")
     print(f"========================================================")
     print(f"[*] Comprovant connexió amb Telemachus (127.0.0.1:8085)...")
 
     if not check_connection():
-        print(f"[!] No s'ha pogut connectar amb KSP/Telemachus.")
-        print(f"    Assegura't que Kerbal Space Program està obert i la nau a la plataforma de vol.")
-        sys.exit(1)
+        print(f"[!] Esperant que la nau estiga carregada a la rampa de llançament...")
+        while not check_connection():
+            time.sleep(1.0)
 
-    print(f"[✓] Connexió establida! Iniciant registre per a: {mission_name}")
+    print(f"[✓] Connexió establida! Obtenint data oficial de Kerbin...")
     
+    # Query initial UT
+    try:
+        req = urllib.request.Request(f"{TELEMACHUS_URL}?ut=t.universalTime", headers={'User-Agent': 'CSA-Telemetry'})
+        with urllib.request.urlopen(req, timeout=2.0) as resp:
+            data = json.loads(resp.read().decode())
+            initial_ut = float(data.get("ut", 0.0))
+            kerbin_date = ut_to_kerbin_date(initial_ut)
+            print(f"[📅] Data Oficial de Kerbin: {kerbin_date} (UT: {initial_ut:,.1f}s)")
+    except Exception:
+        initial_ut = 0.0
+        kerbin_date = "Any 1, Dia ?"
+
     os.makedirs("missions", exist_ok=True)
     csv_file = f"missions/{mission_name}_telemetry.csv"
     
     fieldnames = [
-        "timestamp", "MET", "altitude", "radar_alt", "vert_speed",
+        "timestamp", "UT", "MET", "altitude", "radar_alt", "vert_speed",
         "orbital_vel", "surface_vel", "apoapsis", "periapsis",
         "g_force", "dynamic_pressure", "throttle", "stage"
     ]
@@ -91,6 +124,7 @@ def record_flight(mission_name="CSA-TestFlight", interval=0.5):
                     start_time = now
                 met = round(now - start_time, 1)
 
+                ut = float(data.get("ut", initial_ut))
                 alt = float(data.get("alt", 0.0))
                 rad_alt = float(data.get("rad_alt", 0.0))
                 v_spd = float(data.get("v_spd", 0.0))
@@ -110,6 +144,7 @@ def record_flight(mission_name="CSA-TestFlight", interval=0.5):
 
                 writer.writerow({
                     "timestamp": round(now, 2),
+                    "UT": round(ut, 1),
                     "MET": met,
                     "altitude": round(alt, 1),
                     "radar_alt": round(rad_alt, 1),
@@ -134,6 +169,7 @@ def record_flight(mission_name="CSA-TestFlight", interval=0.5):
             print("=" * 62)
             summary = f"""
 ## 📊 Telemetria Oficial - Missió {mission_name}
+* **Data de Vol (Calendari Kerbin)**: {kerbin_date}
 | Mètrica | Valor Registrat |
 | :--- | :--- |
 | **Durada de Vol (MET)** | {met:.1f} s |
@@ -150,5 +186,5 @@ def record_flight(mission_name="CSA-TestFlight", interval=0.5):
             print(f"[✓] Resum en Markdown guardat a: missions/{mission_name}_summary.md")
 
 if __name__ == "__main__":
-    name = sys.argv[1] if len(sys.argv) > 1 else "CSA-01"
+    name = sys.argv[1] if len(sys.argv) > 1 else "CSA-03"
     record_flight(name)
