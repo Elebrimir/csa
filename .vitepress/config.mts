@@ -40,6 +40,7 @@ export default defineConfig({
           { text: "CSA-04: El Desafiament Corolt-IIb", link: "/missions/csa-04" },
           { text: "CSA-05: L'Estrena del Corolt-III", link: "/missions/csa-05" },
           { text: "CSA-05b: Salt a l'Espai (240 km)", link: "/missions/csa-05b" },
+          { text: "CSA-06: Guiatge kOS i Recuperació", link: "/missions/csa-06" },
           { text: "Plantilla de Missió", link: "/missions/template_mission" },
         ]
       },
@@ -52,6 +53,7 @@ export default defineConfig({
           { text: "Comunicat CSA-04", link: "/social_media/csa-04_post" },
           { text: "Comunicat CSA-05", link: "/social_media/csa-05_post" },
           { text: "Comunicat CSA-05b", link: "/social_media/csa-05b_post" },
+          { text: "Comunicat CSA-06", link: "/social_media/csa-06_post" },
           { text: "Plantilla de Comunicat", link: "/social_media/template_post" },
         ]
       }
