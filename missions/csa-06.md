@@ -34,7 +34,10 @@ Dades capturades en temps real via enllaç telemètric continu de bord (Telemach
 
 ---
 
-### Gràfica de Telemetria del Vol CSA-06
+### Quadre de Comandament i Anàlisi Multivariable (CSA-06)
+![Dashboard Avançat CSA-06](../assets/csa-06_advanced_dashboard.png)
+
+### Gràfica Interactiva SVG de Telemetria Bàsica
 ![Telemetria de Vol CSA-06](../assets/csa-06_telemetry_plot.svg)
 
 ---
