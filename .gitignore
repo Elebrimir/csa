@@ -11,3 +11,8 @@ node_modules/
 .vitepress/cache
 .agents/
 .~lock.*#
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class

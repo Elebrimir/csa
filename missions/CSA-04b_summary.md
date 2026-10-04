@@ -1,16 +1,14 @@
-# 📋 Official Telemetry - Mission CSA-04b
-* **Flight Date (Kerbin Calendar)**: Year 1, Day 35 (03h 56m 39s)
-* **Launch Vehicle**: Corolt-IIb (Suborbital Multistage)
-* **Flight Status**: 🟢 SUCCESSFULLY RECOVERED (High altitude flight, centrifugal booster separation and controlled descent)
+# Telemetry Summary of Mission CSA-04B
 
-| Flight Parameter | Achieved Value |
-| :--- | :--- |
-| **Active Flight Duration (MET)** | **447.7 s (7.5 min)** |
-| **Maximum Altitude (Apoapsis)** | **14,489.5 m (14.49 km)** |
-| **Maximum Surface Speed** | **305.4 m/s (1099.4 km/h)** *(at 6,897 m)* |
-| **Maximum Dynamic Pressure (Max Q)** | **25,281.91 kPa** |
-| **Parachute Deployment** | **1,666.3 m** *(at T+175s)* |
-| **Maximum Acceleration at Deployment** | **19.40 G** |
-| **Vehicle Status** | **100% Recovered and Intact** |
+- **Vehicle**: Corolt-IIb (Aerodynamic Redesign)
+- **Family**: Corolt-II Family
+- **Objective**: Centrifugal booster staging test and high-altitude stability
+- **Outcome**: 🟢 Total Success | Apogee 14.49 km | Controlled Radial Separation
 
-*Data saved in `/home/pablo-cortes/Documents/Corolt_Space_Agency/missions/CSA-04b_telemetry.csv`.*
+## Critical Recorded Parameters
+- **Maximum Altitude (Apoapsis)**: 14,489.5 m (14.49 km) at T+209.1s
+- **Maximum Surface Speed**: 305.4 m/s (1,099.4 km/h) at T+156.5s
+- **Maximum Dynamic Pressure (Max Q)**: 25,281.9 Pa (25.28 kPa)
+- **Maximum Acceleration**: 19.40 G
+- **Total Flight Time**: 565.1 seconds (9.42 minutes)
+- **Terminal Velocity**: 0.00 m/s at elevation 0.0 m
