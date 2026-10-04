@@ -1,75 +1,76 @@
-# 📋 Informe de Missió: CSA-05b «El Salt a l'Espai i la Lliçó de CommNet»
+# 📋 Mission Report: CSA-05b «The Leap into Space & The CommNet Lesson»
 
-* **Data del Llançament**: Any 1, Dia 56 (05h 16m 15s UT 1193389)
-* **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-III (Unitat 02 - Tàndem)](/vehicles/corolt-3)
-* **Estat de la Missió**: 🟡 ÈXIT SUBORBITAL ESPACIAL (240 km) | PÈRDUA EN REENTRADA (Impacte per fallada d'enllaç de control)
-
----
-
-## 🎯 Objectius de la Missió
-1. **Superació de la Frontera de l'Espai (Línia de Kármán, 70 km)**: Validar la capacitat del Corolt-III per impulsar càrregues útils a l'espai exterior (`InSpaceLow`). *(Assolit amb escreix — 240,34 km)*
-2. **Combustió Plena de Dues Etapes en Tàndem**: Comprovar el rendiment continuat del booster RT-10 «Hammer» (1,25 m) i de la segona etapa SRM-XL (0,625 m) després de la fallada d'ignició del vol CSA-05. *(Assolit — Ignició i combustió impecables)*
-3. **Resistència Aerotèrmica a la Reentrada Hipersònica**: Monitoritzar l'estabilitat i la pressió dinàmica ($Q$) en caiguda lliure des de més de 200 km. *(Assolit — Màx Q de 52,29 kPa a Mach 5,3)*
-4. **Recuperació Íntegra de la Càpsula**: Desplegament de paracaigudes a cota segura i rescat al KSC. *(No assolit — Impacte contra el terreny)*
+* **Launch Date**: Year 1, Day 56 (05h 16m 15s UT 1193389)
+* **Flight Director / Operations**: CSA Mission Control (Kerbin Launch Complex)
+* **Launch Vehicle**: [Corolt-III (Unit 02 - Tandem)](/vehicles/corolt-3)
+* **Mission Status**: 🟡 SUBORBITAL SPACE SUCCESS (240 km) | REENTRY LOSS (Ground impact due to control link loss)
 
 ---
 
-## 📊 Telemetria Oficial de Vol (Dades Registrades)
+## 🎯 Mission Objectives
+1. **Cross the Frontier of Space (Kármán Line, 70 km)**: Validate Corolt-III's capability to boost payloads into outer space (`InSpaceLow`). *(Achieved — 240.34 km)*
+2. **Full Tandem Two-Stage Combustion**: Verify sustained burn of the RT-10 «Hammer» (1.25 m) booster and SRM-XL (0.625 m) upper stage after the CSA-05 ignition misfire. *(Achieved — Flawless staging & ignition)*
+3. **Hypersonic Aerothermal Endurance**: Monitor vehicle dynamics and dynamic pressure ($Q$) during ballistic freefall from >200 km. *(Achieved — Max Q of 52.29 kPa at Mach 5.3)*
+4. **Full Payload Recovery**: Parachute deployment at safe altitude and recovery at KSC. *(Not achieved — Terrain impact)*
 
-Dades capturades en temps real via enllaç telemètric continu de bord (Telemachus):
+---
 
-| Paràmetre de Vol | Valor Registrat CSA-05b | Estat i Observacions |
+## 📊 Official Flight Telemetry (Recorded Data)
+
+Captured in real time during flight via continuous onboard telemetry (Telemachus):
+
+| Flight Parameter | Recorded Value CSA-05b | Status and Remarks |
 | :--- | :--- | :--- |
-| **Altitud Màxima (Apoapsis)** | **240.336,8 m (240,34 km)** | 🟢 **Rècord Absolut CSA (Espai Exterior)** |
-| **Velocitat Màxima de Superfície** | **1.624,4 m/s (5.847,8 km/h)** | 🟢 Superat Mach 5,3 en reentrada |
-| **Pressió Dinàmica Màxima (Max Q)** | **52.286,6 Pa (52,29 kPa)** | 🟢 Resistència aerodinàmica excel·lent |
-| **Acceleració Màxima** | **10,91 G** | 🟡 Deceleració atmosfèrica intensa |
-| **Temps a l'Espai (> 70 km)** | **670,8 s (11 min 11 s)** | 🟢 Primera estada prolongada a l'espai |
-| **Desplegament del Paracaigudes** | *No executat* | 🔴 Comanda bloquejada per falta de senyal |
-| **Velocitat d'Impacte a Terra** | **116,7 m/s (420 km/h)** | 🔴 Destrucció de la unitat per col·lisió |
-| **Cota d'Impacte** | **896,8 m s.n.m.** | Terreny continental a l'est del KSC |
-| **Durada Total de Vol** | **1.011,8 s (16 min 52 s)** | Telemetria transmesa fins l'impacte |
+| **Peak Altitude (Apoapsis)** | **240,336.8 m (240.34 km)** | 🟢 **All-Time CSA Spaceflight Record** |
+| **Maximum Surface Speed** | **1,624.4 m/s (5,847.8 km/h)** | 🟢 Exceeded Mach 5.3 on atmospheric reentry |
+| **Peak Dynamic Pressure (Max Q)** | **52,286.6 Pa (52.29 kPa)** | 🟢 Excellent aerothermal structural rigidity |
+| **Maximum Acceleration** | **10.91 G** | 🟡 Severe atmospheric hypersonic deceleration |
+| **Time Spent in Space (> 70 km)** | **670.8 s (11 min 11 s)** | 🟢 First prolonged stay in microgravity |
+| **Parachute Deployment** | *Not executed* | 🔴 Command blocked due to lost radio uplink |
+| **Impact Velocity** | **116.7 m/s (420 km/h)** | 🔴 Vehicle destroyed on collision |
+| **Impact Elevation** | **896.8 m ASL** | Continental highlands east of KSC |
+| **Total Recorded Flight Time** | **1,011.8 s (16 min 52 s)** | Downlink maintained until impact |
 
 ---
 
-### Gràfica de Telemetria del Vol CSA-05b
-![Telemetria de Vol CSA-05b](../assets/csa-05b_telemetry_plot.svg)
+### Flight Telemetry Plot (CSA-05b)
+![CSA-05b Telemetry Plot](../assets/csa-05b_telemetry_plot.svg)
 
 ---
 
-## 🔬 Anàlisi de Rendiment de Propulsió
+## 🔬 Propulsion Performance Analysis
 
-A diferència del vol CSA-05, on el motor SRM-XL va patir una fallada d'ignició, la segona unitat del Corolt-III va funcionar a la perfecció:
-* **Etapa 1 (RT-10 «Hammer»)**: Va cremar durant 31 segons, accelerant la nau fins als 475 m/s i deixant-la a 12 km d'altitud.
-* **Separació i Etapa 2 (SRM-XL)**: La ignició a gran altitud va ser instantània. En un entorn de molt baixa densitat atmosfèrica, el motor va desenvolupar el seu impuls específic complet de buit, disparant la velocitat vertical fins a catapultar l'apogeu fins als **240 km**, molt per damunt dels 50 km previstos inicialment.
-* **Comportament Balístic**: La nau va passar més d'11 minuts en condicions de microgravetat pura a l'espai exterior abans d'iniciar el retorn.
-
----
-
-## ⚠️ Anàlisi de la Fallada de Recuperació (RCA - Root Cause Analysis)
-
-A T+16 minuts, durant la fase terminal de reentrada:
-1. **Límit d'Abast de l'Antena Interna**: El mòdul d'aviònica `SR.ProbeCore` de Sounding Rockets disposa únicament d'una antena integrada de **3,25 km** d'abast.
-2. **Pèrdua d'Enllaç de Control CommNet**: En trobar-se lluny del KSC i fora de cobertura d'estacions terrestres properes, la sonda va quedar en estat `Sense Senyal` (*No signal*).
-3. **Bloqueig de Comandes**: En les sondes robòtiques sense pilot, el protocol de CommNet bloqueja l'execució d'ordres manuals d'etapes o menús si no hi ha enllaç actiu.
-4. **Seqüència Fatal**: L'ordre d'obertura del paracaigudes enviada des de la consola de vol no es va poder transmetre a la nau, precipitant la càpsula contra el terreny a 116,7 m/s.
+In contrast to mission CSA-05, the second Corolt-III flight stack performed nominally:
+* **Stage 1 (RT-10 «Hammer»)**: Burned for 31 seconds, propelling the stack to 475 m/s at 12 km altitude.
+* **Separation & Stage 2 (SRM-XL)**: High-altitude ignition was instantaneous. In the near-vacuum upper air, the motor developed its full vacuum specific impulse, driving vertical velocity to catapult apogee to **240 km**, far exceeding the 50 km baseline target.
+* **Ballistic Coast**: The probe spent over 11 minutes in pure microgravity in space before beginning its atmospheric dive.
 
 ---
 
-## 🛡️ Decisions d'Enginyeria per a Missions Futures
+## ⚠️ Recovery Failure Root Cause Analysis (RCA)
 
-La pèrdua de la unitat 02 ha aportat un aprenentatge incalculable que transforma immediatament els procediments de la CSA:
-
-1. **Incorporació Obligatòria d'Antena Externa (`SurfAntenna`)**:
-   * S'ha verificat la disponibilitat del node tecnològic `gptt_comm1`.
-   * Totes les futures variants del Corolt-III incorporaran l'antena de superfície **Communotron 16-S**, garantint cobertura ininterrompuda des de qualsevol punt de Kerbin.
-2. **Protocol d'Armat Mecànic de Paracaigudes (*Arm Parachute*)**:
-   * Els paracaigudes s'armaran abans de l'enlairament per permetre el desplegament autònom per pressió baromètrica, fins i tot en cas d'apagada total de ràdio.
-3. **Transició cap al Control Autònom (kOS)**:
-   * S'ha iniciat el desenvolupament d'un ordinador de bord programable amb scripts de **kOS** (`corolt3_flight.ks`), delegant el control d'etapes i obertura de seguretat a la CPU interna de la nau sense dependència de decisions manuals remotes.
+At T+16 minutes, during terminal reentry:
+1. **Internal Antenna Range Limit**: The `SR.ProbeCore` avionics module only featured an integrated whip antenna with **3.25 km** nominal range.
+2. **Loss of CommNet Ground Link**: Far downrange from KSC and outside secondary relay station sightlines, the probe entered `No Signal` status.
+3. **Command Lockout**: On uncrewed robotic probes without autonomous software, standard CommNet rules block manual stage/deployment triggers when telemetry link is severed.
+4. **Fatal Sequence**: The parachute deployment command transmitted from flight control was rejected by the dead link, leading to impact at 116.7 m/s.
 
 ---
 
-## 📸 Vehicle de la Missió
-* [Fitxa Tècnica Completa del Corolt-III](/vehicles/corolt-3)
+## 🛡️ Engineering Directives for Future Missions
+
+The loss of Unit 02 yielded invaluable lessons that transformed CSA operational standards:
+
+1. **Mandatory Surface Whip Antenna (`Communotron 16-S`)**:
+   * Verified unlock of tech tree node `gptt_comm1`.
+   * All future Corolt-III variants will integrate surface-mounted **Communotron 16-S** antennae, guaranteeing omnidirectional line-of-sight across Kerbin.
+2. **Mechanical Parachute Pre-Arming Protocol**:
+   * Recovery parachutes must be pre-armed prior to liftoff, enabling barometric pressure triggers independent of radio contact.
+3. **Transition to Autonomous Flight (kOS)**:
+   * Commenced engineering of onboard programmable flight software using **kOS** (`corolt3_flight.ks`), delegating staging sequences and safety chute triggers directly to the internal CPU.
+
+---
+
+## 📸 Mission Vehicle
+* [Complete Corolt-III Technical Specifications](/vehicles/corolt-3)
+

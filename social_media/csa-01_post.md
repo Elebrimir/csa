@@ -1,14 +1,14 @@
-# 📱 Comunicats de la Missió CSA-01
+# 📱 Mission CSA-01 Releases
 
-## 🐦 Format Twitter / X (Fil / Tweet de Llançament)
+## 🐦 Twitter / X Format (Launch Thread / Post)
 
-> 🚀 **LIFTOFF!** Primer vol oficial de la **Corolt Space Agency (CSA)** completat amb èxit!
+> 🚀 **LIFTOFF!** Maiden flight of the **Corolt Space Agency (CSA)** successfully completed!
 > 
-> El nostre coet sonda suborbital **#CoroltI** s'ha elevat sobre Kerbin assolint un apogeu de **6.423 metres** i una velocitat punta de **1.017 km/h** (282,7 m/s) sota una acceleració màxima de 2,37 G.
+> Our suborbital sounding rocket **#CoroltI** soared above Kerbin, reaching an apogee of **6,423 meters** and a top velocity of **1,017 km/h** (282.7 m/s) under 2.37 G peak acceleration.
 > 
-> 📡 Telemetria capturada en directe per la nostra estació de seguiment i càrrega útil recuperada intacta amb paracaigudes!
+> 📡 Telemetry streamed live to our tracking station and payload recovered intact under parachute!
 > 
-> 📊 Informe tècnic complet i gràfiques de telemetria:  
+> 📊 Full engineering report & telemetry plots:  
 > 👉 https://elebrimir.github.io/csa/missions/csa-01
 > 
 > *Ad Astra Per Scientiam* 🌌  
@@ -16,6 +16,7 @@
 
 ---
 
-## 📢 Format Comunicat de Premsa Oficial
-> **CENTRE DE CONTROL DE MISSIONS CSA — COMUNICAT OFICIAL #001**  
-> *"La Corolt Space Agency anuncia la culminació amb èxit de la missió suborbital CSA-01 'Corolt-I'. El vehicle monocilíndric de 0.35m propulsat per combustible sòlid ha validat els models aerodinàmics, els sistemes de telemetria en temps real i el paquet de recuperació passiva. Aquest resultat dóna llum verda al desenvolupament de la segona fase del programa de coets sonda per a assolir la frontera de l'espai (>70 km)."*
+## 📢 Official Press Release Format
+> **CSA MISSION OPERATIONS CENTER — OFFICIAL RELEASE #001**  
+> *"The Corolt Space Agency announces the successful completion of suborbital mission CSA-01 'Corolt-I'. The 0.35m single-stage solid-fuel sounding rocket validated aerodynamic flight models, real-time telemetry pipelines, and passive recovery systems. This milestone provides green-light authorization for Phase II of the sounding rocket program toward the edge of space (>70 km)."*
+

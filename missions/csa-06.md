@@ -1,78 +1,78 @@
-# 📋 Informe de Missió: CSA-06 «El Triomf de l'Autonomia i la Primera Recuperació Espacial»
+# 📋 Mission Report: CSA-06 «The Autonomous Flight Breakthrough & First Space Recovery»
 
-* **Data del Llançament**: Any 1, Dia 65 (00h 30m 00s UT 1391470)
-* **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-III (Unitat 03 - Autònoma kOS)](/vehicles/corolt-3)
-* **Estat de la Missió**: 🟢 ÈXIT TOTAL (Apogeu 245,0 km | Recuperació Íntegra de la Càpsula al KSC)
-
----
-
-## 🎯 Objectius de la Missió
-1. **Vol Suborbital a l'Espai Exterior (Línia de Kármán, 70 km)**: Superar novament la frontera de l'espai i validar la consistència del vehicle Corolt-III. *(Assolit — 245,00 km d'apogeu)*
-2. **Implementació del Sistema de Vol Autònom (kOS / KerboScript)**: Eliminar la dependència del control remot terrestre (CommNet) per evitar el fatídic desenllaç del vol CSA-05b. *(Assolit — Automatització a bord operativa)*
-3. **Assaig de Trajectòria Inclinada (Gravity Turn)**: Provar una inclinació inicial de 80º–82º cap a l'est (heading 90) mitjançant guiatge per programari. *(Parcial / Lliçó d'Enginyeria — Manquen superfícies de control aerodinàmic)*
-4. **Recuperació Íntegra de la Càpsula Científica**: Desplegament segur del paracaigudes a velocitat subsònica i rescat de totes les dades científiques al KSC. *(Assolit — Aterratge suau a 6,5 m/s i recuperació exitosa)*
+* **Launch Date**: Year 1, Day 65 (00h 30m 00s UT 1391470)
+* **Flight Director / Operations**: CSA Mission Control (Kerbin Launch Complex)
+* **Launch Vehicle**: [Corolt-III (Unit 03 - Autonomous kOS)](/vehicles/corolt-3)
+* **Mission Status**: 🟢 FULL SUCCESS (Apogee 245.0 km | Complete Capsule Recovery at KSC)
 
 ---
 
-## 📊 Telemetria Oficial de Vol (Dades Registrades)
+## 🎯 Mission Objectives
+1. **Suborbital Spaceflight (Kármán Line, 70 km)**: Cross the edge of space and confirm repeatability of the Corolt-III architecture. *(Achieved — 245.00 km apogee)*
+2. **Autonomous Flight Execution (kOS / KerboScript)**: Remove dependence on ground telemetry links (CommNet) to prevent a repeat of the CSA-05b failure. *(Achieved — Onboard automation verified)*
+3. **Gravity Turn Trajectory Testing**: Initiate an early pitch angle of 80º–82º toward the East (heading 90) via flight code. *(Partial / Engineering Lesson — Lacked active control surfaces)*
+4. **Intact Recovery of Science Payload**: Safe parachute deployment at subsonic speeds and recovery of space science data at KSC. *(Achieved — Touchdown at 6.5 m/s and full recovery)*
 
-Dades capturades en temps real via enllaç telemètric continu de bord (Telemachus):
+---
 
-| Paràmetre de Vol | Valor Registrat CSA-06 | Estat i Observacions |
+## 📊 Official Flight Telemetry (Recorded Data)
+
+Captured in real time during flight via continuous onboard telemetry (Telemachus):
+
+| Flight Parameter | Recorded Value CSA-06 | Status and Remarks |
 | :--- | :--- | :--- |
-| **Altitud Màxima (Apoapsis)** | **245.005,0 m (245,00 km)** | 🟢 **Nou Rècord Absolut CSA (Espai Exterior)** |
-| **Velocitat Màxima de Superfície** | **1.646,2 m/s (5.926,3 km/h)** | 🟢 Mach 5,4 en reentrada atmosfèrica |
-| **Pressió Dinàmica Màxima (Max Q)** | **57.690,6 Pa (57,69 kPa)** | 🟢 Resistència estructural impecable |
-| **Acceleració Màxima** | **11,57 G** | 🟡 Deceleració atmosfèrica hipersònica màxima |
-| **Temps a l'Espai (> 70 km)** | **848,1 s (14 min 08 s)** | 🟢 Més de 14 minuts en microgravetat pura |
-| **Desplegament del Paracaigudes** | **Executat amb Èxit** | 🟢 Obertura completada a ~1.600 m d'altitud |
-| **Velocitat de Descenso Terminal** | **6,5 m/s (23,4 km/h)** | 🟢 Descens ultra-estable sota campana |
-| **Velocitat de Toc a Terra** | **~0,0 m/s** | 🟢 Aterratge suau sense cap dany estructural |
-| **Cota d'Aterratge** | **897,6 m s.n.m.** | Terreny continental a l'est del KSC |
-| **Durada Total de Vol** | **1.705,0 s (28 min 25 s)** | Missió completa enregistrada íntegrament |
+| **Peak Altitude (Apoapsis)** | **245,005.0 m (245.00 km)** | 🟢 **New CSA All-Time Record (Deep Space)** |
+| **Maximum Surface Speed** | **1,646.2 m/s (5,926.3 km/h)** | 🟢 Mach 5.4 during atmospheric reentry |
+| **Peak Dynamic Pressure (Max Q)** | **57,690.6 Pa (57.69 kPa)** | 🟢 Excellent aerothermal integrity |
+| **Maximum Acceleration** | **11.57 G** | 🟡 Peak hypersonic aerodynamic deceleration |
+| **Time Spent in Space (> 70 km)** | **848.1 s (14 min 08 s)** | 🟢 Over 14 minutes in microgravity |
+| **Parachute Deployment** | **Executed Successfully** | 🟢 Chute full deployment at ~1,600 m |
+| **Terminal Descent Speed** | **6.5 m/s (23.4 km/h)** | 🟢 Ultra-stable descent under canopy |
+| **Touchdown Velocity** | **~0.0 m/s** | 🟢 Soft landing with zero structural damage |
+| **Landing Elevation** | **897.6 m ASL** | Continental terrain east of KSC |
+| **Total Recorded Flight Time** | **1,705.0 s (28 min 25 s)** | Complete mission telemetry recorded |
 
 ---
 
-### Quadre de Comandament i Anàlisi Multivariable (CSA-06)
-![Dashboard Avançat CSA-06](../assets/csa-06_advanced_dashboard.png)
+### Operations Dashboard & Multivariable Analysis (CSA-06)
+![Advanced Dashboard CSA-06](../assets/csa-06_advanced_dashboard.png)
 
-### Gràfica Interactiva SVG de Telemetria Bàsica
-![Telemetria de Vol CSA-06](../assets/csa-06_telemetry_plot.svg)
-
----
-
-## 🔬 Anàlisi del Guiatge i Rendiment de Propulsió
-
-### 1. El Guiatge kOS en Acció
-Per primera vegada en la història de l'agència, el coet portava un ordinador de bord programable amb **KerboScript**. El script `corolt3_guided_ascent.ks` va gestionar:
-* El compte enrere i ignició de la primera etapa (RT-10 «Hammer»).
-* L'encesa de la segona etapa (SRM-XL) en esgotar-se el booster.
-* La intenció de maniobra de cabeceig (*pitch kick*) per començar a planar cap a l'òrbita.
-
-### 2. La Lliçó de l'Autoritat de Control Aerodinàmic
-Tot i que el programari va enviar l'ordre de girar a 82º d'inclinació cap a l'est, el coet va continuar pujant pràcticament en vertical:
-* **Motors sòlids sense tovera mòbil**: Ni el Hammer ni el SRM-XL tenen orientació d'empenta (*gimbal*).
-* **Alerons passius fixes**: Els alerons `SR.Wing.01` i `02` muntats són plans i actuen com les plomes d'una fletxa, estabilitzant el coet fermament cap a la trajectòria prograde i resistint qualsevol canvi de rumb.
-* **Sense parell de gir suficient**: Els petits volants d'inèrcia de la sonda robòtica no tenen prou força contra les forces aerodinàmiques de la fase d'ascens.
+### Flight Telemetry Plot
+![CSA-06 Telemetry Plot](../assets/csa-06_telemetry_plot.svg)
 
 ---
 
-## 🪂 L'Èxit de la Recuperació: La Venjança de la CSA-05b
+## 🔬 Guidance & Propulsion Dynamics
 
-A diferència de la tràgica missió anterior, on el bloqueig de CommNet va impedir salvar la càpsula:
-1. La nau va sobreviure a una reentrada a Mach 5,4 i 11,5 G de deceleració aerodinàmica.
-2. En assolir velocitat subsònica i altitud segura, el sistema de paracaigudes es va activar correctament.
-3. La velocitat es va frenar dràsticament de més de 40 m/s a només **6,5 m/s**.
-4. La càpsula va fer un aterratge de llibre a les planícies de Kerbin i va ser recuperada intacta amb **totes les mostres científiques de l'espai exterior**.
+### 1. kOS Autonomous Guidance in Action
+For the first time in agency history, the vehicle flew under full programmable **KerboScript** supervision. The onboard program `corolt3_guided_ascent.ks` automated:
+* Countdown sequence and first-stage ignition (RT-10 «Hammer»).
+* Burnout detection, interstage separation, and upper stage ignition (SRM-XL).
+* Pitch kick maneuver command aimed at beginning an eastward orbital trajectory.
+
+### 2. The Control Authority Lesson
+While the software commanded an 82º pitch-over toward 90º heading, the vehicle maintained a near-vertical climb:
+* **Ungimballed Solid Motors**: Neither the Hammer nor the SRM-XL possess thrust vector control (TVC).
+* **Fixed Flat Fins**: The mounted `SR.Wing.01` and `02` fins acted like arrow fletchings, stabilizing the rocket aggressively into the relative wind and resisting pitch torque.
+* **Insufficient Reaction Wheel Authority**: Miniature probe reaction wheels lacked control torque against high dynamic pressure.
 
 ---
 
-## 🛡️ Decisions d'Enginyeria per a la Missió CSA-07
+## 🪂 The Recovery Triumph: Redeeming CSA-05b
 
-1. **Desbloqueig Tecnològic a R&D**:
-   * Desbloquejar `Powered Flight` (1 ciència) i `Airframe Construction` (10 ciència) per obtenir els alerons de control actiu **AV-R8 Winglet** (`R8winglet`) i **Delta-Deluxe** (`winglet3`).
-2. **Actualització del Vehicle Corolt-III**:
-   * Substituir els alerons inferiors passius per superfícies de control mòbils. Això atorgarà a kOS el parell aerodinàmic necessari per desviar la trajectòria i fer un autèntic *Gravity Turn*.
-3. **Ejecció de Carenats/Cobertes**:
-   * Incorporar la seqüència de desacoblament de la coberta del truss a més de 60 km d'altitud per alliberar la nau per a la fase orbital.
+Unlike the previous mission where CommNet blackout caused payload loss:
+1. The capsule weathered reentry at Mach 5.4 and 11.5 G deceleration.
+2. Upon reaching subsonic speeds and safe altitude, the autonomous parachute system opened on schedule.
+3. Descent rate plummeted smoothly from >40 m/s to **6.5 m/s**.
+4. The capsule touched down safely on the plains of Kerbin, enabling recovery of **all outer-space scientific samples**.
+
+---
+
+## 🛡️ Engineering Directives for Mission CSA-07
+
+1. **Tech Tree Node Unlocks in R&D**:
+   * Unlock `Powered Flight` (1 science) and `Airframe Construction` (10 science) to gain active aerodynamic control surfaces: **AV-R8 Winglet** (`R8winglet`) and **Delta-Deluxe** (`winglet3`).
+2. **Corolt-III Launcher Modernization**:
+   * Replace fixed fins with movable control surfaces, granting kOS sufficient aerodynamic control torque to execute true *Gravity Turns*.
+3. **Payload Fairing / Shroud Jettison**:
+   * Implement automated truss shroud jettison above 60 km altitude to expose antennae and instruments in vacuum.

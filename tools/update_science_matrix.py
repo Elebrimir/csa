@@ -16,45 +16,45 @@ SAVE_PATH = "/media/steam_games/SteamLibrary/steamapps/common/Kerbal Space Progr
 DOCS_DIR = "/home/pablo-cortes/Documents/Corolt_Space_Agency"
 
 EXPERIMENT_LABELS = {
-    "barometerScan": "Pressió Atmosfèrica (PresMat)",
-    "temperatureScan": "Temperatura (2HOT)",
-    "SRExperiment01": "Meteorologia (SR.Payload.01)",
-    "SRExperiment02": "Aeronomia (SR.Payload.02)",
-    "SRExperiment03": "Sondeig Avançat (SR.Payload.03)",
-    "SRExperiment04": "Enginyeria i Estrès (SR.Payload.04)",
-    "kerbalism_TELEMETRY": "Telemetria de Nau (Kerbalism)",
-    "geigerCounter": "Radiació i Geiger (Kerbalism)",
-    "mysteryGoo": "Misteriós Goo",
-    "mobileMaterialsLab": "Badia de Materials (Science Jr.)",
-    "crewReport": "Informe de Tripulació",
-    "evaReport": "Informe EVA",
-    "recovery": "Recuperació de Nau"
+    "barometerScan": "Atmospheric Pressure (PresMat)",
+    "temperatureScan": "Temperature (2HOT)",
+    "SRExperiment01": "Meteorology (SR.Payload.01)",
+    "SRExperiment02": "Aeronomy (SR.Payload.02)",
+    "SRExperiment03": "Advanced Sounding (SR.Payload.03)",
+    "SRExperiment04": "Engineering & Stress (SR.Payload.04)",
+    "kerbalism_TELEMETRY": "Vessel Telemetry (Kerbalism)",
+    "geigerCounter": "Radiation & Geiger (Kerbalism)",
+    "mysteryGoo": "Mystery Goo",
+    "mobileMaterialsLab": "Materials Bay (Science Jr.)",
+    "crewReport": "Crew Report",
+    "evaReport": "EVA Report",
+    "recovery": "Vessel Recovery"
 }
 
 BIOMES = [
-    ("Shores", "Costas"),
-    ("Grasslands", "Praderas"),
-    ("Highlands", "Montes"),
-    ("Mountains", "Montañas"),
-    ("Water", "Agua (Oceà)"),
-    ("Deserts", "Desiertos"),
-    ("Badlands", "Páramo"),
+    ("Shores", "Shores"),
+    ("Grasslands", "Grasslands"),
+    ("Highlands", "Highlands"),
+    ("Mountains", "Mountains"),
+    ("Water", "Water (Ocean)"),
+    ("Deserts", "Deserts"),
+    ("Badlands", "Badlands"),
     ("Tundra", "Tundra"),
-    ("IceCaps", "Capas de Hielo")
+    ("IceCaps", "Ice Caps")
 ]
 
 SITUATIONS = [
-    ("SrfLanded", "Superfície (Terra)"),
-    ("SrfSplashed", "Superfície (Oceà / Aigua)"),
-    ("FlyingLow", "Vol Baix (0 - 18 km)"),
-    ("FlyingHigh", "Vol Alt (18 - 70 km)"),
-    ("InSpaceLow", "Espai Baix (70 - 250 km)"),
-    ("InSpaceHigh", "Espai Alt (> 250 km / Van Allen)")
+    ("SrfLanded", "Surface (Landed)"),
+    ("SrfSplashed", "Surface (Splashed / Ocean)"),
+    ("FlyingLow", "Low Atmosphere (0 - 18 km)"),
+    ("FlyingHigh", "Upper Atmosphere (18 - 70 km)"),
+    ("InSpaceLow", "Low Space (70 - 250 km)"),
+    ("InSpaceHigh", "High Space (> 250 km / Van Allen)")
 ]
 
 def parse_science_from_save(sfs_file=SAVE_PATH):
     if not os.path.exists(sfs_file):
-        print(f"Error: No s'ha trobat el fitxer {sfs_file}")
+        print(f"Error: Save file not found at {sfs_file}")
         return {}
 
     with open(sfs_file, 'r', errors='ignore') as f:
@@ -105,7 +105,7 @@ def build_matrix(science_data):
         exp_name = EXPERIMENT_LABELS.get(exp_key, exp_key)
 
         # Detect situation & biome
-        sit_found = "Altres"
+        sit_found = "Other"
         for s_code, s_name in SITUATIONS:
             if s_code in context:
                 sit_found = s_name
@@ -121,7 +121,7 @@ def build_matrix(science_data):
         pct = d["pct"]
         rem = max(0.0, d["cap"] - d["sci"])
         
-        status = "Completat (100%)" if pct >= 99.5 else (f"En Progrés ({pct:.1f}%)" if pct > 0 else "Pendent (0%)")
+        status = "Completed (100%)" if pct >= 99.5 else (f"In Progress ({pct:.1f}%)" if pct > 0 else "Pending (0%)")
 
         rows.append({
             "id": sid,
@@ -137,20 +137,20 @@ def build_matrix(science_data):
 
     # 2. Add high-priority unstarted opportunities for Kerbin
     unstarted_keys = [
-        # Water biome targets (super high priority for ocean splashdown)
-        ("barometerScan@KerbinSrfSplashedWater", "Pressió Atmosfèrica (PresMat)", "Superfície (Oceà / Aigua)", "Agua (Oceà)", 1.62),
-        ("temperatureScan@KerbinSrfSplashedWater", "Temperatura (2HOT)", "Superfície (Oceà / Aigua)", "Agua (Oceà)", 0.54),
-        ("SRExperiment01@KerbinSrfSplashedWater", "Meteorologia (SR.Payload.01)", "Superfície (Oceà / Aigua)", "Agua (Oceà)", 0.72),
-        ("SRExperiment02@KerbinSrfSplashedWater", "Aeronomia (SR.Payload.02)", "Superfície (Oceà / Aigua)", "Agua (Oceà)", 0.72),
-        ("barometerScan@KerbinFlyingLowWater", "Pressió Atmosfèrica (PresMat)", "Vol Baix (0 - 18 km)", "Agua (Oceà)", 3.78),
-        ("temperatureScan@KerbinFlyingLowWater", "Temperatura (2HOT)", "Vol Baix (0 - 18 km)", "Agua (Oceà)", 1.26),
-        ("SRExperiment01@KerbinFlyingLowWater", "Meteorologia (SR.Payload.01)", "Vol Baix (0 - 18 km)", "Agua (Oceà)", 1.68),
+        # Water biome targets (high priority for ocean splashdown)
+        ("barometerScan@KerbinSrfSplashedWater", "Atmospheric Pressure (PresMat)", "Surface (Splashed / Ocean)", "Water (Ocean)", 1.62),
+        ("temperatureScan@KerbinSrfSplashedWater", "Temperature (2HOT)", "Surface (Splashed / Ocean)", "Water (Ocean)", 0.54),
+        ("SRExperiment01@KerbinSrfSplashedWater", "Meteorology (SR.Payload.01)", "Surface (Splashed / Ocean)", "Water (Ocean)", 0.72),
+        ("SRExperiment02@KerbinSrfSplashedWater", "Aeronomy (SR.Payload.02)", "Surface (Splashed / Ocean)", "Water (Ocean)", 0.72),
+        ("barometerScan@KerbinFlyingLowWater", "Atmospheric Pressure (PresMat)", "Low Atmosphere (0 - 18 km)", "Water (Ocean)", 3.78),
+        ("temperatureScan@KerbinFlyingLowWater", "Temperature (2HOT)", "Low Atmosphere (0 - 18 km)", "Water (Ocean)", 1.26),
+        ("SRExperiment01@KerbinFlyingLowWater", "Meteorology (SR.Payload.01)", "Low Atmosphere (0 - 18 km)", "Water (Ocean)", 1.68),
         # Space targets (Corolt-III targets)
-        ("barometerScan@KerbinInSpaceLow", "Pressió Atmosfèrica (PresMat)", "Espai Baix (70 - 250 km)", "Global", 5.40),
-        ("geigerCounter@KerbinFlyingLow", "Radiació i Geiger (Kerbalism)", "Vol Baix (0 - 18 km)", "Global", 2.50),
-        ("geigerCounter@KerbinFlyingHigh", "Radiació i Geiger (Kerbalism)", "Vol Alt (18 - 70 km)", "Global", 3.20),
-        ("geigerCounter@KerbinInSpaceLow", "Radiació i Geiger (Kerbalism)", "Espai Baix (70 - 250 km)", "Global", 4.50),
-        ("geigerCounter@KerbinInSpaceHigh", "Radiació i Geiger (Kerbalism)", "Espai Alt (> 250 km / Van Allen)", "Global", 6.00),
+        ("barometerScan@KerbinInSpaceLow", "Atmospheric Pressure (PresMat)", "Low Space (70 - 250 km)", "Global", 5.40),
+        ("geigerCounter@KerbinFlyingLow", "Radiation & Geiger (Kerbalism)", "Low Atmosphere (0 - 18 km)", "Global", 2.50),
+        ("geigerCounter@KerbinFlyingHigh", "Radiation & Geiger (Kerbalism)", "Upper Atmosphere (18 - 70 km)", "Global", 3.20),
+        ("geigerCounter@KerbinInSpaceLow", "Radiation & Geiger (Kerbalism)", "Low Space (70 - 250 km)", "Global", 4.50),
+        ("geigerCounter@KerbinInSpaceHigh", "Radiation & Geiger (Kerbalism)", "High Space (> 250 km / Van Allen)", "Global", 6.00),
     ]
 
     existing_ids = {r["id"] for r in rows}
@@ -165,7 +165,7 @@ def build_matrix(science_data):
                 "points_cap": cap,
                 "points_remaining": cap,
                 "percentage": 0.0,
-                "status": "Pendent (0%)"
+                "status": "Pending (0%)"
             })
 
     return rows
@@ -182,7 +182,7 @@ def generate_csv(rows, csv_path):
         writer.writeheader()
         for r in rows:
             writer.writerow(r)
-    print(f"[✓] Full de càlcul CSV desat a: {csv_path}")
+    print(f"[✓] CSV spreadsheet saved to: {csv_path}")
 
 def generate_markdown(rows, md_path):
     os.makedirs(os.path.dirname(md_path), exist_ok=True)
@@ -200,35 +200,35 @@ def generate_markdown(rows, md_path):
     sorted_rows = sorted(rows, key=lambda x: x["points_remaining"], reverse=True)
 
     lines = [
-        "# 🔬 Matriu Científica i Estat de Recerca (Kerbin)",
+        "# 🔬 Kerbin Science Matrix & Research Status",
         "",
-        "> *«Ad Astra Per Scientiam» — Panell operatiu de seguiment d'experiments i planificació de missions de la Corolt Space Agency (CSA).*",
+        "> *«Ad Astra Per Scientiam» — Mission planning and experiment tracking console for the Corolt Space Agency (CSA).* ",
         "",
-        f"*Dades sincronitzades automàticament des de la partida oficial (`saves/Corolt Space Agency/persistent.sfs`).*",
+        f"*Data automatically synchronized from official career save (`saves/Corolt Space Agency/persistent.sfs`).*",
         "",
         "---",
         "",
-        "## 📊 Indicadors Globals de Ciència",
+        "## 📊 Global Science Indicators",
         "",
-        f"| Mètrica Clau | Valor Assolit | Detall |",
+        f"| Key Metric | Value Achieved | Details |",
         f"| :--- | :--- | :--- |",
-        f"| **Punts de Ciència Obtinguts** | **`{total_pts:.2f} pts`** | Ciència transmesa o recuperada a KSC |",
-        f"| **Potencial de Ciència Identificat** | **`{total_cap:.2f} pts`** | Suma del sostre màxim de Kerbin |",
-        f"| **Punts Disponibles per Guanyar** | **`{total_rem:.2f} pts`** | Punts pendents a l'abast immediat |",
-        f"| **Progrés Global de Kerbin** | **`{global_pct:.1f}%`** | Grau de mostreig completat |",
-        f"| **Estat d'Experiments** | ✅ {completed_count} completats | ⏳ {in_progress_count} en progrés &#124; ❌ {unstarted_count} pendents |",
+        f"| **Science Points Earned** | **`{total_pts:.2f} pts`** | Science transmitted or recovered at KSC |",
+        f"| **Identified Science Potential** | **`{total_cap:.2f} pts`** | Cumulative Kerbin ceiling |",
+        f"| **Points Available to Yield** | **`{total_rem:.2f} pts`** | Immediate reachable opportunities |",
+        f"| **Overall Kerbin Progress** | **`{global_pct:.1f}%`** | Sampling completion rate |",
+        f"| **Experiment Status** | ✅ {completed_count} completed | ⏳ {in_progress_count} in progress &#124; ❌ {unstarted_count} pending |",
         "",
         "```text",
-        f"PROGRÉS GLOBAL: [{'=' * int(global_pct // 5)}{' ' * (20 - int(global_pct // 5))}] {global_pct:.1f}% ({total_pts:.1f}/{total_cap:.1f} pts)",
+        f"OVERALL PROGRESS: [{'=' * int(global_pct // 5)}{' ' * (20 - int(global_pct // 5))}] {global_pct:.1f}% ({total_pts:.1f}/{total_cap:.1f} pts)",
         "```",
         "",
         "---",
         "",
-        "## 🎯 Objectius de Màxim Retorn Científic (Per a Noves Missions)",
+        "## 🎯 High-Yield Scientific Objectives (For Upcoming Missions)",
         "",
-        "Aquests són els experiments pendents que aporten el major nombre de punts per a la flota CSA:",
+        "Priority pending experiments that maximize scientific return for the CSA fleet:",
         "",
-        "| Experiment | Situació | Bioma | Punts Restants | Estat Actual |",
+        "| Experiment | Situation | Biome | Remaining Points | Current Status |",
         "| :--- | :--- | :--- | :---: | :---: |"
     ]
 
@@ -240,22 +240,22 @@ def generate_markdown(rows, md_path):
         "",
         "---",
         "",
-        "## 📋 Matriu Completa d'Experiments",
+        "## 📋 Complete Experiment Matrix",
         "",
-        "Pots descarregar el full complet en format CSV per obrir-lo a **Excel o LibreOffice Calc**: [`kerbin_science_matrix.csv`](./kerbin_science_matrix.csv).",
+        "Download the full dataset in CSV format for **Excel or LibreOffice Calc**: [`kerbin_science_matrix.csv`](./kerbin_science_matrix.csv).",
         "",
-        "| Experiment | Situació | Bioma | Punts (Assolits / Sostre) | Estat & Progrés |",
+        "| Experiment | Situation | Biome | Points (Earned / Cap) | Status & Progress |",
         "| :--- | :--- | :--- | :---: | :---: |"
     ])
 
     for r in sorted_rows:
-        badge = "🟩 Completat" if r["percentage"] >= 99.5 else (f"🟨 {r['percentage']:.1f}%" if r["percentage"] > 0 else "⬜ Pendent")
+        badge = "🟩 Completed" if r["percentage"] >= 99.5 else (f"🟨 {r['percentage']:.1f}%" if r["percentage"] > 0 else "⬜ Pending")
         lines.append(f"| **{r['experiment']}** | {r['situation']} | `{r['biome']}` | **{r['points_earned']:.2f}** / {r['points_cap']:.2f} | {badge} |")
 
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(lines) + "\n")
 
-    print(f"[✓] Documentació VitePress Markdown desada a: {md_path}")
+    print(f"[✓] VitePress Markdown saved to: {md_path}")
 
 def main():
     parser = argparse.ArgumentParser(description="Actualitzador de la Matriu Científica CSA")

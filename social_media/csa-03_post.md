@@ -1,15 +1,16 @@
-# 📱 Comunicats de la Missió CSA-03
+# 📱 Mission CSA-03 Releases
 
-## 🐦 Format Twitter / X (Fil / Tweet de Llançament)
+## 🐦 Twitter / X Format (Launch Thread / Post)
 
-> 🚀 **HISTORIC MILESTONE!** La **Corolt Space Agency (CSA)** conquereix l'estratosfera en la missió **#CSA03**!
+> 🚀 **HISTORIC MILESTONE!** The **Corolt Space Agency (CSA)** conquers the stratosphere on mission **#CSA03**!
 > 
-> El nostre primer coet multietapa **#CoroltII** ha completat amb èxit la separació en vol a 10,6 km, assolint una velocitat màxima supersònica de **1.445 km/h** (401,6 m/s) i un apogeu de **23.968 metres**!
+> Our first multi-stage rocket **#CoroltII** completed airborne staging at 10.6 km, reaching a supersonic peak velocity of **1,445 km/h** (401.6 m/s) and an apogee of **23,968 meters**!
 > 
-> 🔬 Primers experiments científics en alta atmosfera completats i càrrega útil recuperada intacta a les praderies de Kerbin!
+> 🔬 First upper atmospheric science suites completed and payload recovered intact on the grasslands of Kerbin!
 > 
-> 📊 Informe oficial i telemetria completa:  
+> 📊 Official report and complete telemetry:  
 > 👉 https://elebrimir.github.io/csa/missions/csa-03
 > 
 > *Ad Astra Per Scientiam* 🌌  
 > #KerbalSpaceProgram #Spaceflight #CSA #RocketScience #MultiStage
+

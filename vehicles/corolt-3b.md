@@ -1,61 +1,62 @@
-# 🚀 Llançador Suborbital de Guiatge Actiu: Corolt-IIIb (CSA-07)
+# 🚀 Active-Guidance Suborbital Launcher: Corolt-IIIb (CSA-07)
 
-> *"Evolució directa del Corolt-III equipada amb superfícies de control aerodinàmic mòbils a ambdues etapes, permetent a kOS executar maniobres de cabeceig (pitch kick) i guiatge horitzontal cap a l'Est."*
+> *"Direct evolution of the Corolt-III fitted with aerodynamic control surfaces on both stages, empowering kOS to execute automated pitch kick maneuvers and downrange guidance toward the East."*
 
 ---
 
-## 📐 Especificacions Tècniques Generals
+## 📐 General Technical Specifications
 
-| Paràmetre de Disseny | Valor d'Enginyeria |
+| Design Parameter | Engineering Value |
 | :--- | :--- |
-| **Fabricant** | Corolt Space Agency (CSA) |
-| **Tipus de Vehicle** | Llançador Suborbital Multietapa en Línia amb Guiatge Actiu |
-| **Diàmetre de Base (Etapa 1)** | **1.25 m** (Booster RT-10 «Hammer» amb empenta calibrada al 46%) |
-| **Diàmetre Superior (Etapa 2)** | **0.625 m** (Motor de combustible sòlid SRM-XL) |
-| **Massa Total al Llançament** | **5.199 t (5.199 kg)** |
-| **Massa de Càrrega Útil (Dry Mass)** | **0.629 t (629 kg)** |
-| **Massa Recuperada a l'Aterratge** | **0.3015 t (301,5 kg)** |
-| **Cost Total de Construcció** | **9.775,5 fons** |
-| **Valor Recuperat al VAB Warehouse** | **7.301,0 fons** (74,7% de retorn econòmic) |
-| **Superfícies de Control Actiu** | 4x \`bluedog.Redstone.Fin.CtrlSurf\` (Etapa 1) + 4x \`bluedog.Scout.Algol.Fin\` (Etapa 2) |
-| **Recuperació** | Morro cònic amb paracaigudes integrat \`SR.Nosecone.625\` |
+| **Manufacturer** | Corolt Space Agency (CSA) |
+| **Vehicle Type** | Multi-Stage Inline Suborbital Launcher with Active Guidance |
+| **Base Diameter (Stage 1)** | **1.25 m** (RT-10 «Hammer» Booster with thrust calibrated to 46%) |
+| **Upper Diameter (Stage 2)** | **0.625 m** (Solid Rocket Motor SRM-XL) |
+| **Gross Launch Mass** | **5.199 t (5,199 kg)** |
+| **Payload Dry Mass** | **0.629 t (629 kg)** |
+| **Recovered Mass at Splashdown** | **0.3015 t (301.5 kg)** |
+| **Total Construction Cost** | **9,775.5 funds** |
+| **Recovered Value at VAB Warehouse** | **7,301.0 funds** (74.7% economic return rate) |
+| **Active Control Surfaces** | 4x `bluedog.Redstone.Fin.CtrlSurf` (Stage 1) + 4x `bluedog.Scout.Algol.Fin` (Stage 2) |
+| **Recovery System** | Conical nosecone with integrated parachute `SR.Nosecone.625` |
 
 ---
 
-## 🕹️ Sistema de Control i Dinàmica de Vol
+## 🕹️ Flight Control System & Dynamics
 
-A diferència del Corolt-III estàndard (que utilitzava alerons passius fixes incapaços de maniobrar), la variant **Corolt-IIIb** incorpora:
-* **Primera Etapa (Hammer)**: 4 superfícies mòbils tipus Redstone (*Etoh-CS*) que proporcionen ple control de guinyada, cabeceig i alabeig durant la fase densa atmosfèrica.
-* **Segona Etapa (SRM-XL)**: 4 aletes mòbils tipus Algol (*Dioscuri-AFD1*) que mantenen el vector de cabeceig a 80º–82º fins a la cota de 35–40 km.
-* **Ordinador de Bord (kOS)**: Executa el programa d'ascens autònom \`corolt3_guided_ascent.ks\` i disposa del procediment d'emergència \`emergency_recovery.ks\`.
-
----
-
-## 🔬 Suite Científica i Càrrega Útil Recuperable
-
-Tota la secció superior es troba muntada a l'interior d'una gàbia d'instruments oberta \`SR.PayloadTruss.625\`:
-* ⏱️ **Pressió Atmosfèrica PresMat (\`sensorBarometer\`)**
-* 🌡️ **Temperatura 2HOT (\`sensorThermometer\`)**
-* 🌪️ **Meteorological Survey Package (\`SR.Payload.01\`)**
-* 🧪 **Aeronomy Sensor Array (\`SR.Payload.02\`)**
-* ⚙️ **Engineering & Stress Package (\`SR.Payload.04\`)**
-* 📡 **Advanced Sounding Package (\`SR.Payload.03\`)**
-* ⚡ **Emmagatzematge Elèctric**: Bateria de 100 EC (\`batteryBankMini\`) + 2x \`nfex-battery-mini-1\` (250 EC totals).
-* 💾 **Aviònica CSA**: 2x \`SR.ProbeCore\` (32 MB cadascuna, 64 MB totals).
+Unlike the baseline Corolt-III (which relied on unguided fixed fins incapable of altering trajectory), the **Corolt-IIIb** variant integrates:
+* **First Stage (Hammer)**: 4 Redstone-style movable fins (*Etoh-CS*) providing full yaw, pitch, and roll control during the dense atmospheric ascent.
+* **Second Stage (SRM-XL)**: 4 Algol-style actuated fins (*Dioscuri-AFD1*) holding pitch attitude at 80º–82º up to 35–40 km altitude.
+* **Flight Computer (kOS)**: Runs the autonomous ascent guidance program `corolt3_guided_ascent.ks` with onboard contingency handling `emergency_recovery.ks`.
 
 ---
 
-## 📈 Perfil Aerodinàmic Calibrat (Drag Empíric)
+## 🔬 Scientific Suite & Recoverable Payload
 
-Extret a partir de la telemetria real de la missió **CSA-07**:
-* **$C_d \cdot A$ Efectiu Medià**: **1.727 m²**
-* **Coeficient Subsònic (< Mach 0.8)**: 1.468 m²
-* **Pic Transònic (Mach 0.8 – 1.2)**: 2.331 m²
-* **Règim Supersònic (Mach 1.2 – 2.5)**: 1.813 m²
-* **Règim Hipersònic (> Mach 4.5)**: 1.640 m²
+The complete upper section is housed inside an open 0.625m truss `SR.PayloadTruss.625`:
+* ⏱️ **Atmospheric Pressure PresMat (`sensorBarometer`)**
+* 🌡️ **Temperature 2HOT (`sensorThermometer`)**
+* 🌪️ **Meteorological Survey Package (`SR.Payload.01`)**
+* 🧪 **Aeronomy Sensor Array (`SR.Payload.02`)**
+* ⚙️ **Engineering & Stress Package (`SR.Payload.04`)**
+* 📡 **Advanced Sounding Package (`SR.Payload.03`)**
+* ⚡ **Electrical Storage**: 100 EC battery (`batteryBankMini`) + 2x `nfex-battery-mini-1` (250 EC total).
+* 💾 **CSA Avionics**: 2x `SR.ProbeCore` (32 MB each, 64 MB total).
 
 ---
 
-## 📋 Conclusió Operativa i Historial
+## 📈 Calibrated Aerodynamic Drag Profile ($C_d \cdot A$)
 
-El vehicle va debutar amb èxit rotund a la missió **CSA-07** (Any 1, Dia 65), creuant la frontera espacial fins a 138,6 km i recorrent més de 315 km mar endins. La càpsula va fer un amaratge suau a l'oceà i va ser recuperada íntegrament al magatzem del VAB, salvant el 74,7% del valor de la nau.
+Empirically extracted from high-fidelity telemetry during flight **CSA-07**:
+* **Median Effective $C_d \cdot A$**: **1.727 m²**
+* **Subsonic Regime (< Mach 0.8)**: 1.468 m²
+* **Transonic Peak (Mach 0.8 – 1.2)**: 2.331 m²
+* **Supersonic Regime (Mach 1.2 – 2.5)**: 1.813 m²
+* **Hypersonic Regime (> Mach 4.5)**: 1.640 m²
+
+---
+
+## 📋 Operational Conclusion & History
+
+The vehicle completed its operational debut with flying colors on mission **CSA-07** (Year 1, Day 65), soaring to 138.6 km and traveling over 315 km downrange. The instrument capsule performed a gentle ocean splashdown and was recovered in pristine condition into the VAB warehouse, recouping 74.7% of total construction funds.
+
