@@ -244,15 +244,13 @@ def generate_markdown(rows, md_path):
         "",
         "Pots descarregar el full complet en format CSV per obrir-lo a **Excel o LibreOffice Calc**: [`kerbin_science_matrix.csv`](./kerbin_science_matrix.csv).",
         "",
-        "| Experiment | Situació | Bioma | Recollits | Sostre | Progrés | Estat |",
-        "| :--- | :--- | :--- | :---: | :---: | :---: | :---: |"
+        "| Experiment | Situació | Bioma | Punts (Assolits / Sostre) | Estat & Progrés |",
+        "| :--- | :--- | :--- | :---: | :---: |"
     ])
 
     for r in sorted_rows:
         badge = "🟩 Completat" if r["percentage"] >= 99.5 else (f"🟨 {r['percentage']:.1f}%" if r["percentage"] > 0 else "⬜ Pendent")
-        bar_len = int(r["percentage"] // 10)
-        bar = f"`[{'#' * bar_len}{'-' * (10 - bar_len)}]`"
-        lines.append(f"| **{r['experiment']}** | {r['situation']} | {r['biome']} | {r['points_earned']:.2f} | {r['points_cap']:.2f} | {bar} | {badge} |")
+        lines.append(f"| **{r['experiment']}** | {r['situation']} | `{r['biome']}` | **{r['points_earned']:.2f}** / {r['points_cap']:.2f} | {badge} |")
 
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(lines) + "\n")
