@@ -31,6 +31,7 @@ export default defineConfig({
           { text: "Corolt-II (Multietapa Espacial)", link: "/vehicles/corolt-2" },
           { text: "Corolt-IIb (Variant Radial)", link: "/vehicles/corolt-2b" },
           { text: "Corolt-III (Llançador Tàndem)", link: "/vehicles/corolt-3" },
+          { text: "Corolt-IIIb (Guiatge Actiu)", link: "/vehicles/corolt-3b" },
         ]
       },
       {

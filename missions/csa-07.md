@@ -2,7 +2,7 @@
 
 * **Data del Llançament**: Any 1, Dia 65
 * **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-IIIb (Unitat 01 - Superfícies Mòbils)](/vehicles/corolt-3)
+* **Vehicle Llançador**: [Corolt-IIIb (Unitat 01 - Superfícies Mòbils)](/vehicles/corolt-3b)
 * **Estat de la Missió**: 🟢 ÈXIT TOTAL (Apogeu 138,6 km | 315 km Downrange | Amaratge Suau i Recuperació al VAB)
 
 ---
@@ -28,11 +28,15 @@ Dades capturades en temps real via l'enllaç telemètric continu de bord (Telema
 | **Acceleració Màxima** | **6,17 G** | 🟢 Perfil suau i confortable per a la càrrega útil |
 | **Temps a l'Espai (> 70 km)** | **653,5 s (10 min 53 s)** | 🟢 Gairebé 11 minuts en microgravetat espacial |
 | **Abast Horitzontal (Downrange)** | **Longitud -74,56º ➔ -44,27º** | 🟢 **Més de 315 km recorreguts sobre l'oceà** |
+| **Velocitat de Descenso Terminal** | **6,05 m/s (21,8 km/h)** | 🟢 Descens ultra-estable sota campana |
 | **Velocitat de Toc a l'Aigua** | **0,10 m/s** | 🟢 Amaratge ultra-suau sota paracaigudes |
 | **Cota d'Aterratge / Amaratge** | **-1,2 m (Nivell del Mar)** | 🟢 Primer amaratge oceànic de la història de la CSA |
 | **Durada Total de Vol** | **1.357,2 s (22 min 37 s)** | Missió completa enregistrada en 2.727 mostres |
 
 ---
+
+### Quadre de Comandament i Anàlisi Multivariable (CSA-07)
+![Dashboard Avançat CSA-07](../assets/csa-07_advanced_dashboard.png)
 
 ### Gràfica Interactiva SVG de Telemetria de Vol
 ![Telemetria de Vol CSA-07](../assets/csa-07_telemetry_plot.svg)
@@ -54,7 +58,21 @@ A $T+3,5\text{ s}$ de vol, la rutina d'activació d'experiments va patir una exc
 ### 3. El Botí Científic de l'Oceà
 En caure en aigües obertes, la CSA ha desbloquejat per primera vegada un reguitzell de dades científiques del bioma **Agua / Oceà**:
 * Meteorologia, Aeronomia, Pressió Atmosfèrica i Temperatura en vol baix i superfície marina.
-* **+9,8 punts de ciència** afegits a la seu central, elevant el compte a **75,76 punts** llestos per a noves investigacions a R&D.
+* **+9,8 punts de ciència** afegits a la seu central, elevant el compte històric a **75,76 punts**, amb **17,76 punts** disponibles immediatament per a adquisicions a l'arbre de R&D.
+
+### 4. Logística de Recuperació i Economia al VAB Warehouse (KCT)
+Per primera vegada en una missió oceànica a gran distància (>315 km del KSC):
+* **Recuperació al Magatzem**: La nau `Corolt-IIIb` ha estat recuperada íntegrament al **VAB Warehouse**.
+* **Retorn Econòmic**: Dels **9.775,5 fons** de cost inicial de fabricació, s'han retingut **7.301,0 fons** en peces d'alta tecnologia (un **74,7% de valor salvat**).
+* **Inventari d'Equipament Rescatat**: La gàbia oberta `SR.PayloadTruss.625` (2.100 fons), ambdós ordinadors robòtics `SR.ProbeCore` (amb memòries de 32 MB intactes), el conjunt de bateries i els sensors de precisió romanen disponibles per ser reutilitzats en futurs llançaments sense temps d'espera de construcció.
+
+### 5. Extracció Empírica de Drag Aerodinàmic ($C_d \cdot A$)
+L'anàlisi de la telemetria real durant la fase de planatge balístic ha permès calcular el perfil d'arrossegament del vehicle per a alimentar el simulador numèric RK4 (`ascent_simulator.py`):
+* **$C_d \cdot A$ Efectiu Medià**: **1,727 m²**
+* **Coeficient Subsònic (< Mach 0.8)**: 1,468 m²
+* **Pic Transònic (Mach 0.8 – 1.2)**: 2,331 m²
+* **Règim Supersònic (Mach 1.2 – 2.5)**: 1,813 m²
+* **Règim Hipersònic (> Mach 4.5)**: 1,640 m²
 
 ---
 
