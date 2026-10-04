@@ -1,49 +1,50 @@
-# 🚀 Llançador Multietapa: Corolt-IIb (CSA-04)
+# 🚀 Multi-Stage Launcher: Corolt-IIb (CSA-04)
 
-> *"Variant d'alta potència i suite científica ampliada del programa Corolt-II, equipada amb boosters radials de suport i els primers sensors atmosfèrics dedicats."*
+> *"High-thrust variant with an expanded scientific suite from the Corolt-II program, equipped with auxiliary radial boosters and the agency's first dedicated atmospheric sensors."*
 
-![Corolt-IIb Plànol KVV 1](../assets/vehicles/corolt-2b_blueprint_1.png)
+![Corolt-IIb Blueprint KVV 1](../assets/vehicles/corolt-2b_blueprint_1.png)
 
 ---
 
-## 📐 Especificacions Tècniques Generals
+## 📐 General Technical Specifications
 
-| Paràmetre de Disseny | Valor d'Enginyeria |
+| Design Parameter | Engineering Value |
 | :--- | :--- |
-| **Fabricant** | Corolt Space Agency (CSA) |
-| **Tipus de Vehicle** | Coet Sonda Multietapa de Càrrega Científica Ampliada |
-| **Diàmetre Central** | 0.625 m (Booster SRM-XL) $ightarrow$ 0.35 m (Segona Etapa SRM-L) |
-| **Massa Total al Llançament** | **2.157 t (2.157 kg)** |
-| **Massa Final de Càrrega Útil** | **0.177 t (177 kg)** |
-| **Empenta Màxima al Llançament** | **52.31 kN** (Nucli SRM-XL + 4 Boosters Auxiliars) |
-| **Ràtio Empenta/Pes (TWR)** | **2.47 (Llançament)** $ightarrow$ **1.67 (Segona Etapa)** |
-| **Delta-v ($\Delta v$) Total** | **2.146 m/s (Nivell del mar) / 2.552 m/s (Buit)** |
-| **Combustió Primera Etapa** | **49,2 segons** |
-| **Combustió Segona Etapa** | **33,8 segons** |
-| **Estabilització** | 4 aletes a la base + 4 aletes al tram superior (rotació giroscòpica) |
-| **Recuperació** | Paracaigudes integrat `SR.PackChute.35` |
+| **Manufacturer** | Corolt Space Agency (CSA) |
+| **Vehicle Type** | Multi-Stage Sounding Rocket with Expanded Scientific Payload |
+| **Core Diameter** | 0.625 m (SRM-XL Booster) $\rightarrow$ 0.35 m (SRM-L Upper Stage) |
+| **Gross Launch Mass** | **2.157 t (2,157 kg)** |
+| **Final Payload Dry Mass** | **0.177 t (177 kg)** |
+| **Peak Liftoff Thrust** | **52.31 kN** (SRM-XL Core + 4 Auxiliary Radial Boosters) |
+| **Thrust-to-Weight Ratio (TWR)** | **2.47 (Liftoff)** $\rightarrow$ **1.67 (Stage 2 Ignition)** |
+| **Total Delta-v ($\Delta v$)** | **2,146 m/s (Sea Level) / 2,552 m/s (Vacuum)** |
+| **Stage 1 Burn Time** | **49.2 seconds** |
+| **Stage 2 Burn Time** | **33.8 seconds** |
+| **Stabilization** | 4 aft skirt fins + 4 upper canted fins (spin-stabilization) |
+| **Recovery System** | Integrated parachute `SR.PackChute.35` |
 
 ---
 
-## 🔬 Càrrega Científica Embarcada
+## 🔬 Onboard Scientific Payload
 
-Per primer cop en la història de la CSA, el Corolt-IIb integra la tríada bàsica d'investigació ambiental:
-* 🌪️ **Baròmetre PresMat (`sensorBarometer`)**: Registre de pressió dinàmica i estàtica.
-* 🌡️ **Termòmetre 2HOT (`sensorThermometer`)**: Sensor de temperatura d'alta velocitat.
-* 🌦️ **Meteorological Survey Package (`SR.Payload.01`)**: Paquet d'anàlisi de densitat i capes d'aire.
-* ⚡ **Mini Battery Pack**: 100 unitats de Càrrega Elèctrica per garantir el funcionament dels sensors i l'aviònica durant tot el descens.
-
----
-
-## 🛠️ Esquemes d'Enginyeria KVV (Kronal Vessel Viewer)
-
-### Plànol d'Alçat i Perfil Aerodinàmic
-![Corolt-IIb Plànol KVV 2](../assets/vehicles/corolt-2b_blueprint_2.png)
-
-### Vista Explosionada de la Càrrega Útil i Etapes
-![Corolt-IIb Plànol KVV 3](../assets/vehicles/corolt-2b_blueprint_3.png)
+For the first time in CSA history, the Corolt-IIb integrates the fundamental environmental research triad:
+* 🌪️ **PresMat Barometer (`sensorBarometer`)**: High-precision dynamic and static pressure monitoring.
+* 🌡️ **2HOT Thermometer (`sensorThermometer`)**: Fast-response ambient temperature sensor.
+* 🌦️ **Meteorological Survey Package (`SR.Payload.01`)**: Density profiling and air-column analysis.
+* ⚡ **Mini Battery Pack**: 100 EC units ensuring avionics and sensor operations through splashdown/recovery.
 
 ---
 
-## 📋 Conclusió Operativa
-El Corolt-IIb va complir la missió d'inaugurar la recollida de dades físiques reals per a l'agència, demostrant alhora que la combinació de boosters radials i rotació forçada sobrepassa els límits dels ancoratges mecànics simples. Els seus resultats han obert el camí directe cap al desenvolupament del **Corolt-III**.
+## 🛠️ KVV Engineering Blueprints (Kronal Vessel Viewer)
+
+### Elevation & Aerodynamic Profile
+![Corolt-IIb Blueprint KVV 2](../assets/vehicles/corolt-2b_blueprint_2.png)
+
+### Exploded View of Payload & Staging
+![Corolt-IIb Blueprint KVV 3](../assets/vehicles/corolt-2b_blueprint_3.png)
+
+---
+
+## 📋 Operational Conclusion
+Corolt-IIb succeeded in inaugurating physical telemetry collection for the agency while proving that combining radial boosters and rapid forced spin exceeded the structural tolerances of simple surface attachments. The data collected paved the way directly for the development of **Corolt-III**.
+

@@ -1,69 +1,70 @@
-# 📋 Informe de Missió: CSA-04 «El Desafiament del Corolt-IIb»
+# 📋 Mission Report: CSA-04 «The Corolt-IIb Challenge»
 
-* **Data del Llançament**: Any 1, Dia 35 (03h 56m 39s)
-* **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-IIb (Variant Multietapa Radial)](/vehicles/corolt-2b)
-* **Estat de la Missió**: 🟢 ÈXIT DE RECUPERACIÓ I RÈCORD CIENTÍFIC (+10,4 punts de ciència)
-
----
-
-## 🎯 Objectius de la Missió
-1. **Estrena d'Instrumentació Científica Avançada**: Incorporació i validació operativa del Baròmetre BAROTRON (`sensorBarometer`), Termòmetre 2HOT (`sensorThermometer`) i el paquet d'anàlisi meteorològica `SRExperiment01`. *(Completat)*
-2. **Assaig d'Alta Potència i Estabilització**: Avaluació de la configuració de 4 boosters auxiliars exteriors i estabilització giroscòpica per rotació (*spin stabilization*). *(Completat - dades d'estrès estructural crítiques)*
-3. **Altitud Operativa**: Superació de la baixa atmosfera i assalt a les capes mitjanes-altes de Kerbin (>14 km). *(Completat - 14,49 km assolit)*
-4. **Recuperació Íntegra**: Aterratge suau i recuperació al 100% de la càpsula d'instruments a les praderies de Kerbin. *(Completat)*
+* **Launch Date**: Year 1, Day 35 (03h 56m 39s)
+* **Flight Director / Operations**: CSA Mission Control (Kerbin Launch Complex)
+* **Launch Vehicle**: [Corolt-IIb (Radial Multi-Stage Variant)](/vehicles/corolt-2b)
+* **Mission Status**: 🟢 RECOVERY SUCCESS AND SCIENCE RECORD (+10.4 science points)
 
 ---
 
-## 📊 Telemetria Oficial de Vol (Dades Registrades)
+## 🎯 Mission Objectives
+1. **Advanced Science Suite Debut**: First flight testing and validation of the BAROTRON Barometer (`sensorBarometer`), 2HOT Thermometer (`sensorThermometer`), and meteorological suite `SRExperiment01`. *(Completed)*
+2. **High-Power Propulsion & Stabilization Testing**: Assess 4 auxiliary radial booster cluster and spin stabilization dynamics. *(Completed - provided critical structural stress data)*
+3. **Operational Altitude**: Escape the dense lower atmosphere and probe the middle-to-upper layers (>14 km). *(Completed - 14.49 km reached)*
+4. **Intact Recovery**: Soft parachute landing and 100% instrument recovery on the grasslands of Kerbin. *(Completed)*
 
-Dades capturades en temps real via enllaç telemètric Telemachus:
+---
 
-| Paràmetre de Vol | Intent 1 (CSA-04) | Vol Definitiu (CSA-04b) |
+## 📊 Official Flight Telemetry (Recorded Data)
+
+Real-time telemetry recorded via Telemachus:
+
+| Flight Parameter | Flight Attempt 1 (CSA-04) | Definitive Flight (CSA-04b) |
 | :--- | :--- | :--- |
-| **Altitud Màxima (Apoapsis)** | 669,7 m | **14.489,5 m (14,49 km)** |
-| **Velocitat Màxima de Superfície** | 193,6 m/s (697 km/h) | **305,4 m/s (1.100 km/h)** *(a 6.897 m)* |
-| **Pressió Dinàmica Màxima (Max Q)** | 20.354 kPa | **25.281,9 kPa** |
-| **Desplegament del Paracaigudes** | 156,4 m | **1.666,3 m** |
-| **Acceleració Màxima en Obertura** | 13,60 G | **19,40 G** |
-| **Durada Total de Vol** | 62,7 s | **447,7 segons (7 min 28 s)** |
-| **Lloc de Presa de Terra** | Praderies KSC (55,4 m) | **Praderies KSC (1.500 m altiplà)** |
-| **Integritat de la Càrrega Útil** | 100% Recuperada | **100% Recuperada i Intacta** |
+| **Peak Altitude (Apoapsis)** | 669.7 m | **14,489.5 m (14.49 km)** |
+| **Maximum Surface Speed** | 193.6 m/s (697 km/h) | **305.4 m/s (1,100 km/h)** *(at 6,897 m)* |
+| **Peak Dynamic Pressure (Max Q)** | 20.354 kPa | **25,281.9 kPa** |
+| **Parachute Deployment Altitude** | 156.4 m | **1,666.3 m** |
+| **Peak Opening Deceleration** | 13.60 G | **19.40 G** |
+| **Total Flight Duration** | 62.7 s | **447.7 seconds (7 min 28 s)** |
+| **Touchdown Site** | KSC Grasslands (55.4 m) | **KSC Grasslands (1,500 m plateau)** |
+| **Payload Integrity** | 100% Recovered | **100% Recovered and Intact** |
 
 ---
 
-### Gràfica de Telemetria del Vol CSA-04b
-![Telemetria de Vol CSA-04b](../assets/csa-04b_telemetry_plot.svg)
+### Flight Telemetry Plot (CSA-04b)
+![CSA-04b Telemetry Plot](../assets/csa-04b_telemetry_plot.svg)
 
-*(Gràfica de l'incident aerodinàmic inicial CSA-04 per a anàlisi d'enginyeria: [Veure Gràfica CSA-04](../assets/csa-04_telemetry_plot.svg))*
+*(Plot of the initial aerodynamic anomaly during CSA-04 for engineering review: [View CSA-04 Plot](../assets/csa-04_telemetry_plot.svg))*
 
 ---
 
-## 🔬 Rendiment Científic Històric (Kerbalism & R+D)
+## 🔬 Historic Scientific Yield (Kerbalism & R&D)
 
-Aquest vol marca un punt d'inflexió per a la ciència de la CSA:
-* **Baròmetre BAROTRON (`barometerScan@KerbinSrfLandedShores`)**: Primera mesura oficial de la pressió atmosfèrica de Kerbin.
-* **Termòmetre 2HOT (`temperatureScan@KerbinSrfLandedShores`)**: Primer perfil tèrmic certificat per la CSA.
-* **Paquet Meteorològic (`SRExperiment01@KerbinFlyingLowShores` i `SrfLanded`)**: Registre complet de paràmetres atmosfèrics en vol baix i superfície.
-* **Telemetria Ambiental Kerbalism**: Enregistrament continu de dades durant els 7 minuts de descens.
-* **Balanç d'R+D**: La recuperació de la càpsula ha aportat **+10,41 punts de ciència**, disparant el balanç de l'agència de 2,54 a **12,95 punts disponibles**!
+This flight established a cornerstone for CSA environmental research:
+* **BAROTRON Barometer (`barometerScan@KerbinSrfLandedShores`)**: First calibrated atmospheric pressure reading on Kerbin.
+* **2HOT Thermometer (`temperatureScan@KerbinSrfLandedShores`)**: First certified temperature profile.
+* **Meteorological Package (`SRExperiment01@KerbinFlyingLowShores` and `SrfLanded`)**: Full recording of atmospheric boundaries.
+* **Kerbalism Environmental Telemetry**: Continuous streaming over 7 minutes of descent.
+* **R&D Science Haul**: Recovery yielded **+10.41 science points**, boosting agency reserves from 2.54 to **12.95 points**!
 
 > [!NOTE]
-> **Diagnòstic d'Enginyeria sobre Emmagatzematge:** L'ordinador de bord (*Avionics Package*) disposa de 500 KB de capacitat de sèrie, quedant saturat davant dels 3,5 MB generats pels nous sensors. Per al pròxim vol s'actualitzarà la memòria del disc dur o s'incorporarà transmissió per ràdio en directe.
+> **Engineering Storage Diagnosis:** Standard avionics packages feature only 500 KB storage, filling up against the 3.5 MB produced by new high-rate sensors. Subsequent flights will incorporate expanded memory storage or live radio dumping.
 
 ---
 
-## ⚠️ Anàlisi de l'Incident Estructural i Lliçons d'Enginyeria
+## ⚠️ Structural Anomaly Analysis & Engineering Lessons
 
-La campanya CSA-04 ha estat una de les més riques en aprenentatge d'enginyeria aeroespacial:
-1. **Primer Intent (CSA-04):** Amb un TWR inicial extrem (>2.4) i 4 boosters radials sense SAS, el vehicle va assolir Max Q a només 400 m, patint una pèrdua de control aerodinàmic que va forçar un *looping* a 670 m i descens immediat en paracaigudes.
-2. **Vol Definitiu (CSA-04b):** Es va aplicar reducció d'empenta i inclinació d'aletes per aconseguir estabilització giroscòpica per rotació (*spin stabilization*). La rotació va ser tan efectiva i violenta que la força centrífuga va estripar els ancoratges dels 4 boosters radials a baixa cota.
-3. **Comportament del Tram Central:** Deslliurat dels boosters exteriors, el nucli central va continuar volant perfectament vertical i rígid, assolint els **14.489 metres** d'altitud màxima abans d'iniciar una reentrada suau i recuperar tots els instruments.
+The CSA-04 flight campaign yielded major lessons in aerospace vehicle dynamics:
+1. **First Attempt (CSA-04):** With an excessive liftoff TWR (>2.4) and 4 unguided radial boosters without SAS, the vehicle encountered Max Q at only 400 m, suffering aerodynamic loss of control into an unintended loop at 670 m and triggering immediate emergency parachute deployment.
+2. **Definitive Flight (CSA-04b):** Thrust was throttled down and fin cant was applied to induce spin stabilization. The rotational rate was so pronounced that centrifugal forces tore the 4 radial boosters from their surface mountings at low altitude.
+3. **Core Stage Behavior:** Shed of its radial boosters, the central core continued climbing vertically on rails, attaining **14,489 meters** before a smooth reentry and full payload recovery.
 
-### Conclusió per al Programa Corolt:
-S'abandona definitivament l'ús de boosters radials sense guiatge actiu. La futura classe **Corolt-III** serà un vehicle estrictament **en línia (tàndem)** amb motor inferior d'alta empenta (RT-10 «Hammer»).
+### Architectural Takeaway for the Corolt Program:
+Radial boosters without active attitude control have been decommissioned. Future launcher evolution will center entirely around **inline (tandem)** architectures powered by heavy solid boosters (RT-10 «Hammer») in the **Corolt-III** class.
 
 ---
 
-## 📸 Vehicle de la Missió
-![Corolt-IIb Plànol General](../assets/vehicles/corolt-2b_blueprint_1.png)
+## 📸 Mission Vehicle Blueprint
+![Corolt-IIb Blueprint](../assets/vehicles/corolt-2b_blueprint_1.png)
+

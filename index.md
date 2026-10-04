@@ -4,43 +4,43 @@ layout: home
 hero:
   name: "COROLT SPACE AGENCY"
   text: "AD ASTRA PER SCIENTIAM"
-  tagline: "Enginyeria aeroespacial avançada, telemetria d'alta fidelitat i guiatge autònom kOS."
+  tagline: "Advanced aerospace engineering, high-fidelity telemetry, and autonomous kOS guidance."
   image:
     src: /assets/flag.png
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 Veure Vol CSA-06
-      link: /missions/csa-06
+      text: 🚀 View Flight CSA-07
+      link: /missions/csa-07
     - theme: alt
-      text: 📡 Flota Corolt-III
+      text: 📡 Corolt-III Fleet
       link: /vehicles/corolt-3
 
 features:
-  - title: 🌌 CONQUESTA SUBORBITAL & ORBITAL
-    details: Exploració d'alta cota (245 km), perfils d'ascens per gir gravitatori (Gravity Turn) i xarxa autònoma CoroltNet.
-  - title: 🔬 REALISME KERBALISM & SISTEMES
-    details: Ciència de transmissió en temps real, cicles aerotèrmics a Mach 5+, cinturons de radiació i gestió d'energia.
-  - title: 💻 CONTROL AUTÒNOM kOS & TELEMETRIA
-    details: Guiatge per KerboScript independent de CommNet terrestre i telemetria científica contínua multivariable.
+  - title: 🌌 SUBORBITAL & ORBITAL CONQUEST
+    details: High-altitude space exploration (245 km), gravity turn ascent profiles, and autonomous CoroltNet constellation.
+  - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
+    details: Real-time science transmission, Mach 5+ aerothermal heating, Van Allen radiation belts, and strict power budgeting.
+  - title: 💻 AUTONOMOUS kOS CONTROL & TELEMETRY
+    details: Ground-independent KerboScript flight execution and continuous high-rate multivariable telemetry streams.
 ---
 
 <div class="csa-stats-grid">
   <div class="csa-stat-card">
     <div class="csa-stat-val">245.0 km</div>
-    <div class="csa-stat-lbl">Rècord d'Altitud (Apogeu)</div>
+    <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
   </div>
   <div class="csa-stat-card">
     <div class="csa-stat-val">Mach 5.4</div>
-    <div class="csa-stat-lbl">Velocitat Hipersònica</div>
+    <div class="csa-stat-lbl">Hypersonic Velocity</div>
   </div>
   <div class="csa-stat-card">
     <div class="csa-stat-val">100 %</div>
-    <div class="csa-stat-lbl">Recuperació Autònoma</div>
+    <div class="csa-stat-lbl">Autonomous Recovery</div>
   </div>
   <div class="csa-stat-card">
     <div class="csa-stat-val">kOS v1.0</div>
-    <div class="csa-stat-lbl">Aviònica Programable</div>
+    <div class="csa-stat-lbl">Programmable Avionics</div>
   </div>
 </div>
 

@@ -1,14 +1,15 @@
-# Resum Telemètric de la Missió CSA-05b
+# Telemetry Summary of Mission CSA-05B
 
-- **Vehicle**: Corolt-III (Unitat 02 - Tàndem)
-- **Objectiu**: Vol Atmosfèric / Suborbital i Prova de Capacitat de Càrrega
-- **Resultat**: Èxit de propulsió espacial (240 km) | Pèrdua en reentrada per impacte
+- **Vehicle**: Corolt-III (Unit 02 - Tandem)
+- **Family**: Corolt-III Family
+- **Objective**: Atmospheric / Suborbital space crossing and heavy payload capacity test
+- **Outcome**: Space Propulsion Success (240 km) | Loss on Reentry due to Impact
 
-## Paràmetres Crítics Enregistrats
-- **Altitud Màxima (Apogeu)**: 240,336.8 m (240.34 km) a T+602.2s
-- **Velocitat Màxima de Superfície**: 1,624.4 m/s (5,847.8 km/h) a T+937.1s
-- **Pressió Dinàmica Màxima (Max Q)**: 52,286.6 Pa (52.29 kPa)
-- **Acceleració Màxima**: 10.91 G
-- **Temps a l'Espai Exterior (>70 km)**: 670.8 segons (11.2 minuts)
-- **Temps Total de Vol fins l'Impacte**: 1011.8 segons (16.86 minuts)
-- **Velocitat d'Impacte**: 116.7 m/s a cota 896.8 m
+## Critical Recorded Parameters
+- **Maximum Altitude (Apoapsis)**: 240,336.8 m (240.34 km) at T+602.2s
+- **Maximum Surface Speed**: 1,624.4 m/s (5,847.8 km/h) at T+937.1s
+- **Maximum Dynamic Pressure (Max Q)**: 52,286.6 Pa (52.29 kPa)
+- **Maximum Acceleration**: 10.91 G
+- **Time in Outer Space (>70 km)**: 670.8 seconds (11.2 minutes)
+- **Total Flight Time**: 1011.8 seconds (16.86 minutes)
+- **Terminal Velocity**: 0.00 m/s at elevation 896.8 m

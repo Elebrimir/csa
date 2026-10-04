@@ -1,86 +1,86 @@
-# 📋 Informe de Missió: CSA-07 «El Gran Salt a l'Est i el Bateig Oceànic»
+# 📋 Mission Report: CSA-07 «The Great Eastward Leap & Ocean Splashdown»
 
-* **Data del Llançament**: Any 1, Dia 65
-* **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-IIIb (Unitat 01 - Superfícies Mòbils)](/vehicles/corolt-3b)
-* **Estat de la Missió**: 🟢 ÈXIT TOTAL (Apogeu 138,6 km | 315 km Downrange | Amaratge Suau i Recuperació al VAB)
-
----
-
-## 🎯 Objectius de la Missió
-1. **Validació d'Autoritat de Control Actiu**: Equipar alerons mòbils (*Etoh-CS* i *Dioscuri-AFD1*) per primera vegada per governar l'actitud de vol. *(Assolit — Trajectòria orientada amb gran estabilitat cap a l'Est)*
-2. **Vol Suborbital Inclinat d'Alta Energia**: Desviar la trajectòria des del KSC mar endins per assolir distància horitzontal significativa (*downrange*). *(Assolit — Més de 30º de longitud recorreguts, >315 km sobre l'oceà)*
-3. **Automatització de Sensors Científics**: Iniciar la recollida d'experiments a l'ascens. *(Lliçó d'Enginyeria — El programa kOS va topar amb un error de tipus a `ALLACTIONS` a T+3,5s; resolt amb `ALLACTIONNAMES` i creació del protocol `emergency_recovery.ks`)*
-4. **Rescat Manual i Amaratge Suau**: Executar la reentrada atmosfèrica, desplegar paracaigudes a velocitat subsònica i recuperar íntegrament la nau. *(Assolit — Amaratge impecable a l'aigua i nau retornada al VAB Warehouse)*
+* **Launch Date**: Year 1, Day 65
+* **Flight Director / Operations**: CSA Mission Control (Kerbin Launch Complex)
+* **Launch Vehicle**: [Corolt-IIIb (Unit 01 - Movable Control Surfaces)](/vehicles/corolt-3b)
+* **Mission Status**: 🟢 FULL SUCCESS (Apogee 138.6 km | 315 km Downrange | Soft Ocean Splashdown & VAB Warehouse Recovery)
 
 ---
 
-## 📊 Telemetria Oficial de Vol (Dades Registrades)
+## 🎯 Mission Objectives
+1. **Validate Active Aerodynamic Control**: Equip movable control surfaces (*Etoh-CS* and *Dioscuri-AFD1*) for the first time to govern flight attitude. *(Achieved — Highly stable flight path inclined toward the East)*
+2. **High-Energy Tilted Suborbital Profile**: Steer trajectory downrange from KSC out over the ocean. *(Achieved — Over 30º longitude traveled, >315 km downrange over open water)*
+3. **Automated Science Data Collection**: Automate instrument readings during ascent. *(Engineering Lesson — kOS hit a type error on `ALLACTIONS` at T+3.5s; resolved with `ALLACTIONNAMES` and creation of `emergency_recovery.ks`)*
+4. **Manual Recovery Command & Soft Splashdown**: Execute atmospheric reentry, deploy parachute at subsonic velocity, and recover entire capsule. *(Achieved — Flawless ocean splashdown and vessel recovered to VAB Warehouse)*
 
-Dades capturades en temps real via l'enllaç telemètric continu de bord (Telemachus):
+---
 
-| Paràmetre de Vol | Valor Registrat CSA-07 | Estat i Observacions |
+## 📊 Official Flight Telemetry (Recorded Data)
+
+Captured in real time via onboard telemetry downlink (Telemachus):
+
+| Flight Parameter | Recorded Value CSA-07 | Status and Remarks |
 | :--- | :--- | :--- |
-| **Altitud Màxima (Apoapsis)** | **138.596,5 m (138,60 km)** | 🟢 **Espai Exterior profund assolit** |
-| **Velocitat Màxima de Superfície** | **1.449,0 m/s (5.216,4 km/h)** | 🟢 Mach 4,7 en descens atmosfèric |
-| **Velocitat Màxima Orbital** | **1.581,1 m/s** | 🟢 Impuls cinètic horitzontal massiu cap a l'Est |
-| **Pressió Dinàmica Màxima (Max Q)** | **36.563,6 Pa (36,56 kPa)** | 🟢 Càrrega estructural aerodinàmica controlada |
-| **Acceleració Màxima** | **6,17 G** | 🟢 Perfil suau i confortable per a la càrrega útil |
-| **Temps a l'Espai (> 70 km)** | **653,5 s (10 min 53 s)** | 🟢 Gairebé 11 minuts en microgravetat espacial |
-| **Abast Horitzontal (Downrange)** | **Longitud -74,56º ➔ -44,27º** | 🟢 **Més de 315 km recorreguts sobre l'oceà** |
-| **Velocitat de Descenso Terminal** | **6,05 m/s (21,8 km/h)** | 🟢 Descens ultra-estable sota campana |
-| **Velocitat de Toc a l'Aigua** | **0,10 m/s** | 🟢 Amaratge ultra-suau sota paracaigudes |
-| **Cota d'Aterratge / Amaratge** | **-1,2 m (Nivell del Mar)** | 🟢 Primer amaratge oceànic de la història de la CSA |
-| **Durada Total de Vol** | **1.357,2 s (22 min 37 s)** | Missió completa enregistrada en 2.727 mostres |
+| **Peak Altitude (Apoapsis)** | **138,596.5 m (138.60 km)** | 🟢 **Deep Outer Space reached** |
+| **Maximum Surface Speed** | **1,449.0 m/s (5,216.4 km/h)** | 🟢 Mach 4.7 during atmospheric reentry |
+| **Maximum Orbital Speed** | **1,581.1 m/s** | 🟢 Massive eastward horizontal kinetic energy |
+| **Peak Dynamic Pressure (Max Q)** | **36,563.6 Pa (36.56 kPa)** | 🟢 Controlled aerodynamic load |
+| **Maximum Acceleration** | **6.17 G** | 🟢 Smooth, payload-friendly acceleration profile |
+| **Time Spent in Space (> 70 km)** | **653.5 s (10 min 53 s)** | 🟢 Nearly 11 minutes in space microgravity |
+| **Downrange Distance** | **Longitude -74.56º ➔ -44.27º** | 🟢 **Over 315 km traveled downrange** |
+| **Terminal Descent Speed** | **6.05 m/s (21.8 km/h)** | 🟢 Ultra-stable descent under canopy |
+| **Water Touchdown Speed** | **0.10 m/s** | 🟢 Extremely gentle water impact under chute |
+| **Landing Elevation** | **-1.2 m (Sea Level)** | 🟢 First ocean splashdown in CSA history |
+| **Total Recorded Flight Time** | **1,357.2 s (22 min 37 s)** | Complete mission logged across 2,727 samples |
 
 ---
 
-### Quadre de Comandament i Anàlisi Multivariable (CSA-07)
-![Dashboard Avançat CSA-07](../assets/csa-07_advanced_dashboard.png)
+### Operations Dashboard & Multivariable Analysis (CSA-07)
+![Advanced Dashboard CSA-07](../assets/csa-07_advanced_dashboard.png)
 
-### Gràfica Interactiva SVG de Telemetria de Vol
-![Telemetria de Vol CSA-07](../assets/csa-07_telemetry_plot.svg)
-
----
-
-## 🔬 Anàlisi d'Enginyeria i Resolució d'Anomalies
-
-### 1. El Triomf dels Alerons Mòbils
-La decisió d'equipar el **Corolt-IIIb** amb superfícies de control actiu ha estat la clau de l'èxit:
-* Els alerons **Etoh-CS** (`bluedog.Redstone.Fin.CtrlSurf`) a la primera etapa i **Dioscuri-AFD1** (`bluedog.Scout.Algol.Fin`) a la segona etapa han atorgat un parell de cabeceig i guinyada que ha permès inclinar el coet amb decisió cap a l'Est.
-* El coet no només ha pujat a l'espai (138,6 km), sinó que ha desenvolupat **1.581 m/s de velocitat orbital** i ha creuat 30 graus de planeta, caient en ple oceà obert.
-
-### 2. Lliçó de Programari kOS i Protocol d'Emergència
-A $T+3,5\text{ s}$ de vol, la rutina d'activació d'experiments va patir una excepció perquè el mètode `m_part:DOACTION` requeria cadenes de text i `ALLACTIONS` retornava objectes delegats de depuració.
-* **Correcció Aplicada**: Es va migrar la crida a `m_part:ALLACTIONNAMES`, que retorna els noms reals de les accions (ex: `"iniciar: exploración de la presión atmosférica"`).
-* **Protocol de Salvament**: Arran d'aquest incident, es va redactar el nou script `emergency_recovery.ks` que permet prendre el control d'emergència en qualsevol moment, estabilitzar la nau en SAS, activar la ciència i gestionar el desplegament autònom de paracaigudes.
-
-### 3. El Botí Científic de l'Oceà
-En caure en aigües obertes, la CSA ha desbloquejat per primera vegada un reguitzell de dades científiques del bioma **Agua / Oceà**:
-* Meteorologia, Aeronomia, Pressió Atmosfèrica i Temperatura en vol baix i superfície marina.
-* **+9,8 punts de ciència** afegits a la seu central, elevant el compte històric a **75,76 punts**, amb **17,76 punts** disponibles immediatament per a adquisicions a l'arbre de R&D.
-
-### 4. Logística de Recuperació i Economia al VAB Warehouse (KCT)
-Per primera vegada en una missió oceànica a gran distància (>315 km del KSC):
-* **Recuperació al Magatzem**: La nau `Corolt-IIIb` ha estat recuperada íntegrament al **VAB Warehouse**.
-* **Retorn Econòmic**: Dels **9.775,5 fons** de cost inicial de fabricació, s'han retingut **7.301,0 fons** en peces d'alta tecnologia (un **74,7% de valor salvat**).
-* **Inventari d'Equipament Rescatat**: La gàbia oberta `SR.PayloadTruss.625` (2.100 fons), ambdós ordinadors robòtics `SR.ProbeCore` (amb memòries de 32 MB intactes), el conjunt de bateries i els sensors de precisió romanen disponibles per ser reutilitzats en futurs llançaments sense temps d'espera de construcció.
-
-### 5. Extracció Empírica de Drag Aerodinàmic ($C_d \cdot A$)
-L'anàlisi de la telemetria real durant la fase de planatge balístic ha permès calcular el perfil d'arrossegament del vehicle per a alimentar el simulador numèric RK4 (`ascent_simulator.py`):
-* **$C_d \cdot A$ Efectiu Medià**: **1,727 m²**
-* **Coeficient Subsònic (< Mach 0.8)**: 1,468 m²
-* **Pic Transònic (Mach 0.8 – 1.2)**: 2,331 m²
-* **Règim Supersònic (Mach 1.2 – 2.5)**: 1,813 m²
-* **Règim Hipersònic (> Mach 4.5)**: 1,640 m²
+### Interactive SVG Flight Telemetry Plot
+![Flight Telemetry CSA-07](../assets/csa-07_telemetry_plot.svg)
 
 ---
 
-## 🛡️ Decisions d'Enginyeria per a la Missió CSA-08
+## 🔬 Engineering Analysis & Anomaly Resolution
 
-1. **Reutilització del Vector al VAB Warehouse**:
-   * Com que el primer Corolt-IIIb ha estat recuperat íntegre al magatzem del VAB, podem emprar la metodologia de subconjunts (*Subassemblies*) per acoblar-hi una nova càrrega científica i llançar-lo amb un cost de fabricació quasi nul.
-2. **Vol 100% Autònom amb kOS Corregit**:
-   * Executar la missió amb el codi ja verificat per comprovar el gir gravitatori continu complet sense intervenció manual.
-3. **Exploració de Nous Objectius Científics**:
-   * Valorar la instal·lació de càmeres fotogràfiques de baixa tecnologia (`bluedog.cameraLowTech` o `KH-1`) per a enregistrar les primeres imatges orbitals de Kerbin.
+### 1. The Triumph of Movable Control Surfaces
+Equipping **Corolt-IIIb** with active control surfaces was the key to mission success:
+* The **Etoh-CS** fins (`bluedog.Redstone.Fin.CtrlSurf`) on Stage 1 and **Dioscuri-AFD1** (`bluedog.Scout.Algol.Fin`) on Stage 2 provided decisive pitch and yaw authority to tilt the rocket steadily toward the East.
+* In addition to climbing to 138.6 km, the rocket built **1,581 m/s of orbital velocity** and traversed 30 degrees of longitude across Kerbin before plunging into the open ocean.
+
+### 2. kOS Scripting Lesson & Emergency Recovery Protocol
+At $T+3.5\text{ s}$ into flight, the automated instrument trigger encountered a script exception because `m_part:DOACTION` expected strings while `ALLACTIONS` returned debugging delegate objects.
+* **Fix Applied**: Migrated the call to `m_part:ALLACTIONNAMES`, which returns true action names (e.g. `"iniciar: exploración de la presión atmosférica"`).
+* **Contingency Routine**: Stemming from this incident, `emergency_recovery.ks` was created, enabling flight controllers to take emergency control at any moment, engage SAS damping, trigger science experiments, and arm autonomous parachute deployment.
+
+### 3. Scientific Haul from the Ocean
+By splashing down in open waters, CSA unlocked a suite of fresh data from the **Water (Ocean)** biome:
+* Meteorology, Aeronomy, Atmospheric Pressure, and Temperature in both low flight and marine surface states.
+* **+9.8 science points** returned to headquarters, raising total career science to **75.76 points**, with **17.76 points** immediately available in R&D.
+
+### 4. Recovery Logistics & VAB Warehouse Economics (KCT)
+For the first time on a long-distance ocean recovery (>315 km from KSC):
+* **Warehouse Recovery**: The `Corolt-IIIb` capsule was recovered intact directly into the **VAB Warehouse**.
+* **Economic Value Returned**: Out of **9,775.5 funds** original build cost, **7,301.0 funds** worth of advanced parts were salvaged (**74.7% retained value**).
+* **Inventory of Rescued Hardware**: The open `SR.PayloadTruss.625` truss (2,100 funds), both `SR.ProbeCore` robotic units (with intact 32 MB drives), battery modules, and science sensors remain ready to fly on future missions with near-zero build time.
+
+### 5. Empirical Aerodynamic Drag ($C_d \cdot A$)
+Analyzing real flight telemetry during ballistic coast provided empirical drag data to calibrate the RK4 numerical trajectory simulator (`ascent_simulator.py`):
+* **Median Effective $C_d \cdot A$**: **1.727 m²**
+* **Subsonic Regime (< Mach 0.8)**: 1.468 m²
+* **Transonic Peak (Mach 0.8 – 1.2)**: 2.331 m²
+* **Supersonic Regime (Mach 1.2 – 2.5)**: 1.813 m²
+* **Hypersonic Regime (> Mach 4.5)**: 1.640 m²
+
+---
+
+## 🛡️ Engineering Directives for Mission CSA-08
+
+1. **Airframe Re-utilization from VAB Warehouse**:
+   * With the first Corolt-IIIb stored intact in the VAB warehouse, utilize subassembly mating to integrate a fresh payload package and launch at negligible build cost.
+2. **100% Autonomous Flight with Patched kOS**:
+   * Execute the mission with the verified code to demonstrate full continuous gravity turns without manual intervention.
+3. **Exploration of New Scientific Objectives**:
+   * Evaluate installing low-tech optical cameras (`bluedog.cameraLowTech` or `KH-1`) to capture the first orbital photographs of Kerbin.

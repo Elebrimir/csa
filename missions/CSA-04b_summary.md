@@ -1,16 +1,14 @@
-# 📋 Telemetria Oficial - Missió CSA-04b
-* **Data de Vol (Calendari Kerbin)**: Any 1, Dia 35 (03h 56m 39s)
-* **Vehicle Llançador**: Corolt-IIb (Suborbital Multietapa)
-* **Estat del Vol**: 🟢 RECUPERAT AMB ÈXIT (Vol d'alta atmosfera, separació centrífuga de boosters i descens controlat)
+# Telemetry Summary of Mission CSA-04B
 
-| Paràmetre de Vol | Valor Assolit |
-| :--- | :--- |
-| **Durada de Vol Actiu (MET)** | **447.7 s (7.5 min)** |
-| **Altitud Màxima (Apoapsi)** | **14,489.5 m (14.49 km)** |
-| **Velocitat Màxima de Superfície** | **305.4 m/s (1099.4 km/h)** *(a 6.897 m)* |
-| **Pressió Dinàmica Màxima (Max Q)** | **25,281.91 kPa** |
-| **Desplegament del Paracaigudes** | **1.666,3 m** *(a T+175s)* |
-| **Acceleració Màxima en Obertura** | **19,40 G** |
-| **Estat del Vehicle** | **100% Recuperat i Intacte** |
+- **Vehicle**: Corolt-IIb (Aerodynamic Redesign)
+- **Family**: Corolt-II Family
+- **Objective**: Centrifugal booster staging test and high-altitude stability
+- **Outcome**: 🟢 Total Success | Apogee 14.49 km | Controlled Radial Separation
 
-*Dades desades a `/home/pablo-cortes/Documents/Corolt_Space_Agency/missions/CSA-04b_telemetry.csv`.*
+## Critical Recorded Parameters
+- **Maximum Altitude (Apoapsis)**: 14,489.5 m (14.49 km) at T+209.1s
+- **Maximum Surface Speed**: 305.4 m/s (1,099.4 km/h) at T+156.5s
+- **Maximum Dynamic Pressure (Max Q)**: 25,281.9 Pa (25.28 kPa)
+- **Maximum Acceleration**: 19.40 G
+- **Total Flight Time**: 565.1 seconds (9.42 minutes)
+- **Terminal Velocity**: 0.00 m/s at elevation 0.0 m

@@ -1,40 +1,41 @@
-# 📋 INFORME DE MISSIÓ: [NOM DE LA MISSIÓ] (Ex: CSA-01 "Pioner")
+# 📋 MISSION REPORT: [MISSION NAME] (e.g. CSA-01 "Pioneer")
 
-* **Data del Llançament**: [Ex: Any 1, Dia 3 - 04:20 UT]
-* **Comandant / Operador de Vol**: [Nom del Kerbal o Vol no tripulat]
-* **Vehicle Llançador**: [Ex: Corolt-I (Sòlid/Líquid)]
-* **Estat de la Missió**: 🟢 Èxit | 🟡 Èxit Parcial | 🔴 Fallada
-
----
-
-## 🎯 Objectius
-1. **Objectiu Primari**: [Ex: Superar els 70.000m i registrar dades de radiació amb el comptador Geiger]
-2. **Objectiu Secundari**: [Ex: Recuperació intacta de la càpsula amb paracaigudes a l'oceà]
+* **Launch Date**: [e.g. Year 1, Day 3 - 04:20 UT]
+* **Flight Director / Commander**: [Kerbal Name or Uncrewed Autonomous]
+* **Launch Vehicle**: [e.g. Corolt-I (Solid/Liquid)]
+* **Mission Status**: 🟢 Success | 🟡 Partial Success | 🔴 Failure
 
 ---
 
-## 📊 Telemetria i Dades de Vol
-| Paràmetre | Planificat | Real Assolit |
+## 🎯 Objectives
+1. **Primary Objective**: [e.g. Pass 70,000 m and record cosmic radiation with Geiger counter]
+2. **Secondary Objective**: [e.g. Intact capsule recovery via parachute in the ocean]
+
+---
+
+## 📊 Telemetry and Flight Data
+| Parameter | Planned | Actual Achieved |
 | :--- | :--- | :--- |
 | **Apoapsis (Ap)** | -- km | -- km |
 | **Periapsis (Pe)** | -- km | -- km |
-| **Velocitat Màxima** | -- m/s | -- m/s |
-| **Acceleració Màxima (G-Force)** | -- G | -- G |
-| **Delta-v ($\Delta v$) Consumit** | -- m/s | -- m/s |
+| **Maximum Velocity** | -- m/s | -- m/s |
+| **Maximum Acceleration (G-Force)** | -- G | -- G |
+| **Delta-v ($\Delta v$) Expended** | -- m/s | -- m/s |
 
 ---
 
-## 🔬 Rendiment Científic (Kerbalism)
-* **Experiments executats**: [Ex: Telemetria de pressió, temperatura atmosfèrica]
-* **Dades transmeses / emmagatzemades**: [Ex: 12.4 MB transmesos a KSC via antena d'alta freqüència]
-* **Punts de ciència obtinguts**: +-- pts
+## 🔬 Scientific Yield (Kerbalism)
+* **Experiments Executed**: [e.g. Atmospheric pressure telemetry, ambient temperature]
+* **Data Streamed / Stored**: [e.g. 12.4 MB transmitted to KSC via high-gain antenna]
+* **Science Points Earned**: +-- pts
 
 ---
 
-## ⚠️ Anomalies i Incidents Tècnics
-* *Cap incident reportat.* (o: *El motor va patir fallada de pressió a T+45s però la separació d'etapa va salvar el vehicle.*)
+## ⚠️ Anomalies and Technical Incidents
+* *No anomalies reported.* (or: *Second stage suffered ignition failure at T+45s but emergency staging routine recovered the payload.*)
 
 ---
 
-## 📸 Registre Fotogràfic
-*(Inserir captures de pantalla o plànol de Kronal Vessel Viewer)*
+## 📸 Photographic / Blueprint Log
+*(Insert screenshots or Kronal Vessel Viewer blueprints)*
+

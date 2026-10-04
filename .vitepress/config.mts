@@ -2,64 +2,64 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: "Corolt Space Agency",
-  description: "Diari oficial de missions, telemetria i desenvolupament aeroespacial.",
+  description: "Official flight log, telemetry analysis, and aerospace engineering portal.",
   base: "/csa/",
   themeConfig: {
     logo: "/assets/flag.png",
     siteTitle: "CSA Operations",
     nav: [
-      { text: "Inici", link: "/" },
-      { text: "Ciència", link: "/science/" },
+      { text: "Home", link: "/" },
+      { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-3" },
-      { text: "Missions", link: "/missions/csa-05" },
-      { text: "Comunicats", link: "/social_media/csa-05_post" },
+      { text: "Missions", link: "/missions/csa-07" },
+      { text: "Press", link: "/social_media/csa-07_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
       {
-        text: "Agència Espacial",
+        text: "Space Agency",
         items: [
-          { text: "Manifest i Objectius", link: "/" },
-          { text: "Matriu Científica (Kerbin)", link: "/science/" },
+          { text: "Manifesto & Goals", link: "/" },
+          { text: "Kerbin Science Matrix", link: "/science/" },
         ]
       },
       {
-        text: "Flota de Vehicles",
+        text: "Vehicle Fleet",
         items: [
-          { text: "Corolt-I (Coet Sonda)", link: "/vehicles/corolt-1" },
-          { text: "Corolt-Ib (Coet Sonda Millorat)", link: "/vehicles/corolt-1b" },
-          { text: "Corolt-II (Multietapa Espacial)", link: "/vehicles/corolt-2" },
-          { text: "Corolt-IIb (Variant Radial)", link: "/vehicles/corolt-2b" },
-          { text: "Corolt-III (Llançador Tàndem)", link: "/vehicles/corolt-3" },
-          { text: "Corolt-IIIb (Guiatge Actiu)", link: "/vehicles/corolt-3b" },
+          { text: "Corolt-I (Sounding Rocket)", link: "/vehicles/corolt-1" },
+          { text: "Corolt-Ib (Upgraded Sounding Rocket)", link: "/vehicles/corolt-1b" },
+          { text: "Corolt-II (Multi-Stage Launcher)", link: "/vehicles/corolt-2" },
+          { text: "Corolt-IIb (Radial Booster Variant)", link: "/vehicles/corolt-2b" },
+          { text: "Corolt-III (Tandem Orbital Launcher)", link: "/vehicles/corolt-3" },
+          { text: "Corolt-IIIb (Active Guidance Variant)", link: "/vehicles/corolt-3b" },
         ]
       },
       {
-        text: "Diari de Vol",
+        text: "Flight Log",
         items: [
-          { text: "CSA-01: Vol Inaugural", link: "/missions/csa-01" },
-          { text: "CSA-02: Vol Operatiu Corolt-Ib", link: "/missions/csa-02" },
-          { text: "CSA-03: Assalt Estratosfèric", link: "/missions/csa-03" },
-          { text: "CSA-04: El Desafiament Corolt-IIb", link: "/missions/csa-04" },
-          { text: "CSA-05: L'Estrena del Corolt-III", link: "/missions/csa-05" },
-          { text: "CSA-05b: Salt a l'Espai (240 km)", link: "/missions/csa-05b" },
-          { text: "CSA-06: Guiatge kOS i Recuperació", link: "/missions/csa-06" },
-          { text: "CSA-07: Control Mòbil i Amaratge", link: "/missions/csa-07" },
-          { text: "Plantilla de Missió", link: "/missions/template_mission" },
+          { text: "CSA-01: Maiden Flight", link: "/missions/csa-01" },
+          { text: "CSA-02: Corolt-Ib Operational Flight", link: "/missions/csa-02" },
+          { text: "CSA-03: Stratospheric Assault", link: "/missions/csa-03" },
+          { text: "CSA-04: The Corolt-IIb Challenge", link: "/missions/csa-04" },
+          { text: "CSA-05: Corolt-III Debut", link: "/missions/csa-05" },
+          { text: "CSA-05b: Space Leap (240 km)", link: "/missions/csa-05b" },
+          { text: "CSA-06: kOS Guidance & Recovery", link: "/missions/csa-06" },
+          { text: "CSA-07: Mobile Control & Splashdown", link: "/missions/csa-07" },
+          { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
       {
-        text: "Prensa i Xarxes",
+        text: "Press & Social Media",
         items: [
-          { text: "Comunicat CSA-01", link: "/social_media/csa-01_post" },
-          { text: "Comunicat CSA-02", link: "/social_media/csa-02_post" },
-          { text: "Comunicat CSA-03", link: "/social_media/csa-03_post" },
-          { text: "Comunicat CSA-04", link: "/social_media/csa-04_post" },
-          { text: "Comunicat CSA-05", link: "/social_media/csa-05_post" },
-          { text: "Comunicat CSA-05b", link: "/social_media/csa-05b_post" },
-          { text: "Comunicat CSA-06", link: "/social_media/csa-06_post" },
-          { text: "Comunicat CSA-07", link: "/social_media/csa-07_post" },
-          { text: "Plantilla de Comunicat", link: "/social_media/template_post" },
+          { text: "CSA-01 Release", link: "/social_media/csa-01_post" },
+          { text: "CSA-02 Release", link: "/social_media/csa-02_post" },
+          { text: "CSA-03 Release", link: "/social_media/csa-03_post" },
+          { text: "CSA-04 Release", link: "/social_media/csa-04_post" },
+          { text: "CSA-05 Release", link: "/social_media/csa-05_post" },
+          { text: "CSA-05b Release", link: "/social_media/csa-05b_post" },
+          { text: "CSA-06 Release", link: "/social_media/csa-06_post" },
+          { text: "CSA-07 Release", link: "/social_media/csa-07_post" },
+          { text: "Release Template", link: "/social_media/template_post" },
         ]
       }
     ],

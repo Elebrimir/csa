@@ -1,55 +1,56 @@
-# 🚀 Llançador Pesat en Línia: Corolt-III (CSA-05)
+# 🚀 Inline Heavy Launcher: Corolt-III (CSA-05)
 
-> *"Llançador d'alta cota de nova generació de la CSA, dissenyat en arquitectura purament tàndem (en línia) per superar la baixa atmosfera i assaltar les capes altes de Kerbin."*
+> *"Next-generation high-altitude launcher of the CSA, engineered with a purely tandem (inline) architecture to conquer the lower atmosphere and assault the upper layers of Kerbin."*
 
-![Corolt-III Plànol General KVV 1](../assets/vehicles/corolt-3_blueprint_1.png)
+![Corolt-III General Blueprint KVV 1](../assets/vehicles/corolt-3_blueprint_1.png)
 
 ---
 
-## 📐 Especificacions Tècniques Generals
+## 📐 General Technical Specifications
 
-| Paràmetre de Disseny | Valor d'Enginyeria |
+| Design Parameter | Engineering Value |
 | :--- | :--- |
-| **Fabricant** | Corolt Space Agency (CSA) |
-| **Tipus de Vehicle** | Llançador Suborbital Multietapa en Línia (Tàndem) |
-| **Diàmetre de Base (Etapa 1)** | **1.25 m** (Booster RT-10 «Hammer») |
-| **Diàmetre Superior (Etapa 2)** | **0.625 m** (Motor SRM-XL + Gàbia `SR.PayloadTruss.625`) |
-| **Massa Total al Llançament** | **5.144 t (5.144 kg)** |
-| **Massa de Càrrega Útil (Dry Mass)** | **0.629 t (629 kg)** |
-| **Delta-v ($\Delta v$) Total** | **2.721 m/s (Nivell del mar) / 3.196 m/s (Buit)** |
-| **Empenta Inicial (SLT)** | **1.80** (Etapa 1) $\rightarrow$ **2.09** (Etapa 2) |
-| **Temps de Combustió Etapa 1** | **51,5 segons** |
-| **Temps de Combustió Etapa 2** | **46,8 segons** |
-| **Estabilització** | 4 aletes de base `SR_Wing_01` (3.400 K) + 4 aletes superiors `SR_Wing_02` |
-| **Recuperació** | Morro cònic amb paracaigudes integrat `SR.Nosecone.625` |
+| **Manufacturer** | Corolt Space Agency (CSA) |
+| **Vehicle Type** | Multi-Stage Inline (Tandem) Suborbital Launcher |
+| **Base Diameter (Stage 1)** | **1.25 m** (RT-10 «Hammer» Booster) |
+| **Upper Diameter (Stage 2)** | **0.625 m** (SRM-XL Motor + `SR.PayloadTruss.625` Open Cage) |
+| **Gross Launch Mass** | **5.144 t (5,144 kg)** |
+| **Payload Dry Mass** | **0.629 t (629 kg)** |
+| **Total Delta-v ($\Delta v$)** | **2,721 m/s (Sea Level) / 3,196 m/s (Vacuum)** |
+| **Initial Sea-Level TWR** | **1.80** (Stage 1) $\rightarrow$ **2.09** (Stage 2) |
+| **Stage 1 Burn Time** | **51.5 seconds** |
+| **Stage 2 Burn Time** | **46.8 seconds** |
+| **Stabilization** | 4 aft skirt fins `SR_Wing_01` (3,400 K) + 4 upper fins `SR_Wing_02` |
+| **Recovery System** | Conical nosecone with integrated parachute `SR.Nosecone.625` |
 
 ---
 
-## 🔬 Suite Científica i Badia d'Instruments
+## 🔬 Scientific Suite & Instrument Bay
 
-El Corolt-III estrena la nova badia d'instruments oberta de 0,625 m (`SR.PayloadTruss.625`), que permet exposar directament els sensors al flux atmosfèric tal com requereix Kerbalism:
-* ⏱️ **Baròmetre PresMat (`sensorBarometer`)**: Registre de pressió dinàmica i estàtica.
-* 🌡️ **Termòmetre 2HOT (`sensorThermometer`)**: Sensor tèrmic de reacció ràpida.
-* 🌪️ **Meteorological Survey Package (`SR.Payload.01`)**: Mesura meteorològica d'aire i vent.
-* 🧪 **Aeronomy Sensor Array (`SR.Payload.02`)**: Anàlisi de la densitat i composició atmosfèrica.
-* ⚡ **Sistema Elèctric Ampliat**: Bateria `batteryBankMini` (100 EC) + 2x bateries `nfex-battery-mini-1` (250 EC totals).
-* 💾 **Aviònica Duplicada**: 2x `SR.ProbeCore` actualitzades amb el pegat oficial CSA a 32 MB de memòria cadascuna (64 MB totals).
-
----
-
-## 🛠️ Esquemes d'Enginyeria KVV (Kronal Vessel Viewer)
-
-### Vista Explosionada i Detall d'Etapes
-![Corolt-III Vista Explosionada 2](../assets/vehicles/corolt-3_blueprint_2.png)
-
-### Secció de la Badia Científica i Càrrega Útil
-![Corolt-III Badia d'Instruments 3](../assets/vehicles/corolt-3_blueprint_3.png)
-
-### Perfil Estructural i Aerodinàmic
-![Corolt-III Perfil Estructural 4](../assets/vehicles/corolt-3_blueprint_4.png)
+Corolt-III debuts the new 0.625 m open instrument truss (`SR.PayloadTruss.625`), allowing environmental sensors direct exposure to the airstream as mandated by Kerbalism:
+* ⏱️ **PresMat Barometer (`sensorBarometer`)**: High-accuracy dynamic and static pressure log.
+* 🌡️ **2HOT Thermometer (`sensorThermometer`)**: Fast-response thermal sensor.
+* 🌪️ **Meteorological Survey Package (`SR.Payload.01`)**: Atmospheric and wind measurement.
+* 🧪 **Aeronomy Sensor Array (`SR.Payload.02`)**: Upper-layer air density and composition analysis.
+* ⚡ **Expanded Electrical System**: `batteryBankMini` (100 EC) + 2x `nfex-battery-mini-1` (250 EC total).
+* 💾 **Dual CSA Avionics**: 2x `SR.ProbeCore` patched to 32 MB onboard storage each (64 MB total).
 
 ---
 
-## 📋 Conclusió Operativa
-El Corolt-III va demostrar una estabilitat aerodinàmica impecable en el seu primer vol durant la missió CSA-05, assolint els 20,43 km fins i tot després d'un incident d'ignició a la segona etapa. Amb la resolució de la fallada tèrmica/fiabilitat i l'actualització de memòria a 32 MB, el vehicle està llest per superar la cota dels 50 km en la campanya **CSA-05b**.
+## 🛠️ KVV Engineering Blueprints (Kronal Vessel Viewer)
+
+### Exploded Staging Detail
+![Corolt-III Exploded View 2](../assets/vehicles/corolt-3_blueprint_2.png)
+
+### Science Truss & Payload Bay Section
+![Corolt-III Instrument Bay 3](../assets/vehicles/corolt-3_blueprint_3.png)
+
+### Structural & Aerodynamic Profile
+![Corolt-III Structural Profile 4](../assets/vehicles/corolt-3_blueprint_4.png)
+
+---
+
+## 📋 Operational Conclusion
+Corolt-III proved aerodynamic stability in its maiden flight during mission CSA-05, reaching 20.43 km despite an upper stage ignition anomaly. With thermal/reliability fixes applied and storage expanded to 32 MB, the launcher entered service for suborbital space missions in **CSA-05b** and beyond.
+
 

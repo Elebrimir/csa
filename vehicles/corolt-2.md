@@ -1,60 +1,60 @@
-# 🚀 Llançador Multietapa: Corolt-II (CSA-03)
+# 🚀 Multi-Stage Launcher: Corolt-II (CSA-03)
 
-> *"El salt a la frontera de l'espai: el primer coet de dues etapes de la Corolt Space Agency dissenyat per superar la línia de Karman (>70 km)."*
+> *"Leaping to the edge of space: the first two-stage rocket of the Corolt Space Agency engineered to cross the Kármán line (>70 km)."*
 
-![Corolt-II Plànol KVV 1](../assets/vehicles/corolt-2_blueprint_1.png)
+![Corolt-II Blueprint KVV 1](../assets/vehicles/corolt-2_blueprint_1.png)
 
 ---
 
-## 📐 Especificacions Tècniques Generals
+## 📐 General Technical Specifications
 
-| Paràmetre de Disseny | Valor d'Enginyeria |
+| Design Parameter | Engineering Value |
 | :--- | :--- |
-| **Fabricant** | Corolt Space Agency (CSA) |
-| **Tipus de Vehicle** | Coet Sonda Multietapa de 2 Fases (Two-Stage Sounding Rocket) |
-| **Diàmetre Principal** | 0.625 m (Booster) $\rightarrow$ 0.35 m (Segona Etapa) |
-| **Massa Total al Llançament** | **1.387 t (1.387 kg)** |
-| **Massa Final de Càrrega Útil** | **0.167 t (167 kg)** |
-| **Empenta Màxima al Llançament** | **28.00 kN** |
-| **Ràtio Empenta/Pes (TWR)** | **2.06 (Inici Etapa 1)** $\rightarrow$ **2.04 (Inici Etapa 2)** |
-| **Delta-v ($\Delta v$) Total** | **2.205 m/s (Nivell del mar) / 2.630 m/s (Buit)** |
-| **Temps Total de Combustió** | **92,3 segons (58,5s Etapa 1 + 33,8s Etapa 2)** |
-| **Separació d'Etapes** | Desacoblador de separació ràpida `SR.Decoupler` (0.35m) |
-| **Recuperació** | Paracaigudes de càrrega miniatura al morro (`SR.Nosecone.35`) |
+| **Manufacturer** | Corolt Space Agency (CSA) |
+| **Vehicle Type** | Two-Stage Suborbital Sounding Rocket |
+| **Main Diameter** | 0.625 m (Booster) $\rightarrow$ 0.35 m (Upper Stage) |
+| **Gross Launch Mass** | **1.387 t (1,387 kg)** |
+| **Final Payload Dry Mass** | **0.167 t (167 kg)** |
+| **Peak Liftoff Thrust** | **28.00 kN** |
+| **Thrust-to-Weight Ratio (TWR)** | **2.06 (Stage 1 Liftoff)** $\rightarrow$ **2.04 (Stage 2 Ignition)** |
+| **Total Delta-v ($\Delta v$)** | **2,205 m/s (Sea Level) / 2,630 m/s (Vacuum)** |
+| **Total Burn Time** | **92.3 seconds (58.5s Stage 1 + 33.8s Stage 2)** |
+| **Staging Mechanism** | Rapid explosive decoupler `SR.Decoupler` (0.35m) |
+| **Recovery System** | Miniature cargo parachute nosecone (`SR.Nosecone.35`) |
 
 ---
 
-## 🔬 Arquitectura per Etapes
+## 🔬 Staging Architecture
 
 ```
-[Morro + Paracaigudes]
+[Nosecone + Parachute]
        │
-[Càrrega Científica SR.Payload.02 + Bateria + Ordinador]
+[Science Payload SR.Payload.02 + Battery + Computer]
        │
-[Segona Etapa: Motor Sòlid SRM-L 0.35m (4 aletes SR.Wing.03)]
+[Second Stage: Solid Motor SRM-L 0.35m (4x SR.Wing.03 fins)]
        │
-[Desacoblador Explosiu Mini 0.35m]
+[Mini Explosive Decoupler 0.35m]
        │
-[Primera Etapa: Booster SRM-XL 0.625m (4 aletes grans SR.Wing.02)]
+[First Stage: Booster SRM-XL 0.625m (4x large SR.Wing.02 fins)]
 ```
 
-### 1. Primera Etapa (Booster d'Ascens Atmosfèric):
-* **Motor**: SRM-XL de 0.625m (`SR.Rocket.625.01`).
-* **Empenta**: Limitada al 16% per aconseguir un ascens suau i controlat de **28 kN** (TWR inicial de 2.06).
-* **Missió**: Travessar la capa densa de la troposfera durant **58,5 segons** d'acceleració constant, portant el vehicle fins a més de 25.000 metres d'altitud.
-* **Estabilització**: 4 aletes d'alta resistència `SR.Wing.02` a la base.
+### 1. First Stage (Atmospheric Ascent Booster):
+* **Motor**: 0.625m SRM-XL (`SR.Rocket.625.01`).
+* **Thrust Limiter**: Calibrated to 16% for a gentle, aerodynamically sustained liftoff of **28 kN** (initial TWR of 2.06).
+* **Mission**: Punch through the dense troposphere over **58.5 seconds** of steady acceleration, carrying the vehicle above 25,000 meters.
+* **Stabilization**: 4 high-temperature fins `SR.Wing.02` mounted at the aft skirt.
 
-### 2. Segona Etapa (Propulsió a Gran Altitud / Buit):
-* **Motor**: SRM-L de 0.35m (`SR.Rocket.35.02`).
-* **Missió**: Encesa immediatament després de la separació del booster, proporcionant **33,8 segons** d'impuls pur en l'aire fi per catapultar la càrrega útil cap a l'espai exterior.
-* **Càrrega Útil**: El nou paquet científic d'anàlisi atmosfèrica i de radiació **`SR.Payload.02`**, alimentat per la bateria integrada `SR.Stack.Battery`.
+### 2. Second Stage (High Altitude / Vacuum Propulsion):
+* **Motor**: 0.35m SRM-L (`SR.Rocket.35.02`).
+* **Mission**: Ignited immediately upon booster staging, delivering **33.8 seconds** of sustained impulse in thin air to catapult payload into space.
+* **Scientific Payload**: New atmospheric and radiation analysis suite **`SR.Payload.02`**, powered by an integrated `SR.Stack.Battery`.
 
 ---
 
-## 🛠️ Esquemes d'Enginyeria KVV (Kronal Vessel Viewer)
+## 🛠️ KVV Engineering Blueprints (Kronal Vessel Viewer)
 
-### Vista en Secció i Components
-![Corolt-II Plànol KVV 2](../assets/vehicles/corolt-2_blueprint_2.png)
+### Cutaway & Internal Staging View
+![Corolt-II Blueprint KVV 2](../assets/vehicles/corolt-2_blueprint_2.png)
 
-### Esquema d'Integració i Aerodinàmica
-![Corolt-II Plànol KVV 3](../assets/vehicles/corolt-2_blueprint_3.png)
+### Aerodynamic Integration Schematic
+![Corolt-II Blueprint KVV 3](../assets/vehicles/corolt-2_blueprint_3.png)

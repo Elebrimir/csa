@@ -1,16 +1,17 @@
-# 📢 Comunicat Oficial: Missió CSA-05b
+# 📢 Official Release: Mission CSA-05b
 
-**Cap Canaveral de Kerbin — Any 1, Dia 56**
+**Kerbin Launch Complex — Year 1, Day 56**
 
-La **Corolt Space Agency (CSA)** informa dels resultats obtinguts en el llançament de la missió **CSA-05b**, un vol de prova que ha marcat la primera incursió de l'agència a l'**espai exterior suborbital**.
+The **Corolt Space Agency (CSA)** reports on results from test flight **CSA-05b**, marking the agency's first incursion into **suborbital outer space**.
 
-🚀 **Punts clau de la missió:**
-* **Primera missió espacial de la història de la CSA:** Amb el funcionament impecable de totes dues etapes de propulsió sòlida (RT-10 «Hammer» + SRM-XL), el vehicle ha superat la línia de Kármán (70 km) i ha assolit un apogeu sense precedents de **240.336 metres (240,34 km)**, entrant oficialment a l'espai exterior (`InSpaceLow`).
-* **Més d'11 minuts a l'espai:** La unitat ha gaudit de 670 segons de vol balístic en microgravetat abans d'iniciar el retorn.
-* **Reentrada hipersònica extrema:** La càpsula ha penetrat de nou a l'atmosfera a **1.624 m/s (5.847 km/h - Mach 5,3)**, suportant una pressió dinàmica de 52,29 kPa i acceleracions superiors als 10 G.
-* **Incidència en reentrada:** Durant la fase terminal, la manca d'enllaç de ràdio amb la minúscula antena interna (3,25 km) ha impedit que el control de terra transmetera la comanda d'obertura del paracaigudes, resultant en l'impacte de la càpsula contra el terreny a 116 m/s.
-* **Lliçó d'enginyeria i futur:** Les dades telemètriques s'han recuperat al 100%. La CSA procedirà a la instal·lació d'antenes de llarg abast (**Communotron 16-S**) i al desenvolupament de sistemes de vol autònom (**kOS**) per garantir l'obertura independent de salvament.
+🚀 **Key Mission Highlights:**
+* **First Spaceflight in CSA History:** With nominal performance across both solid motor stages (RT-10 «Hammer» + SRM-XL), the vehicle crossed the Kármán line (70 km) to reach an unprecedented apogee of **240,336 meters (240.34 km)**, officially entering outer space (`InSpaceLow`).
+* **Over 11 Minutes in Space:** The unit experienced 670 seconds of pure microgravity ballistic flight before beginning its descent.
+* **Extreme Hypersonic Reentry:** The capsule reentered the atmosphere at **1,624 m/s (5,847 km/h - Mach 5.3)**, withstanding 52.29 kPa dynamic pressure and deceleration exceeding 10 G.
+* **Terminal Reentry Anomaly:** In the final seconds, absence of a radio uplink through the internal short-range antenna (3.25 km) prevented mission control from transmitting the parachute deployment command, resulting in ground impact at 116 m/s.
+* **Engineering Lessons & Future:** Telemetry streams were 100% recovered. The CSA will install long-range external antennas (**Communotron 16-S**) and transition to autonomous flight systems (**kOS**) to guarantee ground-independent parachute deployment.
 
-L'espai ja no és un somni; és el nostre nou escenari de treball.
+Space is no longer a dream; it is our operational frontier.
 
 *Ad Astra Per Scientiam.* 🛰️🚀
+

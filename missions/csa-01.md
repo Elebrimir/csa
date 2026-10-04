@@ -1,43 +1,44 @@
-# 📋 Informe de Missió: CSA-01 «Vol Inaugural Corolt-I»
+# 📋 Mission Report: CSA-01 «Corolt-I Maiden Flight»
 
-* **Data del Llançament**: Any 1, Dia 1
-* **Operador de Vol / Comandament**: Control de Missions CSA (Cap Canaveral de Kerbin)
-* **Vehicle Llançador**: [Corolt-I (Coet Sonda)](/vehicles/corolt-1)
-* **Estat de la Missió**: 🟢 ÈXIT TOTAL (Vol Suborbital i Recuperació)
-
----
-
-## 🎯 Objectius de la Missió
-1. **Objectiu Primari**: Enlairament autònom, prova de combustió del motor sòlid SRM-L i estabilitat aerodinàmica. *(Completat)*
-2. **Objectiu Secundari**: Desplegament de paracaigudes a l'apogeu i recuperació intacta de la càrrega útil. *(Completat)*
-3. **Objectiu Tecnològic**: Enregistrament de telemetria en directe i transmissió de dades a l'estació de seguiment. *(Completat)*
+* **Launch Date**: Year 1, Day 1
+* **Flight Director / Operations**: CSA Mission Control (Kerbin Launch Complex)
+* **Launch Vehicle**: [Corolt-I (Sounding Rocket)](/vehicles/corolt-1)
+* **Mission Status**: 🟢 FULL SUCCESS (Suborbital Flight and Recovery)
 
 ---
 
-## 📊 Telemetria Oficial de Vol (Dades Registrades)
+## 🎯 Mission Objectives
+1. **Primary Objective**: Autonomous liftoff, SRM-L solid motor burn profile verification, and aerodynamic stability test. *(Completed)*
+2. **Secondary Objective**: Parachute deployment at apogee and intact recovery of the scientific payload. *(Completed)*
+3. **Technological Objective**: Live telemetry streaming and tracking station data logging. *(Completed)*
 
-Aquestes dades han estat capturades en directe durant el vol mitjançant el nostre enllaç de telemetria Telemachus:
+---
 
-| Paràmetre de Vol | Valor Assolit |
+## 📊 Official Flight Telemetry (Recorded Data)
+
+Captured in real time during flight via the Telemachus telemetry downlink:
+
+| Flight Parameter | Value Achieved |
 | :--- | :--- |
-| **Altitud Màxima (Apoapsis)** | **6.423,4 m (6,42 km)** |
-| **Velocitat Màxima de Superfície** | **282,7 m/s (1.017 km/h)** |
-| **Acceleració Màxima** | **2,37 G** |
-| **Pressió Dinàmica Màxima (Max Q)** | **27,35 kPa** |
-| **Durada de Vol Registrada** | **321,2 segons (5m 21s)** |
-| **Velocitat de Descens amb Paracaigudes** | **12,8 m/s** |
+| **Peak Altitude (Apoapsis)** | **6,423.4 m (6.42 km)** |
+| **Maximum Surface Speed** | **282.7 m/s (1,017 km/h)** |
+| **Maximum Acceleration** | **2.37 G** |
+| **Peak Dynamic Pressure (Max Q)** | **27.35 kPa** |
+| **Recorded Flight Duration** | **321.2 seconds (5m 21s)** |
+| **Parachute Descent Velocity** | **12.8 m/s** |
 
-### Gràfica de Vol (Altitud i Velocitat vs Temps)
-![Gràfica de Telemetria CSA-01](../assets/csa-01_telemetry_plot.svg)
-
----
-
-## 📝 Resum del Vol
-El llançador suborbital **Corolt-I** s'ha enlairat amb èxit des de la plataforma principal del Centre Espacial. L'estabilització passiva per les 4 aletes aerodinàmiques ha demostrat un comportament impecable, mantenint una trajectòria vertical estricta sense desviació.
-
-Després de la fi de combustió del motor SRM-L als ~26 segons de vol, el vehicle va continuar ascendint per inèrcia fins a assolir un apogeu de **6.423 metres**. A la fase de descens, el paracaigudes miniatura es va desplegar correctament reduint la velocitat a 12,8 m/s fins a l'impacte suau sobre la superfície.
+### Flight Plot (Altitude & Speed vs Time)
+![CSA-01 Telemetry Plot](../assets/csa-01_telemetry_plot.svg)
 
 ---
 
-## 📸 Plànol del Vehicle de la Missió
+## 📝 Flight Summary
+The **Corolt-I** suborbital sounding rocket lifted off successfully from the main space center launchpad. Passive aerodynamic stabilization provided by 4 radial fins delivered straight, zero-deviation vertical ascent.
+
+Following SRM-L solid motor burnout at ~26 seconds into flight, the vehicle coasted ballistically to an apogee of **6,423 meters**. During descent, the miniature pack parachute deployed nominally, slowing terminal velocity to 12.8 m/s until gentle surface touchdown.
+
+---
+
+## 📸 Mission Vehicle Blueprint
 ![Corolt-I Blueprint](../assets/vehicles/corolt-1_blueprint_1.png)
+
