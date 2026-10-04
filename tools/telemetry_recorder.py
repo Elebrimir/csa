@@ -15,7 +15,13 @@ import sys
 import os
 import csv
 import argparse
+import signal
 from datetime import datetime
+
+def _handle_sigterm(signum, frame):
+    raise KeyboardInterrupt
+
+signal.signal(signal.SIGTERM, _handle_sigterm)
 
 TELEMACHUS_URL = "http://127.0.0.1:8085/telemachus/datalink"
 

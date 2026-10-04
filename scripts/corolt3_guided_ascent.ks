@@ -16,6 +16,34 @@ PRINT "  - Cota del Kick:   " + ALT_KICK + " m".
 PRINT "  - Rumb d'Ascens:   " + RUMB + " graus (Est)".
 PRINT "==================================================".
 
+// Funció per activar tots els experiments científics a bord
+FUNCTION activar_experiments {
+    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [CIENCIA] Activant instruments cientifics a bord...".
+    LOCAL comptador IS 0.
+    FOR p IN SHIP:PARTS {
+        FOR m_nom IN p:MODULES {
+            IF m_nom = "Experiment" OR m_nom = "ModuleScienceExperiment" {
+                LOCAL m_part IS p:GETMODULE(m_nom).
+                // Accions (Kerbalism StartAction / Start)
+                FOR act_nom IN m_part:ALLACTIONNAMES {
+                    IF act_nom:TOLOWER:CONTAINS("start") OR act_nom:TOLOWER:CONTAINS("inici") {
+                        m_part:DOACTION(act_nom, TRUE).
+                        SET comptador TO comptador + 1.
+                    }
+                }
+                // Events (KSP GUI / Deploy / Observe)
+                FOR ev_nom IN m_part:ALLEVENTNAMES {
+                    IF ev_nom:TOLOWER:CONTAINS("start") OR ev_nom:TOLOWER:CONTAINS("deploy") OR ev_nom:TOLOWER:CONTAINS("inici") OR ev_nom:TOLOWER:CONTAINS("observ") {
+                        m_part:DOEVENT(ev_nom).
+                        SET comptador TO comptador + 1.
+                    }
+                }
+            }
+        }
+    }
+    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [CIENCIA] " + comptador + " comandes enviades als sensors!".
+}
+
 // 1. Enlairament Vertical
 LOCK THROTTLE TO 1.0.
 LOCK STEERING TO HEADING(RUMB, 90).
@@ -28,6 +56,12 @@ FROM {LOCAL c IS 3.} UNTIL c = 0 STEP {SET c TO c - 1.} DO {
 
 PRINT "T+0.0s: IGNICIO ETAPA 1 (RT-10 «Hammer»)!".
 STAGE.
+LOCAL t_enlairament IS TIME:SECONDS.
+
+// Activacio d'experiments cientifics als 3.5 segons del despegar
+WHEN TIME:SECONDS >= t_enlairament + 3.5 THEN {
+    activar_experiments().
+}
 
 // 2. Ascens vertical fins a cota de Kick
 WAIT UNTIL SHIP:ALTITUDE > ALT_KICK.
