@@ -44,20 +44,20 @@ landing_alt = alts[-1]
 space_times = [t for t, a in zip(times, alts) if a >= 70000]
 time_in_space = (space_times[-1] - space_times[0]) if space_times else 0
 
-summary_content = f"""# Resum Telemètric de la Missió CSA-07
+summary_content = f"""# Telemetry Summary of Mission CSA-07
 
-- **Vehicle**: Corolt-IIIb (Primer vol amb Superfícies de Control Mòbils)
-- **Objectiu**: Validació d'Actuació Aerodinàmica, Trajectòria Inclinada cap a l'Est i Recuperació a l'Oceà
-- **Resultat**: 🟢 Èxit Total | Apogeu de {max_alt/1000:.1f} km | Amaratge suau sota paracaigudes i rescat complet
+- **Vehicle**: Corolt-IIIb (First flight with Movable Control Surfaces)
+- **Objective**: Aerodynamic Actuation Validation, Eastward Inclined Trajectory and Ocean Recovery
+- **Outcome**: 🟢 Total Success | Apoapsis of {max_alt/1000:.1f} km | Soft splashdown under parachutes and full recovery
 
-## Paràmetres Crítics Enregistrats
-- **Altitud Màxima (Apogeu)**: {max_alt:,.1f} m ({max_alt/1000:.2f} km) a T+{max_alt_time:.1f}s
-- **Velocitat Màxima de Superfície**: {max_vel:,.1f} m/s ({max_vel*3.6:,.1f} km/h, Mach ~{max_vel/310:.1f}) a T+{max_vel_time:.1f}s
-- **Pressió Dinàmica Màxima (Max Q)**: {max_q:,.1f} Pa ({max_q/1000:.2f} kPa)
-- **Acceleració Màxima**: {max_g:.2f} G
-- **Temps a l'Espai Exterior (>70 km)**: {time_in_space:.1f} segons ({time_in_space/60:.1f} minuts)
-- **Temps Total de Vol fins l'Amaratge**: {landing_time:.1f} segons ({landing_time/60:.2f} minuts)
-- **Velocitat de Contacte amb l'Aigua**: {vels[-1]:.2f} m/s a cota {landing_alt:.1f} m
+## Critical Recorded Parameters
+- **Maximum Altitude (Apoapsis)**: {max_alt:,.1f} m ({max_alt/1000:.2f} km) at T+{max_alt_time:.1f}s
+- **Maximum Surface Speed**: {max_vel:,.1f} m/s ({max_vel*3.6:,.1f} km/h, Mach ~{max_vel/310:.1f}) at T+{max_vel_time:.1f}s
+- **Maximum Dynamic Pressure (Max Q)**: {max_q:,.1f} Pa ({max_q/1000:.2f} kPa)
+- **Maximum Acceleration**: {max_g:.2f} G
+- **Time in Outer Space (>70 km)**: {time_in_space:.1f} seconds ({time_in_space/60:.1f} minutes)
+- **Total Flight Time until Splashdown**: {landing_time:.1f} seconds ({landing_time/60:.2f} minutes)
+- **Water Impact Velocity**: {vels[-1]:.2f} m/s at elevation {landing_alt:.1f} m
 """
 
 with open(out_summary, 'w') as f:
@@ -132,15 +132,15 @@ svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="1
   </defs>
 
   <!-- Title -->
-  <text x="{w/2}" y="28" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">COROLT SPACE AGENCY  |  TELEMETRIA DE VOL: MISSIÓ CSA-07</text>
-  <text x="{w/2}" y="44" font-size="11" fill="#64748b" text-anchor="middle">Corolt-IIIb (Superfícies de Control Mòbils) • Apogeu: {max_alt/1000:.1f} km • Recuperació Íntegra a l'Oceà</text>
+  <text x="{w/2}" y="28" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">COROLT SPACE AGENCY  |  FLIGHT TELEMETRY: MISSION CSA-07</text>
+  <text x="{w/2}" y="44" font-size="11" fill="#64748b" text-anchor="middle">Corolt-IIIb (Movable Control Surfaces) • Apoapsis: {max_alt/1000:.1f} km • Full Ocean Recovery</text>
 
   <!-- Grid -->
   {grid_svg}
 
   <!-- Karman Line -->
   <line x1="{pad_l}" y1="{y_70k:.1f}" x2="{w - pad_r}" y2="{y_70k:.1f}" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="5,5"/>
-  <text x="{w - pad_r - 10}" y="{y_70k - 6:.1f}" font-size="11" fill="#c084fc" text-anchor="end" font-weight="bold">Línia de Kármán (70 km)</text>
+  <text x="{w - pad_r - 10}" y="{y_70k - 6:.1f}" font-size="11" fill="#c084fc" text-anchor="end" font-weight="bold">Kármán Line (70 km)</text>
 
   <!-- Velocity Line -->
   <polyline fill="none" stroke="#f43f5e" stroke-width="2" points="{str_vel}"/>
@@ -151,22 +151,22 @@ svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="1
   <!-- Peak indicator -->
   <circle cx="{peak_x:.1f}" cy="{peak_y:.1f}" r="4" fill="#38bdf8"/>
   <rect x="{peak_x - 65:.1f}" y="{peak_y - 28:.1f}" width="130" height="20" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
-  <text x="{peak_x:.1f}" y="{peak_y - 14:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogeu: {max_alt/1000:.1f} km</text>
+  <text x="{peak_x:.1f}" y="{peak_y - 14:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogee: {max_alt/1000:.1f} km</text>
 
   <!-- Legends -->
   <g transform="translate({pad_l}, {h - 22})">
     <line x1="0" y1="0" x2="20" y2="0" stroke="#38bdf8" stroke-width="2.5"/>
-    <text x="25" y="4" font-size="11" fill="#94a3b8">Altitud (km)</text>
+    <text x="25" y="4" font-size="11" fill="#94a3b8">Altitude (km)</text>
 
     <line x1="120" y1="0" x2="140" y2="0" stroke="#f43f5e" stroke-width="2"/>
-    <text x="145" y="4" font-size="11" fill="#94a3b8">Velocitat de Superfície (m/s)</text>
+    <text x="145" y="4" font-size="11" fill="#94a3b8">Surface Velocity (m/s)</text>
 
     <line x1="330" y1="0" x2="350" y2="0" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4,4"/>
-    <text x="355" y="4" font-size="11" fill="#94a3b8">Espai Exterior (>70 km)</text>
+    <text x="355" y="4" font-size="11" fill="#94a3b8">Outer Space (>70 km)</text>
   </g>
 </svg>"""
 
 with open(out_svg, 'w') as f:
     f.write(svg)
 
-print(f"Plot SVG generat amb èxit a: {out_svg}")
+print(f"SVG plot generated successfully at: {out_svg}")

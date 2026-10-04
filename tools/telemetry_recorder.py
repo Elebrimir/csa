@@ -76,7 +76,7 @@ def ut_to_kerbin_date(ut):
     minute = int(rem_hour // 60)
     second = int(rem_hour % 60)
 
-    return f"Any {year}, Dia {day} ({hour:02d}h {minute:02d}m {second:02d}s)"
+    return f"Year {year}, Day {day} ({hour:02d}h {minute:02d}m {second:02d}s)"
 
 def check_connection(url=TELEMACHUS_URL):
     try:
@@ -110,15 +110,15 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
     print(f"================================================================================")
     
     initial_ut = 0.0
-    kerbin_date = "Any 1, Dia 1 (00h 00m 00s)"
+    kerbin_date = "Year 1, Day 1 (00h 00m 00s)"
 
     if not mock_mode:
-        print(f"[*] Comprovant enllaç amb Telemachus (127.0.0.1:8085)...")
+        print(f"[*] Checking link with Telemachus (127.0.0.1:8085)...")
         if not check_connection():
-            print(f"[!] Esperant que la nau estiga carregada a la rampa de llançament...")
+            print(f"[!] Waiting for vessel to be loaded on launchpad...")
             while not check_connection():
                 time.sleep(1.0)
-        print(f"[✓] Enllaç telemètric establit! Obtenint data oficial de Kerbin...")
+        print(f"[✓] Telemetry link established! Fetching official Kerbin date...")
         
         try:
             req = urllib.request.Request(f"{TELEMACHUS_URL}?ut=t.universalTime", headers={'User-Agent': 'CSA-Telemetry'})
@@ -126,11 +126,11 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                 data = json.loads(resp.read().decode())
                 initial_ut = safe_float(data.get("ut", 0.0))
                 kerbin_date = ut_to_kerbin_date(initial_ut)
-                print(f"[📅] Data Oficial de Kerbin: {kerbin_date} (UT: {initial_ut:,.1f}s)")
+                print(f"[📅] Official Kerbin Date: {kerbin_date} (UT: {initial_ut:,.1f}s)")
         except Exception:
             pass
     else:
-        print(f"[🔬] MODE MOCK ACTIVAT: Generant dades sintètiques de verificació...")
+        print(f"[🔬] MOCK MODE ACTIVE: Generating synthetic verification data...")
 
     os.makedirs("missions", exist_ok=True)
     csv_file = f"missions/{mission_name}_telemetry.csv"
@@ -157,8 +157,8 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
-        print(f"[*] Enregistrant telemetria a: {csv_file}")
-        print(f"    (Prem Ctrl+C per aturar el registre i generar el resum de missió)\n")
+        print(f"[*] Recording telemetry to: {csv_file}")
+        print(f"    (Press Ctrl+C to stop recording and generate mission summary)\n")
         print(f"{'MET (s)':>7} | {'Alt (m)':>9} | {'Spd (m/s)':>9} | {'Pitch':>6} | {'AoA':>5} | {'Apo (km)':>8} | {'Q (kPa)':>7} | {'G':>5}")
         print("-" * 75)
 
@@ -289,33 +289,33 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
 
         except KeyboardInterrupt:
             print("\n\n" + "=" * 75)
-            print(f"      REGISTRE COMPLETAT - RESUM DE MISSIÓ: {mission_name}")
+            print(f"      RECORDING COMPLETE - MISSION SUMMARY: {mission_name}")
             print("=" * 75)
-            summary = f"""# 📊 Telemetria Oficial - Missió {mission_name}
-* **Data de Vol (Calendari Kerbin)**: {kerbin_date}
-* **Mostres Enregistrades**: {met / interval:.0f}
+            summary = f"""# 📊 Official Telemetry - Mission {mission_name}
+* **Flight Date (Kerbin Calendar)**: {kerbin_date}
+* **Recorded Samples**: {met / interval:.0f}
 
-| Mètrica de Vol | Valor Enregistrat |
+| Flight Metric | Recorded Value |
 | :--- | :--- |
-| **Durada de Vol (MET)** | {met:.1f} s |
-| **Altitud Màxima Assolida** | {max_alt:,.1f} m ({(max_alt/1000):.2f} km) |
-| **Velocitat Màxima** | {max_vel:,.1f} m/s (Mach ~{max_vel/310:.2f}) |
-| **Pressió Dinàmica Màxima (Max Q)** | {max_q:.2f} kPa |
-| **Acceleració Màxima** | {max_g:.2f} G |
-| **Inclinació Mínima Assolida (Pitch)** | {min_pitch:.1f}º |
+| **Flight Duration (MET)** | {met:.1f} s |
+| **Maximum Altitude Achieved** | {max_alt:,.1f} m ({(max_alt/1000):.2f} km) |
+| **Maximum Speed** | {max_vel:,.1f} m/s (Mach ~{max_vel/310:.2f}) |
+| **Maximum Dynamic Pressure (Max Q)** | {max_q:.2f} kPa |
+| **Maximum Acceleration** | {max_g:.2f} G |
+| **Minimum Pitch Achieved** | {min_pitch:.1f}º |
 
-*Telemetria d'alta fidelitat desada a `{csv_file}`.*
+*High-fidelity telemetry saved in `{csv_file}`.*
 """
             print(summary)
             with open(f"missions/{mission_name}_summary.md", "w") as sf:
                 sf.write(summary)
-            print(f"[✓] Resum oficial guardat a: missions/{mission_name}_summary.md")
+            print(f"[✓] Official summary saved to: missions/{mission_name}_summary.md")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Corolt Space Agency Telemetry Recorder v2.0")
-    parser.add_argument("mission", nargs="?", default="CSA-07", help="Codi de la missió (ex: CSA-07)")
-    parser.add_argument("--interval", type=float, default=0.5, help="Interval de mostreig en segons (default: 0.5)")
-    parser.add_argument("--mock", action="store_true", help="Executa en mode de prova sintètica sense Telemachus")
+    parser.add_argument("mission", nargs="?", default="CSA-07", help="Mission code (e.g., CSA-07)")
+    parser.add_argument("--interval", type=float, default=0.5, help="Sampling interval in seconds (default: 0.5)")
+    parser.add_argument("--mock", action="store_true", help="Run in synthetic mock test mode without Telemachus")
     args = parser.parse_args()
 
     record_flight(mission_name=args.mission, interval=args.interval, mock_mode=args.mock)

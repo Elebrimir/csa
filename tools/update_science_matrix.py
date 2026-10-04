@@ -258,12 +258,12 @@ def generate_markdown(rows, md_path):
     print(f"[✓] VitePress Markdown saved to: {md_path}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Actualitzador de la Matriu Científica CSA")
-    parser.add_argument("--save", default=SAVE_PATH, help="Ruta al fitxer persistent.sfs")
+    parser = argparse.ArgumentParser(description="Corolt Space Agency Science Matrix Updater")
+    parser.add_argument("--save", default=SAVE_PATH, help="Path to persistent.sfs save file")
     args = parser.parse_args()
 
     print("================================================================================")
-    print("       COROLT SPACE AGENCY (CSA) - MATRIU DE SEGUIMENT CIENTÍFIC               ")
+    print("       COROLT SPACE AGENCY (CSA) - SCIENCE TRACKING MATRIX                     ")
     print("================================================================================")
     
     data = parse_science_from_save(args.save)

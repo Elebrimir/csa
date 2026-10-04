@@ -42,20 +42,20 @@ landing_alt = alts[-1]
 space_times = [t for t, a in zip(times, alts) if a >= 70000]
 time_in_space = (space_times[-1] - space_times[0]) if space_times else 0
 
-summary_content = f"""# Resum Telemètric de la Missió CSA-06
+summary_content = f"""# Telemetry Summary of Mission CSA-06
 
-- **Vehicle**: Corolt-III (Unitat 03 - kOS Guiat)
-- **Objectiu**: Vol Suborbital d'Alta Cota i Recuperació Autònoma Integral
-- **Resultat**: Èxit Total | Apogeu de 245.0 km | Aterratge suau i recuperació de càpsula
+- **Vehicle**: Corolt-III (Unit 03 - Guided kOS)
+- **Objective**: High Altitude Suborbital Flight and Full Autonomous Recovery
+- **Outcome**: Total Success | Apoapsis of 245.0 km | Soft touchdown and capsule recovery
 
-## Paràmetres Crítics Enregistrats
-- **Altitud Màxima (Apogeu)**: {max_alt:,.1f} m ({max_alt/1000:.2f} km) a T+{max_alt_time:.1f}s
-- **Velocitat Màxima de Superfície**: {max_vel:,.1f} m/s ({max_vel*3.6:,.1f} km/h) a T+{max_vel_time:.1f}s
-- **Pressió Dinàmica Màxima (Max Q)**: {max_q:,.1f} Pa ({max_q/1000:.2f} kPa)
-- **Acceleració Màxima**: {max_g:.2f} G
-- **Temps a l'Espai Exterior (>70 km)**: {time_in_space:.1f} segons ({time_in_space/60:.1f} minuts)
-- **Temps Total de Vol fins l'Aterratge**: {landing_time:.1f} segons ({landing_time/60:.2f} minuts)
-- **Velocitat de Toc a Terra**: ~0.0 m/s (descens sota paracaigudes a 6.5 m/s) a cota {landing_alt:.1f} m
+## Critical Recorded Parameters
+- **Maximum Altitude (Apoapsis)**: {max_alt:,.1f} m ({max_alt/1000:.2f} km) at T+{max_alt_time:.1f}s
+- **Maximum Surface Speed**: {max_vel:,.1f} m/s ({max_vel*3.6:,.1f} km/h) at T+{max_vel_time:.1f}s
+- **Maximum Dynamic Pressure (Max Q)**: {max_q:,.1f} Pa ({max_q/1000:.2f} kPa)
+- **Maximum Acceleration**: {max_g:.2f} G
+- **Time in Outer Space (>70 km)**: {time_in_space:.1f} seconds ({time_in_space/60:.1f} minutes)
+- **Total Flight Time until Landing**: {landing_time:.1f} seconds ({landing_time/60:.2f} minutes)
+- **Touchdown Velocity**: ~0.0 m/s (descent under parachutes at 6.5 m/s) at elevation {landing_alt:.1f} m
 """
 
 with open(out_summary, 'w') as f:
@@ -127,15 +127,15 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="1
   <rect width="{w}" height="{h}" fill="#0b0f19" rx="8"/>
   
   <!-- Title & Legend -->
-  <text x="{pad_l}" y="28" font-size="14" font-weight="bold" fill="#f8fafc">CSA-06: Vol Suborbital Amb Guiatge Autònom i Recuperació (245,0 km)</text>
+  <text x="{pad_l}" y="28" font-size="14" font-weight="bold" fill="#f8fafc">CSA-06: Autonomous Suborbital Flight & Recovery (245.0 km)</text>
   <circle cx="{w - 260}" cy="24" r="5" fill="#38bdf8"/>
-  <text x="{w - 250}" y="28" font-size="12" fill="#38bdf8">Altitud (km)</text>
+  <text x="{w - 250}" y="28" font-size="12" fill="#38bdf8">Altitude (km)</text>
   <circle cx="{w - 140}" cy="24" r="5" fill="#f43f5e"/>
-  <text x="{w - 130}" y="28" font-size="12" fill="#f43f5e">Velocitat (m/s)</text>
+  <text x="{w - 130}" y="28" font-size="12" fill="#f43f5e">Velocity (m/s)</text>
 
   <!-- Space boundary 70km -->
   <line x1="{pad_l}" y1="{y_70k:.1f}" x2="{w - pad_r}" y2="{y_70k:.1f}" stroke="#a855f7" stroke-dasharray="6,4" stroke-width="1.5"/>
-  <text x="{w - pad_r - 10}" y="{y_70k - 6:.1f}" font-size="11" fill="#a855f7" font-weight="bold" text-anchor="end">Límit de l'Espai (Kármán 70 km)</text>
+  <text x="{w - pad_r - 10}" y="{y_70k - 6:.1f}" font-size="11" fill="#a855f7" font-weight="bold" text-anchor="end">Space Boundary (Kármán 70 km)</text>
 
   <!-- Grid & Ticks -->
   {"".join(grid_lines)}
@@ -151,16 +151,16 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="1
 
   <!-- Apogee Marker -->
   <circle cx="{peak_x:.1f}" cy="{peak_y:.1f}" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="2"/>
-  <text x="{peak_x:.1f}" y="{peak_y - 12:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogeu: 245,0 km (T+{max_alt_time:.0f}s)</text>
+  <text x="{peak_x:.1f}" y="{peak_y - 12:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogee: 245.0 km (T+{max_alt_time:.0f}s)</text>
 
   <!-- Touchdown Marker -->
   <circle cx="{pad_l + plot_w:.1f}" cy="{pad_t + plot_h - (landing_alt / alt_ceil) * plot_h:.1f}" r="5" fill="#22c55e" stroke="#ffffff" stroke-width="2"/>
-  <text x="{w - pad_r - 10}" y="{pad_t + plot_h - (landing_alt / alt_ceil) * plot_h - 15:.1f}" font-size="11" font-weight="bold" fill="#22c55e" text-anchor="end">Aterratge Suau: T+{landing_time:.0f}s ({landing_time/60:.1f} min)</text>
+  <text x="{w - pad_r - 10}" y="{pad_t + plot_h - (landing_alt / alt_ceil) * plot_h - 15:.1f}" font-size="11" font-weight="bold" fill="#22c55e" text-anchor="end">Soft Touchdown: T+{landing_time:.0f}s ({landing_time/60:.1f} min)</text>
 
   <!-- Axis Titles -->
-  <text x="{w / 2}" y="{h - 15}" font-size="12" fill="#94a3b8" text-anchor="middle">Temps de Missió Transcorregut (MET) en segons (~28,3 min)</text>
-  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="24" font-size="11" fill="#38bdf8" text-anchor="middle">Altitud (km)</text>
-  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 24}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocitat (m/s)</text>
+  <text x="{w / 2}" y="{h - 15}" font-size="12" fill="#94a3b8" text-anchor="middle">Mission Elapsed Time (MET) in seconds (~28.3 min)</text>
+  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="24" font-size="11" fill="#38bdf8" text-anchor="middle">Altitude (km)</text>
+  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 24}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocity (m/s)</text>
 </svg>
 '''
 

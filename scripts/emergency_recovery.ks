@@ -1,63 +1,63 @@
 // ============================================================================
-// Corolt Space Agency (CSA) — Protocol d'Emergència i Recuperació Autònoma
+// Corolt Space Agency (CSA) — Emergency Protocol & Autonomous Recovery
 // Script: emergency_recovery.ks
 // ============================================================================
 
 CLEARSCREEN.
 PRINT "==================================================".
-PRINT "  ⚠️ COROLT SPACE AGENCY - PROTOCOL D'EMERGÈNCIA  ".
-PRINT "   Recuperació i Salvament Autònom de Càpsula    ".
+PRINT "  ⚠️ COROLT SPACE AGENCY - EMERGENCY PROTOCOL     ".
+PRINT "   Autonomous Capsule Recovery & Safeguarding     ".
 PRINT "==================================================".
 
-// 1. Estabilització Immediata
+// 1. Immediate Stabilization
 UNLOCK STEERING.
 LOCK THROTTLE TO 0.
 SAS ON.
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Sistemes estabilitzats en mode SAS.".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Systems stabilized in SAS mode.".
 
-// 2. Activació de Seguretat de Sensors Científics
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Forçant recollida d'experiments a bord...".
-LOCAL activats IS 0.
+// 2. Safety Activation of Scientific Sensors
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Forcing collection of onboard experiments...".
+LOCAL activated IS 0.
 FOR p IN SHIP:PARTS {
-    FOR m_nom IN p:MODULES {
-        IF m_nom = "Experiment" OR m_nom = "ModuleScienceExperiment" {
-            LOCAL m_part IS p:GETMODULE(m_nom).
-            FOR act_nom IN m_part:ALLACTIONNAMES {
-                IF act_nom:TOLOWER:CONTAINS("start") OR act_nom:TOLOWER:CONTAINS("inici") {
-                    m_part:DOACTION(act_nom, TRUE).
-                    SET activats TO activats + 1.
+    FOR m_name IN p:MODULES {
+        IF m_name = "Experiment" OR m_name = "ModuleScienceExperiment" {
+            LOCAL m_part IS p:GETMODULE(m_name).
+            FOR act_name IN m_part:ALLACTIONNAMES {
+                IF act_name:TOLOWER:CONTAINS("start") OR act_name:TOLOWER:CONTAINS("inici") {
+                    m_part:DOACTION(act_name, TRUE).
+                    SET activated TO activated + 1.
                 }
             }
-            FOR ev_nom IN m_part:ALLEVENTNAMES {
-                IF ev_nom:TOLOWER:CONTAINS("start") OR ev_nom:TOLOWER:CONTAINS("deploy") OR ev_nom:TOLOWER:CONTAINS("inici") OR ev_nom:TOLOWER:CONTAINS("observ") {
-                    m_part:DOEVENT(ev_nom).
-                    SET activats TO activats + 1.
+            FOR ev_name IN m_part:ALLEVENTNAMES {
+                IF ev_name:TOLOWER:CONTAINS("start") OR ev_name:TOLOWER:CONTAINS("deploy") OR ev_name:TOLOWER:CONTAINS("inici") OR ev_name:TOLOWER:CONTAINS("observ") {
+                    m_part:DOEVENT(ev_name).
+                    SET activated TO activated + 1.
                 }
             }
         }
     }
 }
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: " + activats + " sensors activats!".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: " + activated + " sensors activated!".
 
-// 3. Monitorització de Reentrada
+// 3. Reentry Monitoring
 IF SHIP:ALTITUDE > 70000 {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: A l'espai exterior (" + ROUND(SHIP:ALTITUDE/1000, 1) + " km). Esperant reentrada (70 km)...".
+    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: In outer space (" + ROUND(SHIP:ALTITUDE/1000, 1) + " km). Awaiting reentry (70 km)...".
     WAIT UNTIL SHIP:ALTITUDE < 70000.
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Travessant atmosfera (70 km).".
+    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Crossing atmosphere (70 km).".
 }
 
-// 4. Desplegament Segur de Paracaigudes
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Monitoritzant condicions per al paracaigudes...".
+// 4. Safe Parachute Deployment
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Monitoring safe recovery parameters...".
 WAIT UNTIL (ALT:RADAR < 2500) AND (SHIP:AIRSPEED < 250).
 
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Condicions segures detectades!".
-PRINT "DESPLEGANT PARACAIGUDES...".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Safe conditions detected!".
+PRINT "DEPLOYING PARACHUTES...".
 CHUTES ON.
 STAGE.
 
-// 5. Contacte final
+// 5. Touchdown
 WAIT UNTIL SHIP:STATUS = "LANDED" OR SHIP:STATUS = "SPLASHED".
 PRINT "==================================================".
-PRINT "   T+" + ROUND(MISSIONTIME, 1) + "s: CONTACTE CONFIRMAT AMB EL TERRENY! ".
-PRINT "           MISSIO SALVADA AMB EXIT!               ".
+PRINT "   T+" + ROUND(MISSIONTIME, 1) + "s: CONTACT CONFIRMED WITH SURFACE!    ".
+PRINT "           MISSION SAVED SUCCESSFULLY!            ".
 PRINT "==================================================".

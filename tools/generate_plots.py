@@ -64,11 +64,11 @@ svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" 
   <rect width="{w}" height="{h}" fill="#0b0f19" rx="8"/>
   
   <!-- Title & Legend -->
-  <text x="{pad_l}" y="26" font-size="14" font-weight="bold" fill="#f8fafc">CSA-01: Perfil de Vol Telemetrat (Ascens, Apogeu i Inici de Descens)</text>
+  <text x="{pad_l}" y="26" font-size="14" font-weight="bold" fill="#f8fafc">CSA-01: Telemetry Flight Profile (Ascent, Apogee and Initial Descent)</text>
   <circle cx="{w - 240}" cy="22" r="5" fill="#38bdf8"/>
-  <text x="{w - 230}" y="26" font-size="12" fill="#38bdf8">Altitud (m)</text>
+  <text x="{w - 230}" y="26" font-size="12" fill="#38bdf8">Altitude (m)</text>
   <circle cx="{w - 120}" cy="22" r="5" fill="#f43f5e"/>
-  <text x="{w - 110}" y="26" font-size="12" fill="#f43f5e">Velocitat (m/s)</text>
+  <text x="{w - 110}" y="26" font-size="12" fill="#f43f5e">Velocity (m/s)</text>
 
   <!-- Grid & Ticks -->
   {"".join(grid_lines)}
@@ -84,19 +84,19 @@ svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" 
 
   <!-- Apogee Marker -->
   <circle cx="{peak_x:.1f}" cy="{peak_y:.1f}" r="4" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
-  <text x="{peak_x:.1f}" y="{peak_y - 10:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogeu: 6.423 m (T+168s)</text>
+  <text x="{peak_x:.1f}" y="{peak_y - 10:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="middle">Apogee: 6,423 m (T+168s)</text>
 
   <!-- Parachute descent phase note -->
-  <text x="{w - pad_r - 10}" y="{pad_t + 45}" font-size="11" fill="#94a3b8" text-anchor="end">Fase Paracaigudes: -12.8 m/s</text>
+  <text x="{w - pad_r - 10}" y="{pad_t + 45}" font-size="11" fill="#94a3b8" text-anchor="end">Parachute Phase: -12.8 m/s</text>
 
   <!-- Axis Titles -->
-  <text x="{w / 2}" y="{h - 12}" font-size="12" fill="#94a3b8" text-anchor="middle">Temps de Missió Transcorregut (MET) en segons</text>
-  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="20" font-size="11" fill="#38bdf8" text-anchor="middle">Altitud (m)</text>
-  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 20}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocitat (m/s)</text>
+  <text x="{w / 2}" y="{h - 12}" font-size="12" fill="#94a3b8" text-anchor="middle">Mission Elapsed Time (MET) in seconds</text>
+  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="20" font-size="11" fill="#38bdf8" text-anchor="middle">Altitude (m)</text>
+  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 20}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocity (m/s)</text>
 </svg>
 '''
 
 with open(out_svg, 'w') as f:
     f.write(svg_content)
 
-print("Updated SVG successfully!")
+print(f"Generated {out_svg} successfully!")

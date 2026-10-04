@@ -109,11 +109,11 @@ svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" 
   <rect width="{w}" height="{h}" fill="#0b0f19" rx="8"/>
   
   <!-- Title & Legend -->
-  <text x="{pad_l}" y="26" font-size="14" font-weight="bold" fill="#f8fafc">CSA-02 «Corolt-Ib»: Perfil Complet de Vol i Aterratge</text>
+  <text x="{pad_l}" y="26" font-size="14" font-weight="bold" fill="#f8fafc">CSA-02 «Corolt-Ib»: Complete Flight & Touchdown Profile</text>
   <circle cx="{w - 240}" cy="22" r="5" fill="#38bdf8"/>
-  <text x="{w - 230}" y="26" font-size="12" fill="#38bdf8">Altitud (m)</text>
+  <text x="{w - 230}" y="26" font-size="12" fill="#38bdf8">Altitude (m)</text>
   <circle cx="{w - 120}" cy="22" r="5" fill="#f43f5e"/>
-  <text x="{w - 110}" y="26" font-size="12" fill="#f43f5e">Velocitat (m/s)</text>
+  <text x="{w - 110}" y="26" font-size="12" fill="#f43f5e">Velocity (m/s)</text>
 
   <!-- Grid & Ticks -->
   {"".join(grid_lines)}
@@ -129,7 +129,7 @@ svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" 
 
   <!-- Apogee Marker -->
   <circle cx="{peak_x:.1f}" cy="{peak_y:.1f}" r="4" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
-  <text x="{peak_x + 10:.1f}" y="{peak_y - 8:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="start">Apogeu: {peak_alt:.0f}m (T+{peak_t:.0f}s)</text>
+  <text x="{peak_x + 10:.1f}" y="{peak_y - 8:.1f}" font-size="11" font-weight="bold" fill="#38bdf8" text-anchor="start">Apogee: {peak_alt:.0f}m (T+{peak_t:.0f}s)</text>
 
   <!-- Burnout / Max Speed Marker -->
   <circle cx="{maxv_x:.1f}" cy="{maxv_y:.1f}" r="4" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5"/>
@@ -137,12 +137,12 @@ svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" 
 
   <!-- Parachute Deployment Marker -->
   <circle cx="{chute_x:.1f}" cy="{chute_y:.1f}" r="4" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
-  <text x="{chute_x + 8:.1f}" y="{chute_y + 16:.1f}" font-size="11" font-weight="bold" fill="#10b981" text-anchor="start">Paracaigudes ({chute_alt:.0f}m)</text>
+  <text x="{chute_x + 8:.1f}" y="{chute_y + 16:.1f}" font-size="11" font-weight="bold" fill="#10b981" text-anchor="start">Parachutes ({chute_alt:.0f}m)</text>
 
   <!-- Axis Titles -->
-  <text x="{w / 2}" y="{h - 12}" font-size="12" fill="#94a3b8" text-anchor="middle">Temps de Vol Des de l'Enlairament (s)</text>
-  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="20" font-size="11" fill="#38bdf8" text-anchor="middle">Altitud (m)</text>
-  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 20}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocitat (m/s)</text>
+  <text x="{w / 2}" y="{h - 12}" font-size="12" fill="#94a3b8" text-anchor="middle">Flight Time Since Liftoff (s)</text>
+  <text transform="rotate(-90)" x="{- (pad_t + plot_h/2)}" y="20" font-size="11" fill="#38bdf8" text-anchor="middle">Altitude (m)</text>
+  <text transform="rotate(90)" x="{pad_t + plot_h/2}" y="{-w + 20}" font-size="11" fill="#f43f5e" text-anchor="middle">Velocity (m/s)</text>
 </svg>
 '''
 

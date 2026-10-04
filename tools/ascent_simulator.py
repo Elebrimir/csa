@@ -30,11 +30,11 @@ KERBIN_P_0 = 101325.0           # Sea-level atmospheric pressure (Pa)
 # ==============================================================================
 DEFAULT_VEHICLES = {
     "corolt-3": {
-        "name": "Corolt-III (Arquitectura Tàndem)",
+        "name": "Corolt-III (Tandem Architecture)",
         "cda_default": 1.50,
         "stages": [
             {
-                "name": "Etapa 1 (RT-10 «Hammer»)",
+                "name": "Stage 1 (RT-10 «Hammer»)",
                 "m_initial": 5144.0,
                 "m_propellant": 2825.0,
                 "burn_time": 50.7,
@@ -42,7 +42,7 @@ DEFAULT_VEHICLES = {
                 "thrust_asl": 91800.0,
             },
             {
-                "name": "Separació Interetapa",
+                "name": "Interstage Separation",
                 "m_initial": 2319.0, # 5144 - 2825
                 "m_propellant": 0.0,
                 "burn_time": 1.5,
@@ -50,7 +50,7 @@ DEFAULT_VEHICLES = {
                 "thrust_asl": 0.0,
             },
             {
-                "name": "Etapa 2 (SRM-XL)",
+                "name": "Stage 2 (SRM-XL)",
                 "m_initial": 1569.0, # after 750kg casing jettison
                 "m_propellant": 940.0,
                 "burn_time": 57.6,
@@ -250,15 +250,15 @@ def optimize_guidance(simulator, target="max_apoapsis", alt_range=(800, 2600, 20
     print(f"       COROLT SPACE AGENCY (CSA) - kOS GUIDANCE OPTIMIZER (GRID SEARCH)        ")
     print(f"================================================================================")
     print(f"• Vehicle: {simulator.vehicle['name']}")
-    print(f"• Cd·A Calibrat: {simulator.cda:.3f} m²")
-    print(f"• Rangs: Cota Kick [{alt_range[0]}m .. {alt_range[1]}m], Pitch [{pitch_range[0]}º .. {pitch_range[1]}º]")
-    print(f"• Objectiu: {target.upper()}\n")
+    print(f"• Calibrated Cd·A: {simulator.cda:.3f} m²")
+    print(f"• Ranges: Kick Alt [{alt_range[0]}m .. {alt_range[1]}m], Pitch [{pitch_range[0]}º .. {pitch_range[1]}º]")
+    print(f"• Objective: {target.upper()}\n")
 
     results = []
     total_evals = ((alt_range[1] - alt_range[0]) // alt_range[2] + 1) * int((pitch_range[1] - pitch_range[0]) / pitch_range[2] + 1)
     eval_count = 0
 
-    print(f"{'Alt Kick (m)':>12} | {'Pitch (º)':>9} | {'Apoapsi (km)':>12} | {'Max Q (kPa)':>11} | {'Loss Grav (m/s)':>15} | {'Loss Drag (m/s)':>15}")
+    print(f"{'Alt Kick (m)':>12} | {'Pitch (º)':>9} | {'Apoapsis (km)':>13} | {'Max Q (kPa)':>11} | {'Loss Grav (m/s)':>15} | {'Loss Drag (m/s)':>15}")
     print("-" * 84)
 
     best_res = None
@@ -288,16 +288,16 @@ def optimize_guidance(simulator, target="max_apoapsis", alt_range=(800, 2600, 20
     # Print top 5 candidates
     sorted_res = sorted(results, key=lambda x: x["apoapsis_km"], reverse=True)
     for r in sorted_res[:10]:
-        marker = " <-- [ÒPTIM]" if r == best_res else ""
-        print(f"{r['alt_kick']:>12} | {r['pitch_kick']:>9.1f} | {r['apoapsis_km']:>12.2f} | {r['max_q']:>11.2f} | {r['loss_grav']:>15.1f} | {r['loss_drag']:>15.1f}{marker}")
+        marker = " <-- [OPTIMAL]" if r == best_res else ""
+        print(f"{r['alt_kick']:>12} | {r['pitch_kick']:>9.1f} | {r['apoapsis_km']:>13.2f} | {r['max_q']:>11.2f} | {r['loss_grav']:>15.1f} | {r['loss_drag']:>15.1f}{marker}")
 
     print("\n" + "=" * 84)
-    print(f"🎯 CONFIGURACIÓ RECOMANADA PER AL SCRIPT DE kOS:")
+    print(f"🎯 RECOMMENDED CONFIGURATION FOR kOS SCRIPT:")
     print("=" * 84)
-    print(f"DECLARE PARAMETER PITCH_INICIAL IS {best_res['pitch_kick']:.1f}, ALT_KICK IS {best_res['alt_kick']}, RUMB IS 90.")
-    print(f"• Apoapsi Teòrica Estimada: {best_res['apoapsis_km']:.2f} km")
-    print(f"• Pèrdues Totals de Vol: {best_res['total_loss']:.1f} m/s (Gravetat: {best_res['loss_grav']:.1f} m/s | Drag: {best_res['loss_drag']:.1f} m/s)")
-    print(f"• Pressió Dinàmica Màxima (Max Q): {best_res['max_q']:.2f} kPa")
+    print(f"DECLARE PARAMETER PITCH_INITIAL IS {best_res['pitch_kick']:.1f}, ALT_KICK IS {best_res['alt_kick']}, HEADING_DEG IS 90.")
+    print(f"• Estimated Theoretical Apoapsis: {best_res['apoapsis_km']:.2f} km")
+    print(f"• Total Flight Losses: {best_res['total_loss']:.1f} m/s (Gravity: {best_res['loss_grav']:.1f} m/s | Drag: {best_res['loss_drag']:.1f} m/s)")
+    print(f"• Maximum Dynamic Pressure (Max Q): {best_res['max_q']:.2f} kPa")
     print("=" * 84)
 
     return best_res
@@ -308,12 +308,12 @@ def optimize_guidance(simulator, target="max_apoapsis", alt_range=(800, 2600, 20
 def main():
     parser = argparse.ArgumentParser(description="Corolt Space Agency Ascent Simulator & kOS Optimizer")
     parser.add_argument("--vehicle", default="corolt-3", choices=list(DEFAULT_VEHICLES.keys()), help="Vehicle profile")
-    parser.add_argument("--alt-kick", type=float, default=1200.0, help="Cota d'inici de pitch kick (m)")
-    parser.add_argument("--pitch-kick", type=float, default=82.0, help="Angle de cabeceig inicial després del kick (º)")
-    parser.add_argument("--cda", type=float, default=None, help="Producte de drag efectiu Cd*A (m^2)")
-    parser.add_argument("--optimize", action="store_true", help="Executa optimització per cerca en malla (Grid Search)")
-    parser.add_argument("--target", default="max_apoapsis", choices=["max_apoapsis", "min_losses"], help="Criteri d'optimització")
-    parser.add_argument("--plot", type=str, default=None, help="Ruta del fitxer per desar gràfica SVG/PNG de trajectòria")
+    parser.add_argument("--alt-kick", type=float, default=1200.0, help="Kick initiation altitude (m)")
+    parser.add_argument("--pitch-kick", type=float, default=82.0, help="Initial pitch angle after kick (deg)")
+    parser.add_argument("--cda", type=float, default=None, help="Effective aerodynamic drag area Cd*A (m^2)")
+    parser.add_argument("--optimize", action="store_true", help="Run grid search trajectory optimization")
+    parser.add_argument("--target", default="max_apoapsis", choices=["max_apoapsis", "min_losses"], help="Optimization target")
+    parser.add_argument("--plot", type=str, default=None, help="Output path for trajectory SVG/PNG plot")
 
     args = parser.parse_args()
 
@@ -329,19 +329,19 @@ def main():
         print("=" * 70)
         print(f"🚀 CSA ASCENT TRAJECTORY SIMULATION: {v_config['name']}")
         print("=" * 70)
-        print(f"• Paràmetres kOS: ALT_KICK = {args.alt_kick:.0f} m | PITCH_INICIAL = {args.pitch_kick:.1f}º")
-        print(f"• Producte de Drag (Cd·A): {cda:.3f} m²")
+        print(f"• kOS Parameters: ALT_KICK = {args.alt_kick:.0f} m | PITCH_INITIAL = {args.pitch_kick:.1f}º")
+        print(f"• Drag Area Product (Cd·A): {cda:.3f} m²")
         print("-" * 70)
-        print(f"• Temps a Fi de Propulsió: T+{res['burnout_t']:.1f} s")
-        print(f"• Cota de Burnout: {res['burnout_alt']/1000.0:.2f} km")
-        print(f"• Velocitat Inercial a Burnout: {res['burnout_v_inertial']:.1f} m/s")
-        print(f"• Velocitat Superficial a Burnout: {res['burnout_v_surf']:.1f} m/s")
-        print(f"• Apoapsi Teòrica (Ap): {res['apoapsis']/1000.0:.2f} km")
-        print(f"• Periapsi Teòric (Pe): {res['periapsis']/1000.0:.2f} km")
-        print(f"• Excentricitat: {res['eccentricity']:.4f}")
-        print(f"• Pressió Dinàmica Màx (Max Q): {res['max_q_kpa']:.2f} kPa")
-        print(f"• Pèrdues Gravitatòries (Delta-v): {res['loss_gravity']:.1f} m/s")
-        print(f"• Pèrdues Aerodinàmiques (Delta-v): {res['loss_drag']:.1f} m/s")
+        print(f"• Burnout Time: T+{res['burnout_t']:.1f} s")
+        print(f"• Burnout Altitude: {res['burnout_alt']/1000.0:.2f} km")
+        print(f"• Burnout Inertial Velocity: {res['burnout_v_inertial']:.1f} m/s")
+        print(f"• Burnout Surface Velocity: {res['burnout_v_surf']:.1f} m/s")
+        print(f"• Theoretical Apoapsis (Ap): {res['apoapsis']/1000.0:.2f} km")
+        print(f"• Theoretical Periapsis (Pe): {res['periapsis']/1000.0:.2f} km")
+        print(f"• Eccentricity: {res['eccentricity']:.4f}")
+        print(f"• Maximum Dynamic Pressure (Max Q): {res['max_q_kpa']:.2f} kPa")
+        print(f"• Gravitational Losses (Delta-v): {res['loss_gravity']:.1f} m/s")
+        print(f"• Aerodynamic Losses (Delta-v): {res['loss_drag']:.1f} m/s")
         print("=" * 70)
 
         if args.plot:
@@ -354,21 +354,21 @@ def main():
 
                 fig, ax1 = plt.subplots(figsize=(10, 6))
                 ax1.set_title(f"CSA Ascent Simulation - {v_config['name']}\nALT_KICK: {args.alt_kick}m | PITCH: {args.pitch_kick}º | Ap: {res['apoapsis']/1000:.1f}km")
-                ax1.plot(t_list, alt_list, 'b-', label="Altitud (km)")
-                ax1.set_xlabel("Temps de Vol (s)")
-                ax1.set_ylabel("Altitud (km)", color='b')
+                ax1.plot(t_list, alt_list, 'b-', label="Altitude (km)")
+                ax1.set_xlabel("Flight Time (s)")
+                ax1.set_ylabel("Altitude (km)", color='b')
                 ax1.grid(True, linestyle="--", alpha=0.6)
 
                 ax2 = ax1.twinx()
-                ax2.plot(t_list, v_list, 'r--', label="Velocitat Superfície (m/s)")
-                ax2.plot(t_list, pitch_list, 'g-.', label="Pitch (º)")
-                ax2.set_ylabel("Velocitat (m/s) / Pitch (º)", color='r')
+                ax2.plot(t_list, v_list, 'r--', label="Surface Velocity (m/s)")
+                ax2.plot(t_list, pitch_list, 'g-.', label="Pitch (deg)")
+                ax2.set_ylabel("Velocity (m/s) / Pitch (deg)", color='r')
 
                 os.makedirs(os.path.dirname(args.plot) or ".", exist_ok=True)
                 plt.savefig(args.plot, dpi=150, bbox_inches='tight')
-                print(f"[✓] Gràfica de trajectòria desada a: {args.plot}")
+                print(f"[✓] Trajectory plot saved to: {args.plot}")
             except Exception as e:
-                print(f"[!] No s'ha pogut generar la gràfica: {e}")
+                print(f"[!] Could not generate plot: {e}")
 
 if __name__ == "__main__":
     main()
