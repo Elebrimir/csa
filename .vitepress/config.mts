@@ -9,6 +9,7 @@ export default defineConfig({
     siteTitle: "CSA Operations",
     nav: [
       { text: "Inici", link: "/" },
+      { text: "Ciència", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-3" },
       { text: "Missions", link: "/missions/csa-05" },
       { text: "Comunicats", link: "/social_media/csa-05_post" },
@@ -19,6 +20,7 @@ export default defineConfig({
         text: "Agència Espacial",
         items: [
           { text: "Manifest i Objectius", link: "/" },
+          { text: "Matriu Científica (Kerbin)", link: "/science/" },
         ]
       },
       {
