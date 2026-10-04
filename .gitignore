@@ -10,3 +10,4 @@ node_modules/
 .vitepress/dist
 .vitepress/cache
 .agents/
+.~lock.*#
