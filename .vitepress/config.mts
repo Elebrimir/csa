@@ -10,9 +10,9 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Science", link: "/science/" },
-      { text: "Vehicles", link: "/vehicles/corolt-3" },
-      { text: "Missions", link: "/missions/csa-08" },
-      { text: "Press", link: "/social_media/csa-08_post" },
+      { text: "Vehicles", link: "/vehicles/corolt-4" },
+      { text: "Missions", link: "/missions/csa-10" },
+      { text: "Press", link: "/social_media/csa-10_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -48,7 +48,7 @@ export default defineConfig({
           { text: "CSA-07: Mobile Control & Splashdown", link: "/missions/csa-07" },
           { text: "CSA-08: Deep Space & Power Anomaly", link: "/missions/csa-08" },
           { text: "CSA-09: Equatorial Van Allen Probe", link: "/missions/csa-09" },
-          { text: "CSA-10: Boreal Shoreline (Flight Plan)", link: "/missions/csa-10" },
+          { text: "CSA-10: Boreal Mountain Solid-Ground Recovery", link: "/missions/csa-10" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -64,6 +64,8 @@ export default defineConfig({
           { text: "CSA-06 Release", link: "/social_media/csa-06_post" },
           { text: "CSA-07 Release", link: "/social_media/csa-07_post" },
           { text: "CSA-08 Release", link: "/social_media/csa-08_post" },
+          { text: "CSA-09 Release", link: "/social_media/csa-09_post" },
+          { text: "CSA-10 Release", link: "/social_media/csa-10_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }
