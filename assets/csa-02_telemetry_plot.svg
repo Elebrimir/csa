@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 420" width="100%" height="auto" style="background:#0b0f19; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   <rect width="880" height="420" fill="#0b0f19" rx="8"/>
   
-  <!-- Title & Subtitle -->
+  <!-- Title &amp; Subtitle -->
   <text x="440.0" y="26" font-size="14" font-weight="bold" fill="#f8fafc" text-anchor="middle">COROLT SPACE AGENCY  |  FLIGHT TELEMETRY: MISSION CSA-02</text>
-  <text x="440.0" y="42" font-size="11" fill="#64748b" text-anchor="middle">Corolt-Ib (Scientific Variant) (Corolt-I Family) • 🟢 Complete Flight & Touchdown (4.1 km) | 100% Recovery</text>
+  <text x="440.0" y="42" font-size="11" fill="#64748b" text-anchor="middle">Corolt-Ib (Scientific Variant) (Corolt-I Family) • 🟢 Complete Flight &amp; Touchdown (4.1 km) | 100% Recovery</text>
 
-  <!-- Grid & Ticks -->
+  <!-- Grid &amp; Ticks -->
   <line x1="80" y1="50.0" x2="800" y2="50.0" stroke="#1e293b" stroke-dasharray="3,3" stroke-width="1"/>
     <text x="70" y="54.0" font-size="11" fill="#38bdf8" text-anchor="end" font-family="monospace">4500 m</text>
     <text x="810" y="54.0" font-size="11" fill="#f43f5e" text-anchor="start" font-family="monospace">200 m/s</text>
@@ -56,7 +56,7 @@
   <circle cx="346.4" cy="222.9" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
   <text x="354.4" y="238.9" font-size="11" font-weight="bold" fill="#10b981" text-anchor="start">Parachutes (1990m)</text>
 
-  <!-- Axis Titles & Legends -->
+  <!-- Axis Titles &amp; Legends -->
   <text x="440.0" y="405" font-size="12" fill="#94a3b8" text-anchor="middle">Mission Elapsed Time (MET) in seconds</text>
   <text transform="rotate(-90)" x="-205.0" y="24" font-size="11" fill="#38bdf8" text-anchor="middle">Altitude</text>
   <text transform="rotate(90)" x="205.0" y="-856" font-size="11" fill="#f43f5e" text-anchor="middle">Velocity (m/s)</text>

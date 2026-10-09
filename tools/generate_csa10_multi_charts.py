@@ -72,11 +72,11 @@ def generate_flight_deck_dashboard(data):
         sampled.append(data[-1])
 
     panels = [
-        {"x": 60, "y": 70, "w": 460, "h": 180, "title": "ALTITUDE PROFILE & KARMAN CROSSING", "unit": "km"},
-        {"x": 580, "y": 70, "w": 460, "h": 180, "title": "SURFACE & ORBITAL VELOCITIES", "unit": "m/s"},
+        {"x": 60, "y": 70, "w": 460, "h": 180, "title": "ALTITUDE PROFILE &amp; KARMAN CROSSING", "unit": "km"},
+        {"x": 580, "y": 70, "w": 460, "h": 180, "title": "SURFACE &amp; ORBITAL VELOCITIES", "unit": "m/s"},
         {"x": 60, "y": 300, "w": 460, "h": 180, "title": "DYNAMIC PRESSURE (Q) ENVELOPE", "unit": "kPa"},
         {"x": 580, "y": 300, "w": 460, "h": 180, "title": "STRUCTURAL G-FORCE LOAD PROFILE", "unit": "g"},
-        {"x": 60, "y": 530, "w": 460, "h": 180, "title": "GUIDANCE ATTITUDE (PITCH & HEADING)", "unit": "deg"},
+        {"x": 60, "y": 530, "w": 460, "h": 180, "title": "GUIDANCE ATTITUDE (PITCH &amp; HEADING)", "unit": "deg"},
         {"x": 580, "y": 530, "w": 460, "h": 180, "title": "GROUND TRACK PROGRESSION (LAT / LON)", "unit": "deg"}
     ]
 
