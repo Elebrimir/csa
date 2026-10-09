@@ -42,8 +42,8 @@ M_DRY_FINAL = 715.0                # Final stage mass after burnout (casing kept
 # Empirical Drag Profile (Calibrated from CSA-09 telemetry)
 CDA = 0.9626                       # Effective Cd * A (m^2)
 
-# Guidance Parameters (Coastal Polar Profile)
-HEADING_DEG = 5.0                  # Heading 005.0º (North-North-East along coast)
+# Guidance Parameters (Inland Northern Continental Profile)
+HEADING_DEG = 355.0                # Heading 355.0º (North-North-West into solid continent)
 ALT_KICK = 2500.0                  # Initial pitch kick altitude (m)
 PITCH_KICK = 88.0                  # Initial pitch attitude (degrees)
 ALT_END_TURN = 45000.0             # End of pitch transition (m)
@@ -257,9 +257,9 @@ def generate_svg_plot(traj, output_path):
     def spd_to_y(s):
         return g2_y0 + g2_h - (s / (max_spd * 1.1)) * g2_h
 
-    # Map bounds (KSC Lat -2º to +48º, Lon -82º to -66º)
-    map_lat_min, map_lat_max = -2.0, 48.0
-    map_lon_min, map_lon_max = -82.0, -66.0
+    # Map bounds (KSC Lat -5º to +55º, Lon -105º to -65º)
+    map_lat_min, map_lat_max = -5.0, 55.0
+    map_lon_min, map_lon_max = -105.0, -65.0
 
     def map_project(lon, lat):
         x = g3_x0 + ((lon - map_lon_min) / (map_lon_max - map_lon_min)) * g3_w
@@ -273,19 +273,20 @@ def generate_svg_plot(traj, output_path):
 
     ground_path = "M " + " ".join(f"{map_project(p['lon'], p['lat'])[0]:.1f} {map_project(p['lon'], p['lat'])[1]:.1f}" for p in traj)
 
-    # Simplified representative Kerbin eastern coastline from KSC northwards:
+    # Northern continental landmass
+    # Eastern coastline runs north from KSC, while inland continent extends west to Lon -110º
     coastline_pts = [
-        (-72.0, -2.0),
+        (-70.0, -5.0),
         (-74.557, -0.097), # KSC
-        (-75.0, 5.0),
-        (-75.8, 12.0),
-        (-76.2, 20.0),
+        (-74.9, 10.0),
+        (-75.5, 20.0),
         (-76.0, 30.0),
-        (-75.5, 40.0),
-        (-74.8, 48.0)
+        (-76.5, 40.0),
+        (-75.5, 50.0),
+        (-70.0, 55.0)
     ]
     coast_svg_pts = " ".join(f"{map_project(p[0], p[1])[0]:.1f},{map_project(p[0], p[1])[1]:.1f}" for p in coastline_pts)
-    land_poly = coast_svg_pts + f" {map_project(-82.0, 48.0)[0]:.1f},{map_project(-82.0, 48.0)[1]:.1f} {map_project(-82.0, -2.0)[0]:.1f},{map_project(-82.0, -2.0)[1]:.1f}"
+    land_poly = coast_svg_pts + f" {map_project(-105.0, 55.0)[0]:.1f},{map_project(-105.0, 55.0)[1]:.1f} {map_project(-105.0, -5.0)[0]:.1f},{map_project(-105.0, -5.0)[1]:.1f}"
 
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}" style="background:#090d16; font-family:'Courier New', monospace;">
     <defs>
@@ -304,7 +305,7 @@ def generate_svg_plot(traj, output_path):
     <!-- TITLE HEADER -->
     <rect x="0" y="0" width="{width}" height="50" fill="#0f172a" />
     <text x="25" y="32" fill="#38bdf8" font-size="16" font-weight="bold">COROLT SPACE AGENCY // CSA-10 PRE-FLIGHT 3D NUMERICAL SIMULATION</text>
-    <text x="660" y="32" fill="#94a3b8" font-size="12">HEADING: 005.0º NNE | VEHICLE: COROLT-IIIb (800 EC)</text>
+    <text x="640" y="32" fill="#94a3b8" font-size="12">HEADING: 355.0º NNW | VEHICLE: COROLT-IIIb (800 EC)</text>
 
     <!-- ================= PANEL 1: ALTITUDE & BATTERY ================= -->
     <rect x="{g1_x0}" y="{g1_y0}" width="{g1_w}" height="{g1_h}" fill="#0b1120" stroke="#334155" stroke-width="1.2"/>
@@ -338,14 +339,14 @@ def generate_svg_plot(traj, output_path):
     <text x="{g2_x0+15}" y="{g2_y0+75}" fill="#64748b" font-size="11">Calibrated Drag: Cd·A = {CDA:.3f} m²</text>
     <text x="{g2_x0+15}" y="{g2_y0+95}" fill="#64748b" font-size="11">Total Duration: {max_t:.1f} s ({max_t/60.0:.1f} min)</text>
 
-    <!-- ================= PANEL 3: 3D COASTAL GROUND TRACK ================= -->
+    <!-- ================= PANEL 3: 3D NORTHERN CONTINENTAL GROUND TRACK ================= -->
     <rect x="{g3_x0}" y="{g3_y0}" width="{g3_w}" height="{g3_h}" fill="#0b1b2d" stroke="#334155" stroke-width="1.2"/>
-    <text x="{g3_x0+15}" y="{g3_y0+25}" fill="#22c55e" font-size="13" font-weight="bold">COASTAL POLAR GROUND TRACK (HEADING 005º)</text>
+    <text x="{g3_x0+15}" y="{g3_y0+25}" fill="#22c55e" font-size="13" font-weight="bold">NORTH CONTINENTAL TRACK (HEADING 355º NNW)</text>
 
     <!-- Continental Landmass Polygon -->
     <polygon points="{land_poly}" fill="#152e22" stroke="#22c55e" stroke-width="1.5"/>
-    <text x="{g3_x0+25}" y="{g3_y0+220}" fill="#166534" font-size="14" font-weight="bold" opacity="0.7">MAINLAND KERBIN</text>
-    <text x="{g3_x0+g3_w-140}" y="{g3_y0+220}" fill="#1e3a5f" font-size="14" font-weight="bold">EASTERN OCEAN</text>
+    <text x="{g3_x0+25}" y="{g3_y0+160}" fill="#166534" font-size="14" font-weight="bold" opacity="0.7">CONTINENTAL INTERIOR (DRY LAND)</text>
+    <text x="{g3_x0+g3_w-130}" y="{g3_y0+160}" fill="#1e3a5f" font-size="14" font-weight="bold">EAST OCEAN</text>
 
     <!-- Flight Ground Track Arc -->
     <path d="{ground_path}" fill="none" stroke="#38bdf8" stroke-width="3" filter="url(#glow)"/>
@@ -357,8 +358,8 @@ def generate_svg_plot(traj, output_path):
 
     <!-- Touchdown -->
     <circle cx="{map_project(td_lon, td_lat)[0]}" cy="{map_project(td_lon, td_lat)[1]}" r="6" fill="#22c55e"/>
-    <text x="{map_project(td_lon, td_lat)[0]-180}" y="{map_project(td_lon, td_lat)[1]-10}" fill="#22c55e" font-size="11" font-weight="bold">TOUCHDOWN: +{td_lat:.2f}ºN, {td_lon:.2f}ºW</text>
-    <text x="{map_project(td_lon, td_lat)[0]-180}" y="{map_project(td_lon, td_lat)[1]+6}" fill="#94a3b8" font-size="10">Downrange: {final_dist:.1f} km along coast</text>
+    <text x="{map_project(td_lon, td_lat)[0]-180}" y="{map_project(td_lon, td_lat)[1]-10}" fill="#22c55e" font-size="11" font-weight="bold">TOUCHDOWN: +{td_lat:.2f}ºN, {abs(td_lon):.2f}ºW</text>
+    <text x="{map_project(td_lon, td_lat)[0]-180}" y="{map_project(td_lon, td_lat)[1]+6}" fill="#94a3b8" font-size="10">Solid Land (Highlands): {final_dist:.1f} km</text>
 
     <!-- Lat/Lon Grid lines -->
     <line x1="{g3_x0}" y1="{map_project(0, 0)[1]}" x2="{g3_x0+g3_w}" y2="{map_project(0, 0)[1]}" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="0.8"/>
@@ -372,7 +373,7 @@ def generate_svg_plot(traj, output_path):
 
     <!-- FOOTER SUMMARY -->
     <rect x="0" y="{height-30}" width="{width}" height="30" fill="#0f172a" />
-    <text x="25" y="{height-11}" fill="#94a3b8" font-size="11">ENGINEERING ASSESSMENT: Coastal corridor completely avoids inland mountain impact. Water/shore touchdown enables nominal naval retrieval.</text>
+    <text x="25" y="{height-11}" fill="#94a3b8" font-size="11">ENGINEERING ASSESSMENT: Heading 355.0º NNW tracks into the vast northern continent (Grasslands/Highlands). 100% dry land recovery.</text>
 </svg>
 """
 
@@ -391,7 +392,7 @@ if __name__ == "__main__":
     print(f"• Peak Apoapsis:       {max_alt/1000.0:6.2f} km")
     print(f"• Max Surface Speed:   {max(p['v_surf'] for p in traj):6.1f} m/s")
     print(f"• Flight Duration:     {final_p['t']:6.1f} s ({final_p['t']/60.0:.1f} min)")
-    print(f"• Touchdown Lat/Lon:   Lat +{final_p['lat']:.2f}º, Lon {final_p['lon']:.2f}º")
+    print(f"• Touchdown Lat/Lon:   Lat {final_p['lat']:.2f}º, Lon {final_p['lon']:.2f}º")
     print(f"• Downrange Distance:  {final_p['dist_ksc']:6.1f} km from KSC")
     print(f"• Remaining Battery:   {final_p['ec']:6.1f} / 800.0 EC ({final_p['ec']/8.0:.1f}%)")
     print("----------------------------------------------------------------------")

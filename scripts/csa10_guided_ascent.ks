@@ -3,7 +3,7 @@
 // MISSION: CSA-10 (Coastal Polar Trajectory & Multi-Layer Science Survey)
 // VEHICLE: Corolt-IIIb (Upgraded 800 EC Power Bank & Double Duty-Cycle Mini-Lab)
 // OBJECTIVES:
-//   1. Steer along Heading 005º (NNE) following the eastern shoreline.
+//   1. Steer along Heading 355º (NNW) targeting solid inland northern continent.
 //   2. Deep outer space apogee (> 200 km) penetrating Van Allen threshold.
 //   3. Execute dual Materials Mini-Lab sampling:
 //      - 30s burst in Upper Atmosphere (18 - 70 km)
@@ -17,7 +17,7 @@ CLEARSCREEN.
 PRINT "==================================================".
 PRINT "      COROLT SPACE AGENCY - FLIGHT CONTROL        ".
 PRINT "   MISSION: CSA-10 | VEHICLE: Corolt-IIIb (800 EC)".
-PRINT "   Target Heading: 005º (Coastal) | Floor: 100 EC ".
+PRINT "   Target Heading: 355º (Inland Land) | Floor: 100".
 PRINT "==================================================".
 
 // ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ PRINT "==================================================".
 // ----------------------------------------------------------------------------
 SET ALT_KICK TO 2500.            // Altitude for initial gravity kick (m)
 SET PITCH_INITIAL TO 88.0.       // Initial pitch after kick (degrees)
-SET HEADING_DEG TO 5.0.          // Heading 005.0º (North-North-East along coast)
+SET HEADING_DEG TO 355.0.        // Heading 355.0º (North-North-West into solid continent)
 SET POWER_SAFETY_FLOOR TO 100.   // Reserve floor for avionics & recovery (EC)
 
 // ----------------------------------------------------------------------------
@@ -138,7 +138,12 @@ FUNCTION jettison_truss_fairings {
             }
         }
     }
-    PRINT "[FAIRINGS] " + fairing_count + " fairing decouplers fired.".
+    // Also trigger Stage 1 if fairings are placed in dedicated stage
+    IF STAGE:NUMBER = 1 {
+        STAGE.
+        SET fairing_count TO fairing_count + 1.
+    }
+    PRINT "[FAIRINGS] " + fairing_count + " fairing jettison events dispatched.".
     PRINT "==================================================".
 }
 
@@ -213,28 +218,34 @@ WHEN SHIP:ALTITUDE > 25000 THEN {
     trigger_science_suite("UPPER ATMOSPHERE (18-70 km)", TRUE).
 
     // Auto-stop Mini-Lab after 30 seconds to conserve battery for space
-    WHEN MISSIONTIME > (ROUND(MISSIONTIME, 1) + 30) THEN {
+    LOCAL t_stop_atmo IS MISSIONTIME + 30.
+    WHEN MISSIONTIME > t_stop_atmo THEN {
         PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [POWER GUARD] Upper Atmosphere Mini-Lab 30s run complete. Pausing for space.".
         stop_instruments_by_keyword("Material").
     }
 }
 
 // ----------------------------------------------------------------------------
-// Phase 5: Propulsion Burnout, Fairing Separation & Parasitic Load Elimination
+// Phase 5: Propulsion Burnout, Stage 2 Separation & Fairing Jettison
 // ----------------------------------------------------------------------------
 WAIT UNTIL SHIP:MAXTHRUST = 0.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 2 Burnout. Active propulsion complete.".
 PRINT "Predicted Apoapsis: " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km.".
 
-// Cut steering and SAS to eliminate 0.38 EC/s parasitic reaction wheel draw!
+// Cut steering and SAS immediately to eliminate 0.38 EC/s reaction wheel draw
 UNLOCK STEERING.
 SAS OFF.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Steering unlocked, SAS OFF (Zero parasitic draw).".
 
-// Truss Fairing Jettison in thin air
-WHEN SHIP:ALTITUDE > 58000 THEN {
-    jettison_truss_fairings().
-}
+// Jettison empty Stage 2 booster casing to liberate payload (Fires Stage 2 decoupler)
+WAIT 1.0.
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Decoupling Stage 2 booster casing...".
+STAGE.
+WAIT 1.5.
+
+// Jettison protective truss fairings (Fires Stage 1 fairings)
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Jettisoning protective truss fairings...".
+jettison_truss_fairings().
 
 // Science Suite 3: Low Space (> 70 km) + 90s Mini-Lab Burst
 WHEN SHIP:ALTITUDE > 70000 THEN {
@@ -245,7 +256,8 @@ WHEN SHIP:ALTITUDE > 70000 THEN {
     trigger_science_suite("LOW SPACE (70-250 km)", TRUE).
     
     // Scheduled shut down of Mini-Lab after 90 seconds
-    WHEN MISSIONTIME > (ROUND(MISSIONTIME, 1) + 90) OR get_current_ec() < (POWER_SAFETY_FLOOR + 50) THEN {
+    LOCAL t_stop_space IS MISSIONTIME + 90.
+    WHEN MISSIONTIME > t_stop_space OR get_current_ec() < (POWER_SAFETY_FLOOR + 50) THEN {
         PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [POWER GUARD] Low Space Mini-Lab 90s exposure complete. Shutting down.".
         stop_instruments_by_keyword("Material").
     }
@@ -269,16 +281,31 @@ PRINT "Beginning atmospheric descent along northern coast...".
 PRINT "==================================================".
 
 // ----------------------------------------------------------------------------
-// Phase 7: Atmospheric Entry & Parachute Deployment
+// Phase 7: Aerothermal Atmospheric Reentry & Subsonic Backflip
 // ----------------------------------------------------------------------------
-WHEN SHIP:ALTITUDE < 70000 THEN {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Re-entering atmosphere (< 70 km).".
-}
+WAIT UNTIL SHIP:ALTITUDE < 70000.
+PRINT "==================================================".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: RE-ENTERING ATMOSPHERE (< 70 km)!".
+PRINT "LOCKING NOSECONE-FORWARD (SRFPROGRADE) FOR AEROTHERMAL SHIELDING.".
+PRINT "Shielding lateral batteries & sensors behind conical shock wave...".
+PRINT "==================================================".
+LOCK STEERING TO SRFPROGRADE.
 
-WHEN SHIP:ALTITUDE < 15000 AND SHIP:VERTICALSPEED < 0 THEN {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Altitude < 15,000m. Pre-arming recovery parachute...".
-    deploy_parachute_system().
-}
+// Plunge nosecone-first through peak dynamic pressure & hypersonic deceleration
+WAIT UNTIL SHIP:ALTITUDE < 6000 OR (SHIP:ALTITUDE < 10000 AND SHIP:AIRSPEED < 280).
+PRINT "==================================================".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SUBSONIC VELOCITY ATTAINED (Airspeed: " + ROUND(SHIP:AIRSPEED, 1) + " m/s).".
+PRINT "EXECUTING REENTRY BACKFLIP MANEUVER (FLIPPING TO SRFRETROGRADE)...".
+LOCK STEERING TO SRFRETROGRADE.
+WAIT 3.0. // Allow reaction wheel to complete the 180º flip so nosecone faces up into trailing wake
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Backflip complete! Nosecone oriented upwards in trailing wake.".
+PRINT "DEPLOYING MECHANICAL PARACHUTE SYSTEM!".
+PRINT "==================================================".
+deploy_parachute_system().
+WAIT 2.0.
+UNLOCK STEERING.
+SAS OFF.
+PRINT "Steering unlocked, SAS OFF (Zero parasitic draw for final descent).".
 
 // Low-altitude final touchdown monitor
 WAIT UNTIL SHIP:ALTITUDE < 5000.

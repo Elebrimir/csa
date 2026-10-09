@@ -1,20 +1,20 @@
-# 📋 Mission Profile & Flight Plan: CSA-10 «Boreal Shoreline & Van Allen Penetration»
+# 📋 Mission Profile & Flight Plan: CSA-10 «Boreal Continent & Van Allen Penetration»
 
 * **Mission Code**: `CSA-10`
 * **Flight Director**: CSA Mission Control (Kerbin Space Center)
 * **Launch Vehicle**: [Corolt-IIIb (Upgraded 800 EC Upper Stage)](/vehicles/corolt-3b)
 * **Target Altitude**: **> 400 km** (Deep Space & Van Allen Belt Core)
-* **Target Trajectory**: **Heading 005.0º NNE** (Coastal Polar Corridor)
+* **Target Trajectory**: **Heading 355.0º NNW** (Inland Northern Continental Corridor)
 * **Status**: 🟡 PRE-FLIGHT READINESS / LAUNCH CAMPAIGN ACTIVE
 
 ---
 
 ## 🎯 Mission Objectives
 
-1. **Northbound Coastal Polar Flight Corridor (Heading 005.0º NNE)**:
-   * Direct active guidance along **Heading 005.0º (North-North-East)** following Kerbin's eastern continental shoreline.
-   * **Eliminate Retrograde Drag**: Completely abandon the westward retrograde heading flown on CSA-09, preserving the full $+174.5\text{ m/s}$ eastward rotational velocity as inertial momentum.
-   * Guarantee that stage impact and payload recovery remain strictly within the coastal maritime corridor, preventing vessel crash onto inland mountains.
+1. **North-North-West Continental Flight Corridor (Heading 355.0º NNW)**:
+   * Direct active guidance along **Heading 355.0º (North-North-West)**, steering directly into Kerbin's vast northern continent interior.
+   * **Eliminate Retrograde Drag**: Completely abandon the westward retrograde heading flown on CSA-09, preserving orbital energy while adjusting slightly inland ($355.0^\circ$) to guarantee touchdown on **solid dry ground** rather than water.
+   * Guarantee that stage impact and payload recovery remain strictly within solid ground (Grasslands/Highlands biomes), avoiding any marine or coastal splashdown.
 2. **Deep Outer Space Penetration (> 400 km)**:
    * Maximize ballistic apogee to plunge deep through the Van Allen radiation belt threshold (> 250 km) to collect the inaugural High Space radiation telemetry.
 3. **Multi-Layer Dual-Burst Scientific Survey**:
@@ -22,10 +22,13 @@
      * **Burst 1 (Upper Atmosphere 18–70 km)**: Run the Materials Mini-Lab (`2.04 EC/s`) for **30 seconds** during supersonic climb.
      * **Burst 2 (Low Space > 70 km)**: Run the Materials Mini-Lab for **90 seconds** in microgravity vacuum.
      * **Continuous Sensors**: Record continuous PresMat barometric pressure, Geiger radiation count, and micrometeorite impacts across all atmospheric and space regimes.
-4. **Autonomous Avionics & Parachute Reserve Protection**:
+4. **Aerothermal Prograde Shielding & Subsonic Reentry Backflip**:
+   * **Prograde Heat-Shielding**: Upon atmospheric entry ($< 70\text{ km}$), orient the craft strictly nosecone-first (`LOCK STEERING TO SRFPROGRADE`) to shield the lateral battery packs and scientific instruments behind the conical shock wave during hypersonic deceleration.
+   * **Subsonic Backflip**: Once the atmosphere decelerates the vehicle to safe subsonic velocities ($< 280\text{ m/s}$ / $< 6,000\text{ m}$), execute an autonomous **180º backflip** to retrograde (`LOCK STEERING TO SRFRETROGRADE`), placing the nosecone into the trailing wake for clean, thermal-free parachute deployment.
+5. **Autonomous Avionics & Parachute Reserve Protection**:
    * Enforce an inviolable **100 EC battery safety floor** in kOS to guarantee 100% powered avionics, real-time CommNet telemetry streaming, and automated parachute arming.
-5. **Precision Coastal Splashdown & Naval Recovery**:
-   * Touch down via `SR.Nosecone.625` parachute in the calm waters of the northern boreal bay ($\approx \text{Lat } +47.6^\circ\text{N}, \text{Lon } -74.7^\circ\text{W}$), $\sim 499\text{ km}$ downrange from KSC for immediate recovery ship salvage.
+6. **Precision Solid Land Touchdown & Ground Recovery**:
+   * Touch down via `SR.Nosecone.625` parachute on **solid dry land** in the northern continental highlands ($\approx \text{Lat } +47.59^\circ\text{N}, \text{Lon } -85.56^\circ\text{W}$), $\sim 509\text{ km}$ downrange from KSC for immediate terrestrial salvage (zero ocean risk).
 
 ---
 
@@ -35,16 +38,16 @@ Simulated using high-precision 4th-order Runge-Kutta numerical integration in 3D
 
 | Flight Parameter | Pre-Flight Simulated Value | Operational Remarks |
 | :--- | :--- | :--- |
-| **Launch Azimuth / Heading** | **005.0º (North-North-East)** | Aligned with eastern continental coastline |
+| **Launch Azimuth / Heading** | **355.0º (North-North-West)** | Direct inland trajectory targeting dry continental interior |
 | **Pitch Kick Altitude** | **2,500 m** | Transition to 88.0º, descending smoothly to 54.0º at 45 km |
 | **Stage 1 Burnout (RT-10 Hammer)** | **T+50.7 s @ 12.1 km** | Staging decoupler fires at $v \approx 540\text{ m/s}$ |
-| **Stage 2 Burnout (SRM-XL)** | **T+109.8 s @ 62.4 km** | Active propulsion complete ($v_{surf} \approx 2,106\text{ m/s}$) |
+| **Stage 2 Burnout (SRM-XL)** | **T+109.8 s @ 62.4 km** | Active propulsion complete ($v_{surf} \approx 2,107\text{ m/s}$) |
 | **Fairing Jettison** | **T+110 s (> 58 km)** | Unshrouds payload truss in vacuum |
-| **Peak Apoapsis (Apogee)** | **415.51 km** | 🟢 **Deep Outer Space / Van Allen Core penetrated!** |
+| **Peak Apoapsis (Apogee)** | **409.21 km** | 🟢 **Deep Outer Space / Van Allen Core penetrated!** |
 | **Time in Space (> 70 km)** | **~960 s (16.0 min)** | Extended microgravity and radiation sampling window |
 | **Total Flight Duration** | **1,500.1 s (25.0 min)** | Complete ascent and soft parachute descent |
-| **Downrange Distance** | **499.2 km along coast** | Northward travel following the -74.6º meridian axis |
-| **Touchdown Coordinates** | **Lat +47.57º N, Lon -74.65º W** | Coastal waters of northern boreal gulf |
+| **Downrange Distance** | **509.4 km inland** | Trajectory penetrating deep into northern landmass |
+| **Touchdown Coordinates** | **Lat +47.59º N, Lon -85.56º W** | **Solid Ground (Grasslands / Highlands)** |
 | **Final Battery at Touchdown** | **367.0 / 800.0 EC (45.9%)** | 🟢 **Large reserve safety margin over 100 EC floor!** |
 
 ### Pre-Flight Simulated Ascent & Electrical Power Curve
@@ -52,7 +55,7 @@ Simulated using high-precision 4th-order Runge-Kutta numerical integration in 3D
 
 ---
 
-## 🗺️ KAA Airspace Hazard & Maritime Exclusion Corridor Notice (NOTAM)
+## 🗺️ KAA Airspace Hazard & Land Recovery Corridor Notice (NOTAM)
 
 The **Kerbal Aviation Administration (KAA)** has published the official Airspace and Surface Hazard Notice for Mission **CSA-10**:
 
@@ -60,10 +63,10 @@ The **Kerbal Aviation Administration (KAA)** has published the official Airspace
 
 ### KAA Mission Notices & Flight Directives:
 * **NOTAM Reference**: `KAA-CSA10-2026-10` (Effective Window: Y1-D92).
-* **Launch Azimuth**: $005.0\text{º}$ (Coastal Corridor Northward).
-* **Hazard Zone 1 (Booster Debris Area)**: Designated drop sector at $\text{Lat } +1.4\text{º N}, \text{Lon } -74.5\text{º W}$ for the jettisoned RT-10 Hammer casing ($T+51\text{ s}$).
-* **Primary Recovery Zone (Maritime)**: Parachute touchdown footprint at $\text{Lat } +47.6\text{º N}, \text{Lon } -74.7\text{º W}$ in northern coastal waters.
-* **Corridor Clearance**: All civil commercial air traffic along the North-South eastern airways is diverted during the 30-minute launch window.
+* **Launch Azimuth**: $355.0\text{º}$ (Inland Corridor North-North-West).
+* **Hazard Zone 1 (Booster Debris Area)**: Designated drop sector at $\text{Lat } -0.02\text{º N}, \text{Lon } -74.57\text{º W}$ for the jettisoned RT-10 Hammer casing ($T+52\text{ s}$).
+* **Primary Recovery Zone (Solid Ground)**: Parachute touchdown footprint at $\text{Lat } +47.59\text{º N}, \text{Lon } -85.56\text{º W}$ on solid continental terrain.
+* **Corridor Clearance**: All civil commercial air traffic along the inland airways is diverted during the 30-minute launch window.
 
 ---
 
@@ -117,4 +120,4 @@ Mission CSA-10 addresses high-priority scientific samples identified in the [Ker
    ```kos
    RUNPATH("0:/csa/csa10_guided_ascent.ks").
    ```
-3. Verify autonomous liftoff, pitch kick at $2,500\text{ m}$ toward **Heading 005.0º**, 30s Upper Atmosphere Mini-Lab burst, Stage 2 burnout, SAS shutoff, fairing jettison at $> 58\text{ km}$, 90s Low Space Mini-Lab burst, Van Allen entry at $> 250\text{ km}$, apogee at $\sim 415\text{ km}$, parachute pre-arming at $15\text{ km}$, and splashdown in northern coastal waters.
+3. Verify autonomous liftoff, pitch kick at $2,500\text{ m}$ toward **Heading 355.0º NNW**, 30s Upper Atmosphere Mini-Lab burst, Stage 2 burnout, SAS shutoff, fairing jettison at $> 58\text{ km}$, 90s Low Space Mini-Lab burst, Van Allen entry at $> 250\text{ km}$, apogee at $\sim 409\text{ km}$, prograde nosecone heat-shielding during reentry, subsonic backflip at $< 280\text{ m/s}$, parachute deployment, and touchdown on solid continental land.
