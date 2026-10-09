@@ -55,6 +55,12 @@ QUERY_PARAMS = {
     "res_lf": "r.resourceCurrent[LiquidFuel]",
     "res_ox": "r.resourceCurrent[Oxidizer]",
     "res_ec": "r.resourceCurrent[ElectricCharge]",
+    "res_ec_alt": "v.electricCharge",
+    "res_ec_max": "r.resourceMax[ElectricCharge]",
+    "temp_atmo": "v.atmosphericTemperature",
+    "temp_core": "v.temperature",
+    "temp_skin": "v.skinTemperature",
+    "temp_sensor": "s.sensor.temp",
 }
 
 QUERY_API = "?" + "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in QUERY_PARAMS.items())
@@ -143,7 +149,8 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
         "apoapsis", "periapsis", "semi_major_axis", "eccentricity", "inclination", "period",
         "latitude", "longitude",
         "throttle", "stage",
-        "solid_fuel", "liquid_fuel", "oxidizer", "electric_charge"
+        "solid_fuel", "liquid_fuel", "oxidizer", "electric_charge", "electric_charge_max",
+        "temp_ambient", "temp_core", "temp_skin", "temp_sensor"
     ]
     
     start_time = None
@@ -152,6 +159,7 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
     max_g = 0.0
     max_q = 0.0
     min_pitch = 90.0
+    max_skin_temp = 0.0
 
     with open(csv_file, mode="w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -159,8 +167,8 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
 
         print(f"[*] Recording telemetry to: {csv_file}")
         print(f"    (Press Ctrl+C to stop recording and generate mission summary)\n")
-        print(f"{'MET (s)':>7} | {'Alt (m)':>9} | {'Spd (m/s)':>9} | {'Pitch':>6} | {'AoA':>5} | {'Apo (km)':>8} | {'Q (kPa)':>7} | {'G':>5}")
-        print("-" * 75)
+        print(f"{'MET (s)':>7} | {'Alt (m)':>9} | {'Spd (m/s)':>9} | {'Pitch':>6} | {'Apo (km)':>8} | {'Q (kPa)':>7} | {'EC':>6} | {'Skin T (K)':>10}")
+        print("-" * 85)
 
         try:
             sample_count = 0
@@ -184,7 +192,7 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                         "orb_vel": 175.0 + 25.0 * t_mock,
                         "surf_vel": 25.0 * t_mock,
                         "pitch": max(30.0, 90.0 - 0.8 * t_mock),
-                        "heading": 90.0,
+                        "heading": 270.0,
                         "roll": 0.0,
                         "aoa": 1.2,
                         "density": 1.225 * max(0.0, 1.0 - t_mock / 50.0),
@@ -204,7 +212,12 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                         "res_sf": max(0.0, 400.0 - 8.0 * t_mock),
                         "res_lf": 0.0,
                         "res_ox": 0.0,
-                        "res_ec": 150.0
+                        "res_ec": max(0.0, 800.0 - 2.5 * t_mock),
+                        "res_ec_max": 800.0,
+                        "temp_atmo": 288.15 - min(70.0, 1.5 * t_mock),
+                        "temp_core": 290.0,
+                        "temp_skin": 290.0 + 2.0 * t_mock,
+                        "temp_sensor": 288.0
                     }
                     if sample_count >= 10:
                         raise KeyboardInterrupt
@@ -238,15 +251,24 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                 lon = safe_float(data.get("lon"))
                 throttle = safe_float(data.get("throttle"))
                 stage = safe_int(data.get("stage"))
-                res_sf = safe_float(data.get("res_sf"))
-                res_lf = safe_float(data.get("res_lf"))
-                res_ox = safe_float(data.get("res_ox"))
-                res_ec = safe_float(data.get("res_ec"))
+                res_sf = safe_float(data.get("res_sf"), -1.0)
+                res_lf = safe_float(data.get("res_lf"), -1.0)
+                res_ox = safe_float(data.get("res_ox"), -1.0)
+                res_ec = safe_float(data.get("res_ec"), -1.0)
+                if res_ec < 0:
+                    res_ec = safe_float(data.get("res_ec_alt"), -1.0)
+                res_ec_max = safe_float(data.get("res_ec_max"), -1.0)
+
+                temp_atmo = safe_float(data.get("temp_atmo"), 0.0)
+                temp_core = safe_float(data.get("temp_core"), 0.0)
+                temp_skin = safe_float(data.get("temp_skin"), 0.0)
+                temp_sensor = safe_float(data.get("temp_sensor"), 0.0)
 
                 max_alt = max(max_alt, alt)
                 max_vel = max(max_vel, max(orb_vel, surf_vel))
                 max_g = max(max_g, g_force)
                 max_q = max(max_q, q)
+                max_skin_temp = max(max_skin_temp, temp_skin)
                 if alt > 500:
                     min_pitch = min(min_pitch, pitch)
 
@@ -280,11 +302,17 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                     "solid_fuel": round(res_sf, 1),
                     "liquid_fuel": round(res_lf, 1),
                     "oxidizer": round(res_ox, 1),
-                    "electric_charge": round(res_ec, 1)
+                    "electric_charge": round(res_ec, 1),
+                    "electric_charge_max": round(res_ec_max, 1),
+                    "temp_ambient": round(temp_atmo, 1),
+                    "temp_core": round(temp_core, 1),
+                    "temp_skin": round(temp_skin, 1),
+                    "temp_sensor": round(temp_sensor, 1)
                 })
                 f.flush()
 
-                print(f"{met:>7.1f} | {alt:>9.1f} | {surf_vel:>9.1f} | {pitch:>5.1f}º | {aoa:>4.1f}º | {apo/1000:>8.1f} | {q:>7.2f} | {g_force:>4.1f}G", end="\r")
+                ec_str = f"{res_ec:.0f}" if res_ec >= 0 else "N/A"
+                print(f"{met:>7.1f} | {alt:>9.1f} | {surf_vel:>9.1f} | {pitch:>5.1f}º | {apo/1000:>8.1f} | {q:>7.2f} | {ec_str:>6} | {temp_skin:>10.1f}", end="\r")
                 time.sleep(interval)
 
         except KeyboardInterrupt:

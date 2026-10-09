@@ -9,11 +9,10 @@ import sys
 import os
 import argparse
 import json
+import csv
 import numpy as np
-import pandas as pd
 
 # Standard Kerbin atmospheric speed of sound approximation (m/s)
-# At SL: ~310 m/s, upper atmo: ~280 m/s
 def speed_of_sound_kerbin(altitude):
     if altitude < 10000:
         return 310.0 - (altitude / 10000.0) * 30.0
@@ -22,97 +21,119 @@ def speed_of_sound_kerbin(altitude):
     else:
         return 290.0
 
+def safe_float(v, default=0.0):
+    try:
+        return float(v)
+    except (ValueError, TypeError):
+        return default
+
 def calibrate_aerodynamics(csv_path, dry_mass=629.0, wet_mass=5144.0, output_json=None):
     if not os.path.exists(csv_path):
         print(f"Error: File {csv_path} not found")
         return None
 
-    df = pd.read_csv(csv_path)
     print("=" * 70)
     print(f"🚀 CSA AERODYNAMIC CALIBRATION: {os.path.basename(csv_path)}")
     print("=" * 70)
 
-    # 1. Filter out pre-launch pad idling
-    flight = df[df['altitude'] > 80.0].copy()
-    if flight.empty:
+    rows = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            alt = safe_float(r.get("altitude"))
+            if alt > 80.0:
+                rows.append({
+                    "MET": safe_float(r.get("MET")),
+                    "altitude": alt,
+                    "surface_vel": safe_float(r.get("surface_vel")),
+                    "dynamic_pressure": safe_float(r.get("dynamic_pressure")),
+                    "g_force": safe_float(r.get("g_force")),
+                })
+
+    if not rows:
         print("[!] No active flight profile detected in data.")
         return None
 
-    t0 = flight['MET'].min()
+    t0 = rows[0]["MET"]
     print(f"• Liftoff detected at MET: T+{t0:.1f} s")
-    print(f"• Flight samples: {len(flight):,}")
+    print(f"• Flight samples: {len(rows):,}")
 
-    # Standard gravity constant
     g0 = 9.80665
 
-    # Identify coasting in atmosphere (T=0, altitude between 10 km and 68 km, dynamic_pressure > 5 Pa)
-    # During unpowered coast, G-meter measures purely aerodynamic drag: F_drag / m = g_force * g0
-    # Dynamic pressure Q = dynamic_pressure (in Pa)
-    # D = Cd * A * Q => Cd * A = (m * g_force * g0) / Q
-    
-    # Check if we have ascent coasting or descent coasting
-    ap_idx = flight['altitude'].idxmax()
-    ascent_coast = flight.loc[:ap_idx]
-    ascent_coast = ascent_coast[(ascent_coast['altitude'] >= 15000) & 
-                                (ascent_coast['altitude'] <= 68000) & 
-                                (ascent_coast['dynamic_pressure'] >= 10.0) & 
-                                (ascent_coast['g_force'] < 1.0)] # thrust produces > 1.5G, coasting produces < 1.0G
-
-    # Reentry coasting
-    reentry = flight.loc[ap_idx:]
-    reentry = reentry[(reentry['altitude'] >= 15000) & 
-                      (reentry['altitude'] <= 65000) & 
-                      (reentry['dynamic_pressure'] >= 50.0) & 
-                      (reentry['g_force'] < 3.0)]
+    # Find apogee index
+    max_alt = -1.0
+    ap_idx = 0
+    for i, r in enumerate(rows):
+        if r["altitude"] > max_alt:
+            max_alt = r["altitude"]
+            ap_idx = i
 
     samples = []
-    
-    # Process ascent coast samples (vehicle mass ~ dry_mass + residual payload)
-    for _, row in ascent_coast.iterrows():
-        q = row['dynamic_pressure']
-        g_felt = row['g_force']
-        v = row['surface_vel']
-        alt = row['altitude']
-        mach = v / speed_of_sound_kerbin(alt)
-        
-        # specific drag force (N / kg)
-        f_drag_spec = g_felt * g0
-        # Cd * A = (mass * f_drag_spec) / Q
-        cda = (dry_mass * f_drag_spec) / q if q > 0 else 0
-        if 0.05 < cda < 5.0:
-            samples.append({'phase': 'ascent_coast', 'alt': alt, 'mach': mach, 'q': q, 'cda': cda})
 
-    # Process reentry samples
-    for _, row in reentry.iterrows():
-        q = row['dynamic_pressure']
-        g_felt = row['g_force']
-        v = row['surface_vel']
-        alt = row['altitude']
-        mach = v / speed_of_sound_kerbin(alt)
-        
-        f_drag_spec = g_felt * g0
-        cda = (dry_mass * f_drag_spec) / q if q > 0 else 0
-        if 0.05 < cda < 5.0:
-            samples.append({'phase': 'reentry', 'alt': alt, 'mach': mach, 'q': q, 'cda': cda})
+    # Ascent coast: before apogee
+    for r in rows[:ap_idx]:
+        alt = r["altitude"]
+        q = r["dynamic_pressure"]
+        g_felt = r["g_force"]
+        if 15000 <= alt <= 68000 and q >= 10.0 and g_felt < 1.0:
+            v = r["surface_vel"]
+            mach = v / speed_of_sound_kerbin(alt)
+            f_drag_spec = g_felt * g0
+            cda = (dry_mass * f_drag_spec) / q if q > 0 else 0
+            if 0.05 < cda < 5.0:
+                samples.append({"phase": "ascent_coast", "alt": alt, "mach": mach, "q": q, "cda": cda})
 
-    results_df = pd.DataFrame(samples)
-    
+    # Reentry coast: after apogee
+    for r in rows[ap_idx:]:
+        alt = r["altitude"]
+        q = r["dynamic_pressure"]
+        g_felt = r["g_force"]
+        if 15000 <= alt <= 65000 and q >= 50.0 and g_felt < 3.0:
+            v = r["surface_vel"]
+            mach = v / speed_of_sound_kerbin(alt)
+            f_drag_spec = g_felt * g0
+            cda = (dry_mass * f_drag_spec) / q if q > 0 else 0
+            if 0.05 < cda < 5.0:
+                samples.append({"phase": "reentry", "alt": alt, "mach": mach, "q": q, "cda": cda})
+
     print("\n📊 EMPIRICAL DRAG RESULTS:")
-    if not results_df.empty:
-        # Group by Mach buckets
-        bins = [0, 0.8, 1.2, 2.5, 4.5, 8.0]
-        labels = ['Subsonic (<0.8)', 'Transonic (0.8-1.2)', 'Supersonic (1.2-2.5)', 'High Super (2.5-4.5)', 'Hypersonic (>4.5)']
-        results_df['regime'] = pd.cut(results_df['mach'], bins=bins, labels=labels)
+    if samples:
+        cdas = [s["cda"] for s in samples]
+        overall_cda = float(np.median(cdas))
         
-        summary = results_df.groupby('regime', observed=False)['cda'].agg(['count', 'mean', 'std', 'median']).reset_index()
-        print(summary.to_string(index=False))
-        
-        overall_cda = float(results_df['cda'].median())
+        # Buckets by Mach
+        buckets = {
+            'Subsonic (<0.8)': [],
+            'Transonic (0.8-1.2)': [],
+            'Supersonic (1.2-2.5)': [],
+            'High Super (2.5-4.5)': [],
+            'Hypersonic (>4.5)': []
+        }
+        for s in samples:
+            m = s["mach"]
+            if m < 0.8:
+                buckets['Subsonic (<0.8)'].append(s["cda"])
+            elif m < 1.2:
+                buckets['Transonic (0.8-1.2)'].append(s["cda"])
+            elif m < 2.5:
+                buckets['Supersonic (1.2-2.5)'].append(s["cda"])
+            elif m < 4.5:
+                buckets['High Super (2.5-4.5)'].append(s["cda"])
+            else:
+                buckets['Hypersonic (>4.5)'].append(s["cda"])
+
+        print(f"{'Regime':<22} | {'Count':<7} | {'Mean':<7} | {'Median':<7}")
+        print("-" * 55)
+        for reg, vals in buckets.items():
+            if vals:
+                print(f"{reg:<22} | {len(vals):<7} | {np.mean(vals):<7.3f} | {np.median(vals):<7.3f}")
+            else:
+                print(f"{reg:<22} | {0:<7} | {'-':<7} | {'-':<7}")
+
         print(f"\n[✓] Vehicle median Cd·A: {overall_cda:.3f} m²")
     else:
-        # Fallback based on rocket geometry (1.25m diameter cone cylinder with 4 fins)
         print("[i] Insufficient coasting data in telemetry. Using standard geometric model.")
-        overall_cda = 0.45 * (np.pi * (1.25 / 2.0) ** 2) # ~0.55 m2
+        overall_cda = 0.45 * (np.pi * (1.25 / 2.0) ** 2)
         print(f"[✓] Estimated theoretical Cd·A: {overall_cda:.3f} m²")
 
     calibration = {

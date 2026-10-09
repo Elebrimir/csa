@@ -1,42 +1,42 @@
 experiment,situation,biome,points_earned,points_cap,points_remaining,percentage,status,id
-Meteorology (SR.Payload.01),Upper Atmosphere (18 - 70 km),Global,1.22,2.16,0.94,56.5,In Progress (56.5%),SRExperiment01@KerbinFlyingHigh
-Meteorology (SR.Payload.01),Low Atmosphere (0 - 18 km),Grasslands,0.04,1.68,1.64,2.3,In Progress (2.3%),SRExperiment01@KerbinFlyingLowGrasslands
-Meteorology (SR.Payload.01),Low Atmosphere (0 - 18 km),Highlands,0.34,1.68,1.34,20.0,In Progress (20.0%),SRExperiment01@KerbinFlyingLowHighlands
-Meteorology (SR.Payload.01),Low Atmosphere (0 - 18 km),Shores,0.77,1.68,0.91,46.0,In Progress (46.0%),SRExperiment01@KerbinFlyingLowShores
-Meteorology (SR.Payload.01),Low Atmosphere (0 - 18 km),Water (Ocean),1.05,1.68,0.63,62.6,In Progress (62.6%),SRExperiment01@KerbinFlyingLowWater
-Meteorology (SR.Payload.01),Surface (Landed),Shores,0.05,0.72,0.67,7.6,In Progress (7.6%),SRExperiment01@KerbinSrfLandedShores
-Meteorology (SR.Payload.01),Surface (Splashed / Ocean),Water (Ocean),0.26,0.96,0.7,26.6,In Progress (26.6%),SRExperiment01@KerbinSrfSplashedWater
-Aeronomy (SR.Payload.02),Upper Atmosphere (18 - 70 km),Global,1.63,2.16,0.53,75.4,In Progress (75.4%),SRExperiment02@KerbinFlyingHigh
-Aeronomy (SR.Payload.02),Low Atmosphere (0 - 18 km),Global,1.68,1.68,0.0,100.0,Completed (100%),SRExperiment02@KerbinFlyingLow
-Engineering & Stress (SR.Payload.04),Upper Atmosphere (18 - 70 km),Global,0.13,2.16,2.03,6.1,In Progress (6.1%),SRExperiment04@KerbinFlyingHigh
-Atmospheric Pressure (PresMat),Upper Atmosphere (18 - 70 km),Global,0.96,4.86,3.9,19.8,In Progress (19.8%),barometerScan@KerbinFlyingHigh
-Atmospheric Pressure (PresMat),Low Atmosphere (0 - 18 km),Grasslands,0.02,3.78,3.76,0.5,In Progress (0.5%),barometerScan@KerbinFlyingLowGrasslands
-Atmospheric Pressure (PresMat),Low Atmosphere (0 - 18 km),Highlands,0.26,3.78,3.52,7.0,In Progress (7.0%),barometerScan@KerbinFlyingLowHighlands
-Atmospheric Pressure (PresMat),Low Atmosphere (0 - 18 km),Shores,0.57,3.78,3.21,15.0,In Progress (15.0%),barometerScan@KerbinFlyingLowShores
-Atmospheric Pressure (PresMat),Low Atmosphere (0 - 18 km),Water (Ocean),0.83,3.78,2.95,21.9,In Progress (21.9%),barometerScan@KerbinFlyingLowWater
-Atmospheric Pressure (PresMat),Surface (Landed),Shores,0.07,1.62,1.55,4.4,In Progress (4.4%),barometerScan@KerbinSrfLandedShores
-Atmospheric Pressure (PresMat),Surface (Landed),Water (Ocean),0.15,1.62,1.47,9.3,In Progress (9.3%),barometerScan@KerbinSrfLandedWater
-Vessel Telemetry (Kerbalism),Upper Atmosphere (18 - 70 km),Grasslands,0.64,1.08,0.44,59.1,In Progress (59.1%),kerbalism_TELEMETRY@KerbinFlyingHighGrasslands
-Vessel Telemetry (Kerbalism),Upper Atmosphere (18 - 70 km),Highlands,1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighHighlands
-Vessel Telemetry (Kerbalism),Upper Atmosphere (18 - 70 km),Shores,1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighShores
-Vessel Telemetry (Kerbalism),Upper Atmosphere (18 - 70 km),Water (Ocean),1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighWater
-Vessel Telemetry (Kerbalism),Low Atmosphere (0 - 18 km),Grasslands,0.46,0.84,0.38,55.2,In Progress (55.2%),kerbalism_TELEMETRY@KerbinFlyingLowGrasslands
-Vessel Telemetry (Kerbalism),Low Atmosphere (0 - 18 km),Highlands,0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowHighlands
-Vessel Telemetry (Kerbalism),Low Atmosphere (0 - 18 km),Shores,0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowShores
-Vessel Telemetry (Kerbalism),Low Atmosphere (0 - 18 km),Water (Ocean),0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowWater
-Vessel Telemetry (Kerbalism),Low Space (70 - 250 km),Global,1.2,1.2,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinInSpaceLow
-Vessel Telemetry (Kerbalism),Surface (Landed),Shores,0.36,0.36,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinSrfLandedShores
-Vessel Telemetry (Kerbalism),Surface (Splashed / Ocean),Water (Ocean),0.48,0.48,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinSrfSplashedWater
-Vessel Recovery,Other,Global,6.0,6.0,0.0,100.0,Completed (100%),recovery@KerbinFlew
-Vessel Recovery,Other,Global,9.33,9.6,0.27,97.2,In Progress (97.2%),recovery@KerbinSubOrbited
-Temperature (2HOT),Upper Atmosphere (18 - 70 km),Global,1.62,1.62,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingHigh
-Temperature (2HOT),Low Atmosphere (0 - 18 km),Grasslands,0.13,1.26,1.13,10.3,In Progress (10.3%),temperatureScan@KerbinFlyingLowGrasslands
-Temperature (2HOT),Low Atmosphere (0 - 18 km),Highlands,0.59,1.26,0.67,46.5,In Progress (46.5%),temperatureScan@KerbinFlyingLowHighlands
-Temperature (2HOT),Low Atmosphere (0 - 18 km),Shores,1.26,1.26,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingLowShores
-Temperature (2HOT),Low Atmosphere (0 - 18 km),Water (Ocean),1.26,1.26,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingLowWater
-Temperature (2HOT),Low Space (70 - 250 km),Global,1.8,1.8,0.0,100.0,Completed (100%),temperatureScan@KerbinInSpaceLow
-Temperature (2HOT),Surface (Landed),Shores,0.08,0.54,0.46,14.0,In Progress (14.0%),temperatureScan@KerbinSrfLandedShores
-Temperature (2HOT),Surface (Landed),Water (Ocean),0.33,0.54,0.21,61.7,In Progress (61.7%),temperatureScan@KerbinSrfLandedWater
+Meteorological Experiments (Meteorological Survey Package),Upper Atmosphere (18 - 70 km),Global,1.22,2.16,0.94,56.5,In Progress (56.5%),SRExperiment01@KerbinFlyingHigh
+Meteorological Experiments (Meteorological Survey Package),Low Atmosphere (0 - 18 km),Grasslands,0.04,1.68,1.64,2.3,In Progress (2.3%),SRExperiment01@KerbinFlyingLowGrasslands
+Meteorological Experiments (Meteorological Survey Package),Low Atmosphere (0 - 18 km),Highlands,0.34,1.68,1.34,20.0,In Progress (20.0%),SRExperiment01@KerbinFlyingLowHighlands
+Meteorological Experiments (Meteorological Survey Package),Low Atmosphere (0 - 18 km),Shores,0.77,1.68,0.91,46.0,In Progress (46.0%),SRExperiment01@KerbinFlyingLowShores
+Meteorological Experiments (Meteorological Survey Package),Low Atmosphere (0 - 18 km),Water (Ocean),1.05,1.68,0.63,62.6,In Progress (62.6%),SRExperiment01@KerbinFlyingLowWater
+Meteorological Experiments (Meteorological Survey Package),Surface (Landed),Shores,0.05,0.72,0.67,7.6,In Progress (7.6%),SRExperiment01@KerbinSrfLandedShores
+Meteorological Experiments (Meteorological Survey Package),Surface (Splashed / Ocean),Water (Ocean),0.26,0.96,0.7,26.6,In Progress (26.6%),SRExperiment01@KerbinSrfSplashedWater
+Aeronomical Experiments (Aeronomy Sensor Array),Upper Atmosphere (18 - 70 km),Global,1.63,2.16,0.53,75.4,In Progress (75.4%),SRExperiment02@KerbinFlyingHigh
+Aeronomical Experiments (Aeronomy Sensor Array),Low Atmosphere (0 - 18 km),Global,1.68,1.68,0.0,100.0,Completed (100%),SRExperiment02@KerbinFlyingLow
+Engineering Experiments (Engineering Payload),Upper Atmosphere (18 - 70 km),Global,0.13,2.16,2.03,6.1,In Progress (6.1%),SRExperiment04@KerbinFlyingHigh
+Registración de la Presión Atmosférica (Barómetro PresMat),Upper Atmosphere (18 - 70 km),Global,0.96,4.86,3.9,19.8,In Progress (19.8%),barometerScan@KerbinFlyingHigh
+Registración de la Presión Atmosférica (Barómetro PresMat),Low Atmosphere (0 - 18 km),Grasslands,0.02,3.78,3.76,0.5,In Progress (0.5%),barometerScan@KerbinFlyingLowGrasslands
+Registración de la Presión Atmosférica (Barómetro PresMat),Low Atmosphere (0 - 18 km),Highlands,0.26,3.78,3.52,7.0,In Progress (7.0%),barometerScan@KerbinFlyingLowHighlands
+Registración de la Presión Atmosférica (Barómetro PresMat),Low Atmosphere (0 - 18 km),Shores,0.57,3.78,3.21,15.0,In Progress (15.0%),barometerScan@KerbinFlyingLowShores
+Registración de la Presión Atmosférica (Barómetro PresMat),Low Atmosphere (0 - 18 km),Water (Ocean),0.83,3.78,2.95,21.9,In Progress (21.9%),barometerScan@KerbinFlyingLowWater
+Registración de la Presión Atmosférica (Barómetro PresMat),Surface (Landed),Shores,0.07,1.62,1.55,4.4,In Progress (4.4%),barometerScan@KerbinSrfLandedShores
+Registración de la Presión Atmosférica (Barómetro PresMat),Surface (Landed),Water (Ocean),0.15,1.62,1.47,9.3,In Progress (9.3%),barometerScan@KerbinSrfLandedWater
+Informe de telemetría (Avionics Package),Upper Atmosphere (18 - 70 km),Grasslands,0.64,1.08,0.44,59.1,In Progress (59.1%),kerbalism_TELEMETRY@KerbinFlyingHighGrasslands
+Informe de telemetría (Avionics Package),Upper Atmosphere (18 - 70 km),Highlands,1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighHighlands
+Informe de telemetría (Avionics Package),Upper Atmosphere (18 - 70 km),Shores,1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighShores
+Informe de telemetría (Avionics Package),Upper Atmosphere (18 - 70 km),Water (Ocean),1.08,1.08,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingHighWater
+Informe de telemetría (Avionics Package),Low Atmosphere (0 - 18 km),Grasslands,0.46,0.84,0.38,55.2,In Progress (55.2%),kerbalism_TELEMETRY@KerbinFlyingLowGrasslands
+Informe de telemetría (Avionics Package),Low Atmosphere (0 - 18 km),Highlands,0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowHighlands
+Informe de telemetría (Avionics Package),Low Atmosphere (0 - 18 km),Shores,0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowShores
+Informe de telemetría (Avionics Package),Low Atmosphere (0 - 18 km),Water (Ocean),0.84,0.84,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinFlyingLowWater
+Informe de telemetría (Avionics Package),Low Space (70 - 250 km),Global,1.2,1.2,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinInSpaceLow
+Informe de telemetría (Avionics Package),Surface (Landed),Shores,0.36,0.36,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinSrfLandedShores
+Informe de telemetría (Avionics Package),Surface (Splashed / Ocean),Water (Ocean),0.48,0.48,0.0,100.0,Completed (100%),kerbalism_TELEMETRY@KerbinSrfSplashedWater
+Recuperación de la nave (Vessel Recovery),Other,Global,6.0,6.0,0.0,100.0,Completed (100%),recovery@KerbinFlew
+Recuperación de la nave (Vessel Recovery),Other,Global,9.33,9.6,0.27,97.2,In Progress (97.2%),recovery@KerbinSubOrbited
+Exploración de temperatura (Termómetro 2HOT),Upper Atmosphere (18 - 70 km),Global,1.62,1.62,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingHigh
+Exploración de temperatura (Termómetro 2HOT),Low Atmosphere (0 - 18 km),Grasslands,0.13,1.26,1.13,10.3,In Progress (10.3%),temperatureScan@KerbinFlyingLowGrasslands
+Exploración de temperatura (Termómetro 2HOT),Low Atmosphere (0 - 18 km),Highlands,0.59,1.26,0.67,46.5,In Progress (46.5%),temperatureScan@KerbinFlyingLowHighlands
+Exploración de temperatura (Termómetro 2HOT),Low Atmosphere (0 - 18 km),Shores,1.26,1.26,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingLowShores
+Exploración de temperatura (Termómetro 2HOT),Low Atmosphere (0 - 18 km),Water (Ocean),1.26,1.26,0.0,100.0,Completed (100%),temperatureScan@KerbinFlyingLowWater
+Exploración de temperatura (Termómetro 2HOT),Low Space (70 - 250 km),Global,1.8,1.8,0.0,100.0,Completed (100%),temperatureScan@KerbinInSpaceLow
+Exploración de temperatura (Termómetro 2HOT),Surface (Landed),Shores,0.08,0.54,0.46,14.0,In Progress (14.0%),temperatureScan@KerbinSrfLandedShores
+Exploración de temperatura (Termómetro 2HOT),Surface (Landed),Water (Ocean),0.33,0.54,0.21,61.7,In Progress (61.7%),temperatureScan@KerbinSrfLandedWater
 Atmospheric Pressure (PresMat),Surface (Splashed / Ocean),Water (Ocean),0.0,1.62,1.62,0.0,Pending (0%),barometerScan@KerbinSrfSplashedWater
 Temperature (2HOT),Surface (Splashed / Ocean),Water (Ocean),0.0,0.54,0.54,0.0,Pending (0%),temperatureScan@KerbinSrfSplashedWater
 Aeronomy (SR.Payload.02),Surface (Splashed / Ocean),Water (Ocean),0.0,0.72,0.72,0.0,Pending (0%),SRExperiment02@KerbinSrfSplashedWater

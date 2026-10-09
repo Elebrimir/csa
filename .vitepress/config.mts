@@ -11,8 +11,8 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-3" },
-      { text: "Missions", link: "/missions/csa-07" },
-      { text: "Press", link: "/social_media/csa-07_post" },
+      { text: "Missions", link: "/missions/csa-08" },
+      { text: "Press", link: "/social_media/csa-08_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -45,6 +45,8 @@ export default defineConfig({
           { text: "CSA-05b: Space Leap (240 km)", link: "/missions/csa-05b" },
           { text: "CSA-06: kOS Guidance & Recovery", link: "/missions/csa-06" },
           { text: "CSA-07: Mobile Control & Splashdown", link: "/missions/csa-07" },
+          { text: "CSA-08: Deep Space & Power Anomaly", link: "/missions/csa-08" },
+          { text: "CSA-09: Equatorial Inland Probe (Plan)", link: "/missions/csa-09" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -59,6 +61,7 @@ export default defineConfig({
           { text: "CSA-05b Release", link: "/social_media/csa-05b_post" },
           { text: "CSA-06 Release", link: "/social_media/csa-06_post" },
           { text: "CSA-07 Release", link: "/social_media/csa-07_post" },
+          { text: "CSA-08 Release", link: "/social_media/csa-08_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }
