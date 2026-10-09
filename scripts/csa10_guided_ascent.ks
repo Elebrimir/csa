@@ -218,33 +218,34 @@ WHEN SHIP:ALTITUDE > 25000 THEN {
     trigger_science_suite("UPPER ATMOSPHERE (18-70 km)", TRUE).
 
     // Auto-stop Mini-Lab after 30 seconds to conserve battery for space
-    WHEN MISSIONTIME > (ROUND(MISSIONTIME, 1) + 30) THEN {
+    LOCAL t_stop_atmo IS MISSIONTIME + 30.
+    WHEN MISSIONTIME > t_stop_atmo THEN {
         PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [POWER GUARD] Upper Atmosphere Mini-Lab 30s run complete. Pausing for space.".
         stop_instruments_by_keyword("Material").
     }
 }
 
 // ----------------------------------------------------------------------------
-// Phase 5: Propulsion Burnout, Fairing Separation & Parasitic Load Elimination
+// Phase 5: Propulsion Burnout, Stage 2 Separation & Fairing Jettison
 // ----------------------------------------------------------------------------
 WAIT UNTIL SHIP:MAXTHRUST = 0.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 2 Burnout. Active propulsion complete.".
 PRINT "Predicted Apoapsis: " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km.".
 
-// Jettison empty Stage 2 booster casing to liberate payload
-WAIT 1.0.
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Decoupling Stage 2 booster casing...".
-STAGE. // Fires Stage 1 decoupler
-
-// Cut steering and SAS to eliminate 0.38 EC/s parasitic reaction wheel draw!
+// Cut steering and SAS immediately to eliminate 0.38 EC/s reaction wheel draw
 UNLOCK STEERING.
 SAS OFF.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Steering unlocked, SAS OFF (Zero parasitic draw).".
 
-// Truss Fairing Jettison in thin air
-WHEN SHIP:ALTITUDE > 58000 THEN {
-    jettison_truss_fairings().
-}
+// Jettison empty Stage 2 booster casing to liberate payload (Fires Stage 2 decoupler)
+WAIT 1.0.
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Decoupling Stage 2 booster casing...".
+STAGE.
+WAIT 1.5.
+
+// Jettison protective truss fairings (Fires Stage 1 fairings)
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Jettisoning protective truss fairings...".
+jettison_truss_fairings().
 
 // Science Suite 3: Low Space (> 70 km) + 90s Mini-Lab Burst
 WHEN SHIP:ALTITUDE > 70000 THEN {
@@ -255,7 +256,8 @@ WHEN SHIP:ALTITUDE > 70000 THEN {
     trigger_science_suite("LOW SPACE (70-250 km)", TRUE).
     
     // Scheduled shut down of Mini-Lab after 90 seconds
-    WHEN MISSIONTIME > (ROUND(MISSIONTIME, 1) + 90) OR get_current_ec() < (POWER_SAFETY_FLOOR + 50) THEN {
+    LOCAL t_stop_space IS MISSIONTIME + 90.
+    WHEN MISSIONTIME > t_stop_space OR get_current_ec() < (POWER_SAFETY_FLOOR + 50) THEN {
         PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [POWER GUARD] Low Space Mini-Lab 90s exposure complete. Shutting down.".
         stop_instruments_by_keyword("Material").
     }
