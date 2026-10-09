@@ -51,6 +51,23 @@ Simulated using 4th-order Runge-Kutta numerical integration with calibrated empi
 
 ---
 
+## 🗺️ KAA Airspace Hazard & Exclusion Corridor Notice (NOTAM)
+
+The **Kerbal Aviation Administration (KAA)** has published the official Airspace and Surface Hazard Notice for Mission **CSA-09**:
+
+![KAA Airspace and Surface Hazard Map CSA-09](../assets/csa-09_faa_hazard_map.svg)
+
+### KAA Mission Notices & Safety Directives:
+* **NOTAM Reference**: `KAA-CSA09-2026-10` (Effective Window: Y1-D91).
+* **Launch Azimuth**: $270.0\text{º}$ (Due West along Equator).
+* **Hazard Zone 1 (Booster Drop Zone)**: Designated drop sector at Lon $-77.5\text{º W}$, Lat $-0.1\text{º S}$ for the jettisoned RT-10 Hammer casing ($T+51\text{ s}$).
+* **Primary Recovery Zone (Terrestrial)**: Nominal parachute touchdown footprint at Lon $-144.5\text{º W}$, Lat $-0.1\text{º S}$ in the Highlands continental interior.
+* **Coriolis Exploitation Directive**: Kerbin's $174.5\text{ m/s}$ eastward rotational velocity offsets the suborbital ground track $149\text{ km}$ deeper inland, guaranteeing zero maritime exposure and 100% dry terrain recovery.
+
+*(Note: Upon flight completion, this pre-flight baseline will be directly compared against real telemetry data).*
+
+---
+
 ## ⚡ Power Consumption Model (800 EC Pack)
 
 | Flight Phase | Duration | Active Systems | Drain Rate | Power Consumed | Remaining Battery |

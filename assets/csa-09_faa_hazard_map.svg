@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" style="background:#0a1120; font-family: 'Courier New', Courier, monospace;">
+    <defs>
+        <!-- Hatched pattern for Hazard Exclusion Zones -->
+        <pattern id="hazardHatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#ef4444" stroke-width="2.5" opacity="0.8" />
+        </pattern>
+        <pattern id="boosterHatch" width="10" height="10" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#f59e0b" stroke-width="2" opacity="0.8" />
+        </pattern>
+        <pattern id="recoveryHatch" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#22c55e" stroke-width="2" opacity="0.7" />
+        </pattern>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Ocean Background (Eastern Ocean) -->
+    <rect x="0" y="0" width="960" height="640" fill="#0b1b2d" />
+
+    <!-- Continental Landmass (Equatorial Mainland: Grasslands, Highlands, Mountains) -->
+    <polygon points="784.9,590.0 784.9,321.3 772.4,185.0 738.0,117.5 566.0,77.0 50.0,50.0 50.0,590.0" fill="#162e26" stroke="#22c55e" stroke-width="1.8" />
+
+    <!-- Coordinate Grid (Latitude & Longitude) -->
+    <g stroke="#1e3a5f" stroke-width="1" stroke-dasharray="3,3" opacity="0.6">
+        <line x1="50" y1="455.0" x2="910" y2="455.0" />
+        <line x1="50" y1="320.0" x2="910" y2="320.0" stroke="#38bdf8" stroke-dasharray="6,4" stroke-width="1.5" /> <!-- Equator -->
+        <line x1="50" y1="185.0" x2="910" y2="185.0" />
+        
+        <!-- Longitudes -->
+        <line x1="136.0" y1="50" x2="136.0" y2="590" />
+        <line x1="308.0" y1="50" x2="308.0" y2="590" />
+        <line x1="480.0" y1="50" x2="480.0" y2="590" />
+        <line x1="652.0" y1="50" x2="652.0" y2="590" />
+        <line x1="824.0" y1="50" x2="824.0" y2="590" />
+    </g>
+
+    <!-- Grid Coordinate Labels -->
+    <text x="55" y="315.0" fill="#38bdf8" font-size="10" font-weight="bold">EQUATOR 0º (FLIGHT VECTOR)</text>
+    <text x="55" y="181.0" fill="#64748b" font-size="10">10º N</text>
+    <text x="55" y="451.0" fill="#64748b" font-size="10">10º S</text>
+    <text x="140.0" y="585" fill="#64748b" font-size="10">-150º W</text>
+    <text x="312.0" y="585" fill="#64748b" font-size="10">-130º W</text>
+    <text x="484.0" y="585" fill="#64748b" font-size="10">-110º W</text>
+    <text x="656.0" y="585" fill="#64748b" font-size="10">-90º W</text>
+    <text x="828.0" y="585" fill="#64748b" font-size="10">-70º W</text>
+
+    <!-- Biome Annotations -->
+    <text x="720.8000000000001" y="387.5" fill="#22c55e" font-size="11" opacity="0.8" font-weight="bold">GRASSLANDS PLATEAU</text>
+    <text x="437.0" y="401.0" fill="#86efac" font-size="11" opacity="0.8" font-weight="bold">HIGHLANDS CONTINENTAL RANGE</text>
+    <text x="841.2" y="252.5" fill="#38bdf8" font-size="11" opacity="0.8">EASTERN OCEAN</text>
+
+    <!-- ==================== EXCLUSION ZONES (NOTAM) ==================== -->
+    
+    <!-- Hazard Zone 1: Stage 1 Booster Drop Area (RT-10) -->
+    <ellipse cx="759.5" cy="321.35" rx="28" ry="16" fill="url(#boosterHatch)" stroke="#f59e0b" stroke-width="2" />
+    <text x="759.5" y="299.35" fill="#f59e0b" font-size="10" font-weight="bold" text-anchor="middle">HAZARD ZONE 1: BOOSTER DROP</text>
+    <text x="759.5" y="347.35" fill="#cbd5e1" font-size="8" text-anchor="middle">RT-10 Spent Casing (T+51s, -77.5º W)</text>
+
+    <!-- Planned Recovery Zone (Payload Touchdown Area under Parachute) -->
+    <ellipse cx="183.3" cy="321.35" rx="48" ry="24" fill="url(#recoveryHatch)" stroke="#22c55e" stroke-width="2.5" />
+    <text x="183.3" y="291.35" fill="#22c55e" font-size="11" font-weight="bold" text-anchor="middle">PRIMARY RECOVERY ZONE (TERRESTRIAL)</text>
+    <text x="183.3" y="356.35" fill="#86efac" font-size="9" text-anchor="middle">Nominal Parachute Touchdown: Lon -144.5º W, Lat -0.1º S</text>
+    <text x="183.3" y="368.35" fill="#94a3b8" font-size="8" text-anchor="middle">Highlands Inland Biome (100% Solid Ground)</text>
+
+    <!-- ==================== FLIGHT CORRIDOR ==================== -->
+    <!-- Flight Corridor Path (Due West along Equator) -->
+    <line x1="784.8098" y1="321.3095" x2="183.3" y2="321.35" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6,4" />
+    
+    <!-- KSC Launchpad Marker -->
+    <circle cx="784.8098" cy="321.3095" r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="2" filter="url(#glow)" />
+    <text x="794.8098" y="311.3095" fill="#ffffff" font-size="11" font-weight="bold">KSC PAD 01 (LAUNCH)</text>
+    <text x="794.8098" y="326.3095" fill="#94a3b8" font-size="8">Lat 0.10º S, Lon 74.56º W</text>
+
+    <!-- Stage 2 Burnout Marker -->
+    <circle cx="695.0" cy="321.35" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+    <text x="695.0" y="311.35" fill="#fbbf24" font-size="8" font-weight="bold" text-anchor="middle">MECO-2 (T+110s)</text>
+
+    <!-- Apogee Marker -->
+    <circle cx="523.0" cy="321.35" r="5" fill="#a855f7" stroke="#ffffff" stroke-width="1.5" />
+    <text x="523.0" y="309.35" fill="#c084fc" font-size="9" font-weight="bold" text-anchor="middle">APOGEE (277.6 km)</text>
+    <text x="523.0" y="339.35" fill="#cbd5e1" font-size="8" text-anchor="middle">Van Allen Penetration (T+430s)</text>
+
+    <!-- Touchdown Crosshair -->
+    <circle cx="183.3" cy="321.35" r="8" fill="none" stroke="#22c55e" stroke-width="2" />
+    <line x1="171.3" y1="321.35" x2="195.3" y2="321.35" stroke="#22c55e" stroke-width="1.5" />
+    <line x1="183.3" y1="309.35" x2="183.3" y2="333.35" stroke="#22c55e" stroke-width="1.5" />
+
+    <!-- Azimuth Heading Arrow (Due West 270º) -->
+    <g transform="translate(754.8098, 321.3095)">
+        <line x1="25" y1="0" x2="0" y2="0" stroke="#38bdf8" stroke-width="2.5" />
+        <polyline points="8,-4 0,0 8,4" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+        <text x="12" y="-8" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">HDG 270º (WEST)</text>
+    </g>
+
+    <!-- ==================== OFFICIAL KAA HEADER BLOCK ==================== -->
+    <rect x="50" y="25" width="860" height="70" fill="#0f172a" stroke="#334155" stroke-width="1.5" rx="4" />
+    
+    <circle cx="85" cy="60" r="22" fill="#1e293b" stroke="#38bdf8" stroke-width="2" />
+    <text x="85" y="57" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">KAA</text>
+    <text x="85" y="69" fill="#94a3b8" font-size="7" text-anchor="middle">OFFICIAL</text>
+
+    <text x="120" y="48" fill="#f8fafc" font-size="13" font-weight="bold">KERBAL AVIATION ADMINISTRATION (KAA) — AIRSPACE &amp; SURFACE HAZARD NOTAM</text>
+    <text x="120" y="65" fill="#38bdf8" font-size="11">MISSION: CSA-09 EQUATORIAL CONTINENTAL FLIGHT CORRIDOR</text>
+    <text x="120" y="80" fill="#94a3b8" font-size="9">NOTAM ID: KAA-CSA09-2026-10 | LAUNCH WINDOW: Y1-D91 | CORRIDOR: DUE WEST (270º AZIMUTH)</text>
+
+    <!-- Status Stamp -->
+    <rect x="740" y="37" width="155" height="46" fill="#14532d" stroke="#22c55e" stroke-width="1.5" rx="3" />
+    <text x="818" y="55" fill="#f0fdf4" font-size="10" font-weight="bold" text-anchor="middle">ACTIVE FLIGHT NOTAM</text>
+    <text x="818" y="71" fill="#86efac" font-size="8" text-anchor="middle">INLAND RECOVERY APPROVED</text>
+
+    <!-- Bottom Notice Cards -->
+    <rect x="50" y="530" width="420" height="52" fill="#0f172a" stroke="#334155" stroke-width="1" rx="4" opacity="0.95" />
+    <text x="60" y="546" fill="#e2e8f0" font-size="9" font-weight="bold">EQUATORIAL CORRIDOR SAFETY DIRECTIVE:</text>
+    <text x="60" y="560" fill="#94a3b8" font-size="8">• Aircraft in sector 0º Equator (Lon -75º to -145º) clear altitude FL200+ during T+0 to T+15m.</text>
+    <text x="60" y="572" fill="#94a3b8" font-size="8">• All debris and payload impacts restricted to 100% uninhabited continental wilderness.</text>
+
+    <rect x="570" y="530" width="340" height="52" fill="#0f172a" stroke="#334155" stroke-width="1" rx="4" opacity="0.95" />
+    <text x="580" y="546" fill="#e2e8f0" font-size="9" font-weight="bold">CORIOLIS EXPLOITATION STRATEGY:</text>
+    <text x="580" y="560" fill="#cbd5e1" font-size="8">• Kerbin's 174.5 m/s Eastward spin offsets ground track 149 km deeper inland.</text>
+    <text x="580" y="572" fill="#86efac" font-size="8">• Guarantees zero maritime water exposure for soft parachute recovery.</text>
+</svg>
