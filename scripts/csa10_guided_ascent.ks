@@ -226,6 +226,11 @@ WAIT UNTIL SHIP:MAXTHRUST = 0.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 2 Burnout. Active propulsion complete.".
 PRINT "Predicted Apoapsis: " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km.".
 
+// Jettison empty Stage 2 booster casing to liberate payload
+WAIT 1.0.
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Decoupling Stage 2 booster casing...".
+STAGE. // Fires Stage 1 decoupler
+
 // Cut steering and SAS to eliminate 0.38 EC/s parasitic reaction wheel draw!
 UNLOCK STEERING.
 SAS OFF.
