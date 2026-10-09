@@ -260,13 +260,17 @@ class BaseMissionPlotter(ABC):
 
         title = f"COROLT SPACE AGENCY  |  FLIGHT TELEMETRY: MISSION {self.mission_id}"
         subtitle = f"{self.get_vehicle_name()} ({self.get_vehicle_family()}) • {self.get_mission_outcome()}"
+        
+        # Escape XML entities for valid SVG rendering
+        title_xml = title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        subtitle_xml = subtitle.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
         svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="100%" height="auto" style="background:#0b0f19; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   <rect width="{w}" height="{h}" fill="#0b0f19" rx="8"/>
   
   <!-- Title & Subtitle -->
-  <text x="{w/2}" y="26" font-size="14" font-weight="bold" fill="#f8fafc" text-anchor="middle">{title}</text>
-  <text x="{w/2}" y="42" font-size="11" fill="#64748b" text-anchor="middle">{subtitle}</text>
+  <text x="{w/2}" y="26" font-size="14" font-weight="bold" fill="#f8fafc" text-anchor="middle">{title_xml}</text>
+  <text x="{w/2}" y="42" font-size="11" fill="#64748b" text-anchor="middle">{subtitle_xml}</text>
 
   <!-- Grid & Ticks -->
   {grid_svg}
