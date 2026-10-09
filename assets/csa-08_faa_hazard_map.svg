@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" style="background:#0a1120; font-family: 'Courier New', Courier, monospace;">
+    <defs>
+        <!-- Hatched pattern for Hazard Exclusion Zones -->
+        <pattern id="hazardHatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#ef4444" stroke-width="2.5" opacity="0.8" />
+        </pattern>
+        <pattern id="boosterHatch" width="10" height="10" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#f59e0b" stroke-width="2" opacity="0.8" />
+        </pattern>
+        <!-- Radar Grid Glow -->
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Ocean Background -->
+    <rect x="0" y="0" width="960" height="640" fill="#0b1b2d" />
+
+    <!-- Continental Landmass (Mainland Kerbin) -->
+    <polygon points="789.6,590.0 763.8,495.5 745.7,429.3 734.6,374.0 703.6,326.8 652.0,306.5 583.2,286.2 497.2,266.0 428.4,232.2 342.4,198.5 222.0,164.8 50.0,131.0 50.0,590.0 789.6,590.0" fill="#162e26" stroke="#22c55e" stroke-width="1.8" />
+
+    <!-- Coordinate Grid (Latitude & Longitude) -->
+    <!-- Latitudes -->
+    <g stroke="#1e3a5f" stroke-width="1" stroke-dasharray="3,3" opacity="0.6">
+        <line x1="50" y1="563.0" x2="910" y2="563.0" />
+        <line x1="50" y1="428.0" x2="910" y2="428.0" stroke="#38bdf8" stroke-dasharray="5,5" stroke-width="1.2" /> <!-- Equator -->
+        <line x1="50" y1="293.0" x2="910" y2="293.0" />
+        <line x1="50" y1="158.0" x2="910" y2="158.0" />
+        
+        <!-- Longitudes -->
+        <line x1="136.0" y1="50" x2="136.0" y2="590" />
+        <line x1="308.0" y1="50" x2="308.0" y2="590" />
+        <line x1="480.0" y1="50" x2="480.0" y2="590" />
+        <line x1="652.0" y1="50" x2="652.0" y2="590" />
+        <line x1="824.0" y1="50" x2="824.0" y2="590" />
+    </g>
+
+    <!-- Grid Coordinate Labels -->
+    <text x="55" y="424.0" fill="#38bdf8" font-size="10" font-weight="bold">EQUATOR 0º</text>
+    <text x="55" y="289.0" fill="#64748b" font-size="10">10º N</text>
+    <text x="55" y="154.0" fill="#64748b" font-size="10">20º N</text>
+    <text x="312.0" y="585" fill="#64748b" font-size="10">-100º W</text>
+    <text x="484.0" y="585" fill="#64748b" font-size="10">-90º W</text>
+    <text x="656.0" y="585" fill="#64748b" font-size="10">-80º W</text>
+
+    <!-- Region Annotations -->
+    <text x="625.6195999999999" y="489.30949999999996" fill="#22c55e" font-size="12" opacity="0.7" font-weight="bold">GRASSLANDS CONTINENT</text>
+    <text x="775.6195999999999" y="529.3095" fill="#38bdf8" font-size="12" opacity="0.7">EASTERN OCEAN</text>
+    <text x="352.30399999999986" y="151.625" fill="#38bdf8" font-size="12" opacity="0.7" font-weight="bold">NORTHERN GULF (WATER)</text>
+
+    <!-- ==================== EXCLUSION ZONES (NOTAM) ==================== -->
+    
+    <!-- Hazard Zone 1: Stage 1 Booster Drop Area (RT-10) -->
+    <ellipse cx="700.1599999999999" cy="394.25" rx="32" ry="20" fill="url(#boosterHatch)" stroke="#f59e0b" stroke-width="2" transform="rotate(-35 700.1599999999999 394.25)" />
+    <text x="735.1599999999999" y="384.25" fill="#f59e0b" font-size="10" font-weight="bold">HAZARD ZONE 1: BOOSTER IMPACT</text>
+    <text x="735.1599999999999" y="398.25" fill="#94a3b8" font-size="9">RT-10 Spent Casing (T+52s)</text>
+
+    <!-- Hazard Zone 2: Payload Reentry Impact Footprint (CSA-08 Anomaly) -->
+    <ellipse cx="382.30399999999986" cy="181.625" rx="55" ry="35" fill="url(#hazardHatch)" stroke="#ef4444" stroke-width="2.5" transform="rotate(-38 382.30399999999986 181.625)" />
+    <text x="427.30399999999986" y="161.625" fill="#ef4444" font-size="11" font-weight="bold">HAZARD ZONE 2: PRIMARY IMPACT FOOTPRINT</text>
+    <text x="427.30399999999986" y="176.625" fill="#fca5a5" font-size="9">Unpowered Suborbital Reentry (T+850s)</text>
+    <text x="427.30399999999986" y="189.625" fill="#fca5a5" font-size="9">Lat 18.25º N, Lon 95.68º W (Ocean Bay)</text>
+
+    <!-- ==================== TRAJECTORY PATH ==================== -->
+    <!-- Flight Corridor Guideline -->
+    <line x1="745.6195999999999" y1="429.30949999999996" x2="382.30399999999986" y2="181.625" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6,4" />
+    
+    <!-- KSC Launchpad Marker -->
+    <circle cx="745.6195999999999" cy="429.30949999999996" r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="2" filter="url(#glow)" />
+    <text x="757.6195999999999" y="433.30949999999996" fill="#ffffff" font-size="12" font-weight="bold">KSC PAD 01 (LAUNCH)</text>
+    <text x="757.6195999999999" y="446.30949999999996" fill="#94a3b8" font-size="9">Lat 0.10º S, Lon 74.56º W</text>
+
+    <!-- Stage 2 Burnout Marker -->
+    <circle cx="651.5097999999999" cy="362.50474999999994" r="4" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5" />
+    <text x="661.5097999999999" y="357.50474999999994" fill="#fbbf24" font-size="9" font-weight="bold">MECO-2 (T+99s)</text>
+
+    <!-- Apogee Marker -->
+    <circle cx="557.4" cy="295.7" r="5" fill="#a855f7" stroke="#ffffff" stroke-width="1.5" />
+    <text x="567.4" y="290.7" fill="#c084fc" font-size="10" font-weight="bold">APOGEE (179.4 km)</text>
+    <text x="567.4" y="303.7" fill="#cbd5e1" font-size="9">Inland Overflight (T+420s)</text>
+
+    <!-- Final Impact Splashdown Marker -->
+    <polygon points="382.30399999999986,172.625 390.30399999999986,188.625 374.30399999999986,188.625" fill="#ef4444" stroke="#ffffff" stroke-width="1.5" />
+    <circle cx="382.30399999999986" cy="181.625" r="12" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3" />
+
+    <!-- Azimuth Heading Arrow -->
+    <g transform="translate(715.6195999999999, 399.30949999999996) rotate(-45)">
+        <line x1="0" y1="0" x2="25" y2="0" stroke="#38bdf8" stroke-width="2" />
+        <polyline points="18,-4 25,0 18,4" fill="none" stroke="#38bdf8" stroke-width="2" />
+        <text x="5" y="-6" fill="#38bdf8" font-size="9" font-weight="bold">HDG 315º</text>
+    </g>
+
+    <!-- ==================== OFFICIAL KAA / FAA HEADER BLOCK ==================== -->
+    <rect x="50" y="30" width="860" height="70" fill="#0f172a" stroke="#334155" stroke-width="1.5" rx="4" />
+    
+    <!-- Agency Seal / Emblem Representation -->
+    <circle cx="85" cy="65" r="22" fill="#1e293b" stroke="#38bdf8" stroke-width="2" />
+    <text x="85" y="62" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">KAA</text>
+    <text x="85" y="74" fill="#94a3b8" font-size="7" text-anchor="middle">OFFICIAL</text>
+
+    <text x="120" y="52" fill="#f8fafc" font-size="14" font-weight="bold">KERBAL AVIATION ADMINISTRATION (KAA) — AIRSPACE &amp; MARITIME HAZARD NOTICE</text>
+    <text x="120" y="70" fill="#38bdf8" font-size="11">MISSION: CSA-08 COMMERCIAL SPACE LAUNCH REENTRY CORRIDOR</text>
+    <text x="120" y="85" fill="#94a3b8" font-size="9">NOTAM ID: KAA-CSA08-2026-09 | EFFECTIVE LAUNCH WINDOW: Y1-D90 (T+00h to T+04h)</text>
+
+    <!-- Warning Stamp -->
+    <rect x="740" y="42" width="155" height="46" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5" rx="3" />
+    <text x="818" y="60" fill="#fef2f2" font-size="10" font-weight="bold" text-anchor="middle">RESTRICTED AIRSPACE</text>
+    <text x="818" y="76" fill="#fca5a5" font-size="8" text-anchor="middle">ACTIVE DEBRIS CORRIDOR</text>
+
+    <!-- Legend & Warnings Card at Bottom -->
+    <rect x="50" y="525" width="380" height="55" fill="#0f172a" stroke="#334155" stroke-width="1" rx="4" opacity="0.95" />
+    <text x="60" y="542" fill="#e2e8f0" font-size="10" font-weight="bold">SPECIAL OPERATING PROCEDURES (SOP):</text>
+    <text x="60" y="557" fill="#94a3b8" font-size="8">• Aircraft &amp; seafaring vessels maintain minimum 25 NM clearance from Hazard Zones.</text>
+    <text x="60" y="570" fill="#94a3b8" font-size="8">• High-energy suborbital trajectory. Ballistic impact probability: 99.4% in Sector 2.</text>
+
+    <rect x="610" y="525" width="300" height="55" fill="#0f172a" stroke="#334155" stroke-width="1" rx="4" opacity="0.95" />
+    <text x="620" y="542" fill="#e2e8f0" font-size="10" font-weight="bold">CORIOLIS DRIFT INVESTIGATION:</text>
+    <text x="620" y="557" fill="#cbd5e1" font-size="8">• Inertial trajectory aimed at inland Highlands.</text>
+    <text x="620" y="570" fill="#f87171" font-size="8">• 174.5 m/s Eastward Kerbin spin rotated gulf water under flight path.</text>
+</svg>

@@ -43,6 +43,35 @@ Captured in real time via onboard telemetry downlink (Telemachus):
 
 ---
 
+## 📐 Pre-Flight Numerical Simulation vs. Post-Flight Reality
+
+Before ignition, the CSA Flight Dynamics Office evaluated the trajectory using a 4th-order Runge-Kutta numerical integration model (`ascent_simulator.py`):
+
+| Flight Parameter | Pre-Flight RK4 Simulation | Real Flight Telemetry | Variance / Engineering Rationale |
+| :--- | :--- | :--- | :--- |
+| **Peak Apoapsis** | **274.90 km** | **179.41 km** | -95.5 km (-34.7%) — Extra scientific payload mass & steeper transonic drag than simulated |
+| **Maximum Surface Speed** | **1,650.0 m/s** | **1,569.4 m/s** | -80.6 m/s (-4.9%) — High aerodynamic drag during Stage 1 gravity kick |
+| **Launch Azimuth / Heading** | **315.0º (Northwest)** | **314.4º (Northwest)** | 🟢 99.8% precision on autonomous kOS steering |
+| **Downrange Distance** | **~245 km** | **~220 km** | Consistent with lower apogee arc |
+| **Battery Lifetime** | **Nominal (> 900 s)** | **113.6 s** | 🔴 Catastrophic depletion caused by continuous thermal Mini-Lab drain |
+
+### Pre-Flight Ascent Simulation Plot
+![Simulated Ascent CSA-08](../assets/csa-08_simulated_ascent.svg)
+
+---
+
+## 🗺️ KAA Airspace Hazard & Maritime Exclusion Zone (FAA-Style NOTAM)
+
+Under regulatory guidelines from the **Kerbal Aviation Administration (KAA)** (the Kerbin counterpart to the FAA Commercial Space Transportation Office), a formal airspace restriction and maritime exclusion corridor was established for the CSA-08 launch window:
+
+![KAA Airspace and Maritime Hazard Map CSA-08](../assets/csa-08_faa_hazard_map.svg)
+
+### Official KAA Hazard Notices:
+* **NOTAM Reference**: `KAA-CSA08-2026-09` (Effective Y1-D90).
+* **Hazard Zone 1 (Booster Impact Footprint)**: Dedicated ellipse located at $77.2\text{º W}, 2.5\text{º N}$, cleared for the jettisoned RT-10 Hammer casing ($T+52\text{ s}$).
+* **Hazard Zone 2 (Primary Reentry Footprint)**: Due to the loss of electrical power and subsequent failure of parachute deployment, the upper stage reentered as an uncontrolled ballistic projectile, impacting Sector 2 inside the Northern Gulf at $95.68\text{º W}, 18.25\text{º N}$ at $89\text{ m/s}$.
+* **Coriolis Shift Investigation**: While inertial trajectory computers aimed the ascent directly at inland Highlands, Kerbin's eastward rotational velocity ($174.5\text{ m/s}$) shifted the coastal geography under the vehicle during its 14-minute space hop, placing the impact point directly into gulf waters.
+
 ## 🔬 Engineering Analysis & Forensic Investigation
 
 ### 1. The Power Depletion Anomaly (Autopsy of 400 EC)
