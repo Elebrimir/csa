@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" style="background:#0a1120; font-family: 'Courier New', Courier, monospace;">
+    <defs>
+        <pattern id="mountainsHatch" width="12" height="12" patternTransform="rotate(30 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#854d0e" stroke-width="2.5" opacity="0.6" />
+        </pattern>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <rect x="0" y="0" width="960" height="640" fill="#0b1b2d" />
+
+    <!-- Mainland -->
+    <polygon points="910.0,590.0 714.0,514.4 699.3,435.7 686.4,358.6 660.6,281.4 643.4,204.3 652.0,127.1 673.5,50.0 50.0,50.0 50.0,590.0" fill="#162e26" stroke="#22c55e" stroke-width="1.8" />
+
+    <!-- Mountain Zone Polygon -->
+    <polygon points="394.0,281.42857142857144 630.5,250.57142857142856 617.6000000000001,158.0 394.0,173.4285714285714" fill="url(#mountainsHatch)" stroke="#ca8a04" stroke-width="1.5" />
+    <text x="415.5" y="235.14285714285717" fill="#facc15" font-size="12" font-weight="bold">KERBIN MOUNTAINS RANGE (ELEV > 1,500m)</text>
+
+    <!-- Flight track line -->
+    <line x1="714.0489999999999" y1="514.3537142857143" x2="567.5049999999998" y2="213.24971428571428" stroke="#38bdf8" stroke-width="3" filter="url(#glow)"/>
+
+    <!-- KSC -->
+    <circle cx="714.0489999999999" cy="514.3537142857143" r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="726.0489999999999" y="518.3537142857143" fill="#38bdf8" font-size="11" font-weight="bold">KSC LAUNCH PAD</text>
+    <text x="726.0489999999999" y="530.3537142857143" fill="#94a3b8" font-size="9">Lat -0.10º, Lon -74.56º</text>
+
+    <!-- Touchdown -->
+    <circle cx="567.5049999999998" cy="213.24971428571428" r="7" fill="#22c55e" stroke="#ffffff" stroke-width="2"/>
+    <text x="337.50499999999977" y="198.24971428571428" fill="#22c55e" font-size="12" font-weight="bold">CSA-10 TOUCHDOWN: MOUNTAINS BIOME</text>
+    <text x="337.50499999999977" y="215.24971428571428" fill="#f8fafc" font-size="10">Lat +19.42ºN, Lon -77.97ºW | Alt: 1,584m</text>
+    <text x="337.50499999999977" y="229.24971428571428" fill="#38bdf8" font-size="9">Downrange: 211 km | 100% SOLID DRY LAND</text>
+
+    <!-- Header Block -->
+    <rect x="0" y="0" width="960" height="45" fill="#0f172a" />
+    <text x="25" y="28" fill="#38bdf8" font-size="14" font-weight="bold">COROLT SPACE AGENCY // CSA-10 ACTUAL RECOVERY &amp; TOPOGRAPHIC MAP</text>
+    <text x="680" y="28" fill="#22c55e" font-size="12" font-weight="bold">PRIMARY RECOVERY: SOLID GROUND</text>
+
+    <!-- Footer -->
+    <rect x="0" y="615" width="960" height="25" fill="#020617" />
+    <text x="25" y="632" fill="#64748b" font-size="10">CSA EXPEDITIONARY RECOVERY TEAM // MOUNTAIN RECOVERY SUCCESSFUL // WATER HAZARDS COMPLETELY ELIMINATED</text>
+</svg>
