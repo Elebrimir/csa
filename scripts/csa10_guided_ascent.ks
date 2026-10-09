@@ -3,7 +3,7 @@
 // MISSION: CSA-10 (Coastal Polar Trajectory & Multi-Layer Science Survey)
 // VEHICLE: Corolt-IIIb (Upgraded 800 EC Power Bank & Double Duty-Cycle Mini-Lab)
 // OBJECTIVES:
-//   1. Steer along Heading 005º (NNE) following the eastern shoreline.
+//   1. Steer along Heading 355º (NNW) targeting solid inland northern continent.
 //   2. Deep outer space apogee (> 200 km) penetrating Van Allen threshold.
 //   3. Execute dual Materials Mini-Lab sampling:
 //      - 30s burst in Upper Atmosphere (18 - 70 km)
@@ -17,7 +17,7 @@ CLEARSCREEN.
 PRINT "==================================================".
 PRINT "      COROLT SPACE AGENCY - FLIGHT CONTROL        ".
 PRINT "   MISSION: CSA-10 | VEHICLE: Corolt-IIIb (800 EC)".
-PRINT "   Target Heading: 005º (Coastal) | Floor: 100 EC ".
+PRINT "   Target Heading: 355º (Inland Land) | Floor: 100".
 PRINT "==================================================".
 
 // ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ PRINT "==================================================".
 // ----------------------------------------------------------------------------
 SET ALT_KICK TO 2500.            // Altitude for initial gravity kick (m)
 SET PITCH_INITIAL TO 88.0.       // Initial pitch after kick (degrees)
-SET HEADING_DEG TO 5.0.          // Heading 005.0º (North-North-East along coast)
+SET HEADING_DEG TO 355.0.        // Heading 355.0º (North-North-West into solid continent)
 SET POWER_SAFETY_FLOOR TO 100.   // Reserve floor for avionics & recovery (EC)
 
 // ----------------------------------------------------------------------------

@@ -18,7 +18,7 @@
     <rect x="0" y="0" width="960" height="640" fill="#0b1b2d" />
 
     <!-- Continental Landmass -->
-    <polygon points="566.0,590.0 523.0,567.5 492.7,545.9 482.9,509.0 465.7,464.0 451.3,410.0 437.0,347.0 445.6,275.0 457.1,203.0 480.0,140.0 502.9,77.0 523.0,50.0 50.0,50.0 50.0,590.0" fill="#162e26" stroke="#22c55e" stroke-width="1.8" />
+    <polygon points="802.5,590.0 704.5,545.9 697.1,455.0 684.2,365.0 673.5,275.0 662.8,185.0 684.2,95.0 802.5,50.0 50.0,50.0 50.0,590.0" fill="#162e26" stroke="#22c55e" stroke-width="1.8" />
 
     <!-- Coordinate Grid -->
     <!-- Latitudes -->
@@ -31,74 +31,76 @@
         <line x1="50" y1="95.0" x2="910" y2="95.0" />
         
         <!-- Longitudes -->
-        <line x1="193.33333333333331" y1="50" x2="193.33333333333331" y2="590" />
-        <line x1="336.66666666666663" y1="50" x2="336.66666666666663" y2="590" />
-        <line x1="480.0" y1="50" x2="480.0" y2="590" stroke="#a855f7" stroke-dasharray="2,4" stroke-width="1" />
-        <line x1="623.3333333333333" y1="50" x2="623.3333333333333" y2="590" />
-        <line x1="766.6666666666667" y1="50" x2="766.6666666666667" y2="590" />
+        <line x1="157.5" y1="50" x2="157.5" y2="590" />
+        <line x1="372.5" y1="50" x2="372.5" y2="590" stroke="#a855f7" stroke-dasharray="2,4" stroke-width="1" />
+        <line x1="467.9599999999999" y1="50" x2="467.9599999999999" y2="590" stroke="#22c55e" stroke-dasharray="2,4" stroke-width="1" />
+        <line x1="587.5" y1="50" x2="587.5" y2="590" />
+        <line x1="704.5245" y1="50" x2="704.5245" y2="590" stroke="#38bdf8" stroke-dasharray="2,4" stroke-width="1" />
+        <line x1="802.5" y1="50" x2="802.5" y2="590" />
     </g>
 
     <!-- Labels for Lat/Lon -->
     <text x="55" y="541.0" fill="#38bdf8" font-size="10" font-weight="bold">EQUATOR 0º</text>
     <text x="55" y="361.0" fill="#64748b" font-size="10">+20º LAT</text>
     <text x="55" y="181.0" fill="#64748b" font-size="10">+40º LAT</text>
-    <text x="485.0" y="65" fill="#a855f7" font-size="10">-75º MERIDIAN (COASTLINE AXIS)</text>
+    <text x="709.5245" y="65" fill="#38bdf8" font-size="10">KSC MERIDIAN (-74.6º)</text>
+    <text x="387.9599999999999" y="65" fill="#22c55e" font-size="10">LANDING AXIS (-85.6º)</text>
 
     <!-- Geographic Annotations -->
-    <text x="193.33333333333331" y="410.0" fill="#22c55e" font-size="14" font-weight="bold" opacity="0.5">MAINLAND KERBIN</text>
-    <text x="680.6666666666666" y="320.0" fill="#38bdf8" font-size="14" font-weight="bold" opacity="0.5">EASTERN OCEAN</text>
+    <text x="200.5" y="320.0" fill="#22c55e" font-size="14" font-weight="bold" opacity="0.6">MAINLAND KERBIN (NORTH CONTINENT)</text>
+    <text x="759.5" y="320.0" fill="#38bdf8" font-size="14" font-weight="bold" opacity="0.5">EASTERN OCEAN</text>
 
     <!-- 1. HAZARD ZONE 1: Stage 1 Booster Drop Area -->
-    <rect x="475.18666666666644" y="507.85" width="36" height="50" rx="8" fill="url(#boosterHatch)" stroke="#f59e0b" stroke-width="1.8" />
-    <text x="518.1866666666665" y="532.85" fill="#f59e0b" font-size="10" font-weight="bold">STAGE 1 DROP ZONE (RT-10)</text>
-    <text x="518.1866666666665" y="545.85" fill="#94a3b8" font-size="9">Lat +1.4º, Lon -74.5º | T+51s</text>
+    <rect x="686.2450000000001" y="530.18" width="36" height="30" rx="6" fill="url(#boosterHatch)" stroke="#f59e0b" stroke-width="1.8" />
+    <text x="729.2450000000001" y="543.18" fill="#f59e0b" font-size="10" font-weight="bold">STAGE 1 DROP ZONE (RT-10)</text>
+    <text x="729.2450000000001" y="556.18" fill="#94a3b8" font-size="9">Lat -0.02º, Lon -74.57º | T+52s</text>
 
-    <!-- 2. HAZARD ZONE 2: Northern Maritime Recovery Footprint -->
-    <ellipse cx="490.0333333333332" cy="116.87" rx="30" ry="25" fill="url(#hazardHatch)" stroke="#ef4444" stroke-width="2" />
-    <text x="270.0333333333332" y="104.87" fill="#ef4444" font-size="11" font-weight="bold">PRIMARY RECOVERY ZONE (NOTAM)</text>
-    <text x="270.0333333333332" y="120.87" fill="#94a3b8" font-size="10">Target Footprint: +47.6ºN, -74.7ºW</text>
-    <text x="270.0333333333332" y="134.87" fill="#38bdf8" font-size="9">Downrange: 499.2 km (Naval Salvage Zone)</text>
+    <!-- 2. HAZARD ZONE 2: Northern Continental Recovery Footprint (SOLID LAND) -->
+    <ellipse cx="467.9599999999999" cy="116.68999999999994" rx="36" ry="26" fill="url(#hazardHatch)" stroke="#ef4444" stroke-width="2" />
+    <text x="237.95999999999992" y="104.68999999999994" fill="#ef4444" font-size="11" font-weight="bold">PRIMARY RECOVERY ZONE (SOLID LAND)</text>
+    <text x="237.95999999999992" y="120.68999999999994" fill="#94a3b8" font-size="10">Target Footprint: +47.6ºN, -85.6ºW</text>
+    <text x="237.95999999999992" y="134.68999999999994" fill="#22c55e" font-size="9">Downrange: 509.4 km (Grasslands/Highlands Ground Recovery)</text>
 
-    <!-- FLIGHT CORRIDOR (Heading 005.0º NNE) -->
-    <line x1="492.69933333333324" y1="545.873" x2="490.0333333333332" y2="116.87" stroke="#38bdf8" stroke-width="2.8" stroke-dasharray="6,4" filter="url(#glow)" />
+    <!-- FLIGHT CORRIDOR (Heading 355.0º NNW) -->
+    <line x1="704.5245" y1="545.873" x2="467.9599999999999" y2="116.68999999999994" stroke="#38bdf8" stroke-width="2.8" stroke-dasharray="6,4" filter="url(#glow)" />
 
     <!-- Trajectory Waypoint Markers -->
     <!-- Launch Pad KSC -->
-    <circle cx="492.69933333333324" cy="545.873" r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" />
-    <text x="504.69933333333324" y="549.873" fill="#38bdf8" font-size="11" font-weight="bold">KSC LAUNCH COMPLEX</text>
-    <text x="504.69933333333324" y="561.873" fill="#94a3b8" font-size="9">Lat -0.10º, Lon -74.56º</text>
+    <circle cx="704.5245" cy="545.873" r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" />
+    <text x="716.5245" y="549.873" fill="#38bdf8" font-size="11" font-weight="bold">KSC LAUNCH COMPLEX</text>
+    <text x="716.5245" y="561.873" fill="#94a3b8" font-size="9">Lat -0.10º, Lon -74.56º</text>
 
     <!-- Apogee Marker -->
-    <circle cx="491.4666666666668" cy="324.5" r="5" fill="#a855f7" />
-    <text x="503.4666666666668" y="327.5" fill="#a855f7" font-size="10" font-weight="bold">APOGEE (415.5 km)</text>
-    <text x="503.4666666666668" y="339.5" fill="#94a3b8" font-size="9">Van Allen Radiation Zone</text>
+    <circle cx="576.5349999999999" cy="337.28000000000003" r="5" fill="#a855f7" />
+    <text x="588.5349999999999" y="340.28000000000003" fill="#a855f7" font-size="10" font-weight="bold">APOGEE (409.2 km)</text>
+    <text x="588.5349999999999" y="352.28000000000003" fill="#94a3b8" font-size="9">Van Allen Radiation Zone</text>
 
     <!-- Touchdown Marker -->
-    <circle cx="490.0333333333332" cy="116.87" r="6" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" />
+    <circle cx="467.9599999999999" cy="116.68999999999994" r="6" fill="#22c55e" stroke="#ffffff" stroke-width="1.5" />
 
     <!-- Flight Direction Arrow -->
-    <polygon points="492.69933333333324,505.87300000000005 487.69933333333324,520.873 497.69933333333324,520.873" fill="#38bdf8" />
-    <text x="502.69933333333324" y="515.873" fill="#38bdf8" font-size="10" font-weight="bold">HEADING 005.0º</text>
+    <polygon points="704.5245,505.87300000000005 699.5245,520.873 709.5245,520.873" fill="#38bdf8" />
+    <text x="714.5245" y="515.873" fill="#38bdf8" font-size="10" font-weight="bold">HEADING 355.0º NNW</text>
 
     <!-- HEADER BLOCK -->
     <rect x="0" y="0" width="960" height="45" fill="#0f172a" />
     <text x="25" y="28" fill="#38bdf8" font-size="14" font-weight="bold">KERBAL AVIATION ADMINISTRATION (KAA) // AIRSPACE HAZARD NOTICE</text>
-    <text x="650" y="28" fill="#f59e0b" font-size="12" font-weight="bold">NOTAM: KAA-CSA10-2026-10 (POLAR CORRIDOR)</text>
+    <text x="630" y="28" fill="#f59e0b" font-size="12" font-weight="bold">NOTAM: KAA-CSA10-2026-10 (NORTH INLAND CORRIDOR)</text>
 
     <!-- LEGEND BOX -->
     <rect x="720" y="500" width="220" height="115" rx="5" fill="#0f172a" stroke="#1e293b" stroke-width="1.2" />
     <text x="735" y="520" fill="#f8fafc" font-size="11" font-weight="bold">OPERATIONAL LEGEND</text>
     
     <line x1="735" y1="540" x2="765" y2="540" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4,2"/>
-    <text x="775" y="544" fill="#94a3b8" font-size="10">Active Ascent Track (005º)</text>
+    <text x="775" y="544" fill="#94a3b8" font-size="10">Active Ascent Track (355º)</text>
 
     <rect x="735" y="555" width="20" height="12" fill="url(#boosterHatch)" stroke="#f59e0b" stroke-width="1"/>
     <text x="775" y="565" fill="#94a3b8" font-size="10">Stage 1 Debris Zone</text>
 
     <rect x="735" y="580" width="20" height="12" fill="url(#hazardHatch)" stroke="#ef4444" stroke-width="1"/>
-    <text x="775" y="590" fill="#94a3b8" font-size="10">Marine Recovery Sector</text>
+    <text x="775" y="590" fill="#94a3b8" font-size="10">Solid Ground Recovery Sector</text>
 
     <!-- FOOTER STATUS -->
     <rect x="0" y="615" width="960" height="25" fill="#020617" />
-    <text x="25" y="632" fill="#64748b" font-size="10">COROLT SPACE AGENCY // FLIGHT OPERATIONS &amp; SAFETY DIVISION // RESTRICTED MARITIME CORRIDOR</text>
+    <text x="25" y="632" fill="#64748b" font-size="10">COROLT SPACE AGENCY // FLIGHT OPERATIONS &amp; SAFETY DIVISION // DRY LAND RECOVERY MISSION</text>
 </svg>
