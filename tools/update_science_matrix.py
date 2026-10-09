@@ -16,19 +16,19 @@ SAVE_PATH = "/media/steam_games/SteamLibrary/steamapps/common/Kerbal Space Progr
 DOCS_DIR = "/home/pablo-cortes/Documents/Corolt_Space_Agency"
 
 EXPERIMENT_LABELS = {
-    "barometerScan": "Atmospheric Pressure (PresMat)",
-    "temperatureScan": "Temperature (2HOT)",
-    "SRExperiment01": "Meteorology (SR.Payload.01)",
-    "SRExperiment02": "Aeronomy (SR.Payload.02)",
-    "SRExperiment03": "Advanced Sounding (SR.Payload.03)",
-    "SRExperiment04": "Engineering & Stress (SR.Payload.04)",
-    "kerbalism_TELEMETRY": "Vessel Telemetry (Kerbalism)",
-    "geigerCounter": "Radiation & Geiger (Kerbalism)",
-    "mysteryGoo": "Mystery Goo",
-    "mobileMaterialsLab": "Materials Bay (Science Jr.)",
-    "crewReport": "Crew Report",
-    "evaReport": "EVA Report",
-    "recovery": "Vessel Recovery"
+    "barometerScan": "Registración de la Presión Atmosférica (Barómetro PresMat)",
+    "temperatureScan": "Exploración de temperatura (Termómetro 2HOT)",
+    "SRExperiment01": "Meteorological Experiments (Meteorological Survey Package)",
+    "SRExperiment02": "Aeronomical Experiments (Aeronomy Sensor Array)",
+    "SRExperiment03": "Estudio de Materiales (Materials Study Mini-Lab)",
+    "SRExperiment04": "Engineering Experiments (Engineering Payload)",
+    "kerbalism_TELEMETRY": "Informe de telemetría (Avionics Package)",
+    "geigerCounter": "Escaneo de radiación (Contador Geiger)",
+    "mysteryGoo": "Misterio Goo (Mystery Goo)",
+    "mobileMaterialsLab": "Bahía de Materiales (Science Jr.)",
+    "crewReport": "Informe de tripulación (Crew Report)",
+    "evaReport": "Informe de AEV (EVA Report)",
+    "recovery": "Recuperación de la nave (Vessel Recovery)"
 }
 
 BIOMES = [

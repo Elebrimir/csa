@@ -1,9 +1,9 @@
 {
-  "mission_source": "CSA-07_telemetry.csv",
+  "mission_source": "CSA-08_telemetry.csv",
   "vehicle_dry_mass_kg": 629.0,
-  "calibrated_cda_m2": 1.7266,
-  "subsonic_cda": 1.4676,
-  "transonic_peak_cda": 2.3308,
-  "supersonic_cda": 1.8129,
-  "hypersonic_cda": 1.6402
+  "calibrated_cda_m2": 1.4212,
+  "subsonic_cda": 1.208,
+  "transonic_peak_cda": 1.9186,
+  "supersonic_cda": 1.4923,
+  "hypersonic_cda": 1.3502
 }
