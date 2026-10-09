@@ -45,8 +45,17 @@ Following recovery 268.0 km west of the Kerbin Space Center, telemetry logs were
 ### Actual vs. Simulated Ground Track & Exclusion Corridor
 ![CSA-09 Trajectory Comparison Map](../assets/csa-09_comparison_map.svg)
 
-### Full-Flight Telemetry Plot
+### Full-Flight Primary Telemetry Plot
 ![CSA-09 Flight Telemetry Plot](../assets/csa-09_telemetry_plot.svg)
+
+### 6-Panel Flight Operations Deck (Multi-Variable Telemetry)
+![CSA-09 6-Panel Operations Deck](../assets/csa-09_advanced_dashboard.svg)
+
+### Aerodynamic Pressure (Q) & Deceleration G-Loads
+![CSA-09 Aerodynamic Pressure & Gee-Force](../assets/csa-09_dynamic_pressure_plot.svg)
+
+### Flight Guidance Attitude (Pitch & Compass Heading)
+![CSA-09 Attitude & Heading Steering](../assets/csa-09_attitude_steering_plot.svg)
 
 ---
 
