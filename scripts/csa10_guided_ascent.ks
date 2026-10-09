@@ -138,7 +138,12 @@ FUNCTION jettison_truss_fairings {
             }
         }
     }
-    PRINT "[FAIRINGS] " + fairing_count + " fairing decouplers fired.".
+    // Also trigger Stage 1 if fairings are placed in dedicated stage
+    IF STAGE:NUMBER = 1 {
+        STAGE.
+        SET fairing_count TO fairing_count + 1.
+    }
+    PRINT "[FAIRINGS] " + fairing_count + " fairing jettison events dispatched.".
     PRINT "==================================================".
 }
 
