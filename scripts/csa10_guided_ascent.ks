@@ -54,11 +54,11 @@ FUNCTION stop_all_science {
     PRINT "⚠️ [POWER GUARD] Emergency shutdown of all scientific instruments!".
     FOR p IN SHIP:PARTS {
         FOR m IN p:MODULES {
-            LOCAL mod IS p:GETMODULE(m).
-            FOR ev IN mod:ALLEVENTNAMES {
+            LOCAL part_mod IS p:GETMODULE(m).
+            FOR ev IN part_mod:ALLEVENTNAMES {
                 LOCAL evl IS ev:TOLOWER.
                 IF evl:CONTAINS("stop") OR evl:CONTAINS("detener") OR evl:CONTAINS("parar") {
-                    mod:DOEVENT(ev).
+                    part_mod:DOEVENT(ev).
                 }
             }
         }
@@ -70,11 +70,11 @@ FUNCTION stop_instruments_by_keyword {
     FOR p IN SHIP:PARTS {
         IF p:TITLE:CONTAINS(keyword) OR p:NAME:CONTAINS(keyword) {
             FOR m IN p:MODULES {
-                LOCAL mod IS p:GETMODULE(m).
-                FOR ev IN mod:ALLEVENTNAMES {
+                LOCAL part_mod IS p:GETMODULE(m).
+                FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("stop") OR evl:CONTAINS("detener") OR evl:CONTAINS("parar") {
-                        mod:DOEVENT(ev).
+                        part_mod:DOEVENT(ev).
                         PRINT "  [STOPPED] " + p:TITLE + " (" + ev + ")".
                     }
                 }
@@ -101,14 +101,14 @@ FUNCTION trigger_science_suite {
         LOCAL is_mat IS p:TITLE:CONTAINS("Material") OR p:NAME:CONTAINS("Payload_01").
         IF NOT is_mat OR include_materials {
             FOR m IN p:MODULES {
-                LOCAL mod IS p:GETMODULE(m).
-                FOR ev IN mod:ALLEVENTNAMES {
+                LOCAL part_mod IS p:GETMODULE(m).
+                FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("investigar") OR evl:CONTAINS("comenzar") OR evl:CONTAINS("observar")
                        OR evl:CONTAINS("registrar") OR evl:CONTAINS("iniciar") OR evl:CONTAINS("start")
                        OR evl:CONTAINS("log") OR evl:CONTAINS("deploy") OR evl:CONTAINS("analizar") {
                         IF NOT evl:CONTAINS("paracaídas") AND NOT evl:CONTAINS("chute") AND NOT evl:CONTAINS("desacoplar") {
-                            mod:DOEVENT(ev).
+                            part_mod:DOEVENT(ev).
                             SET trig_count TO trig_count + 1.
                         }
                     }
@@ -127,11 +127,11 @@ FUNCTION jettison_truss_fairings {
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("Fairing") OR p:NAME:CONTAINS("PayloadFairing") {
             FOR m IN p:MODULES {
-                LOCAL mod IS p:GETMODULE(m).
-                FOR ev IN mod:ALLEVENTNAMES {
+                LOCAL part_mod IS p:GETMODULE(m).
+                FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("decouple") OR evl:CONTAINS("desacoplar") {
-                        mod:DOEVENT(ev).
+                        part_mod:DOEVENT(ev).
                         SET fairing_count TO fairing_count + 1.
                     }
                 }
@@ -153,11 +153,11 @@ FUNCTION deploy_parachute_system {
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("Chute") OR p:NAME:CONTAINS("Nosecone") OR p:NAME:CONTAINS("Parachute") {
             FOR m IN p:MODULES {
-                LOCAL mod IS p:GETMODULE(m).
-                FOR ev IN mod:ALLEVENTNAMES {
+                LOCAL part_mod IS p:GETMODULE(m).
+                FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("arm") OR evl:CONTAINS("armar") OR evl:CONTAINS("deploy") OR evl:CONTAINS("desplegar") {
-                        mod:DOEVENT(ev).
+                        part_mod:DOEVENT(ev).
                         PRINT "  [PARACHUTE] " + p:TITLE + " -> " + ev.
                     }
                 }
