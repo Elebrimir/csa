@@ -32,6 +32,7 @@ export default defineConfig({
           { text: "Corolt-IIb (Radial Booster Variant)", link: "/vehicles/corolt-2b" },
           { text: "Corolt-III (Tandem Orbital Launcher)", link: "/vehicles/corolt-3" },
           { text: "Corolt-IIIb (Active Guidance Variant)", link: "/vehicles/corolt-3b" },
+          { text: "Corolt-IV (Liquid Quasiorbital Launcher)", link: "/vehicles/corolt-4" },
         ]
       },
       {
@@ -46,7 +47,8 @@ export default defineConfig({
           { text: "CSA-06: kOS Guidance & Recovery", link: "/missions/csa-06" },
           { text: "CSA-07: Mobile Control & Splashdown", link: "/missions/csa-07" },
           { text: "CSA-08: Deep Space & Power Anomaly", link: "/missions/csa-08" },
-          { text: "CSA-09: Equatorial Inland Probe (Plan)", link: "/missions/csa-09" },
+          { text: "CSA-09: Equatorial Van Allen Probe", link: "/missions/csa-09" },
+          { text: "CSA-10: Boreal Shoreline (Flight Plan)", link: "/missions/csa-10" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
