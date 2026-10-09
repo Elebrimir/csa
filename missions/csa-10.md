@@ -22,9 +22,12 @@
      * **Burst 1 (Upper Atmosphere 18–70 km)**: Run the Materials Mini-Lab (`2.04 EC/s`) for **30 seconds** during supersonic climb.
      * **Burst 2 (Low Space > 70 km)**: Run the Materials Mini-Lab for **90 seconds** in microgravity vacuum.
      * **Continuous Sensors**: Record continuous PresMat barometric pressure, Geiger radiation count, and micrometeorite impacts across all atmospheric and space regimes.
-4. **Autonomous Avionics & Parachute Reserve Protection**:
+4. **Aerothermal Prograde Shielding & Subsonic Reentry Backflip**:
+   * **Prograde Heat-Shielding**: Upon atmospheric entry ($< 70\text{ km}$), orient the craft strictly nosecone-first (`LOCK STEERING TO SRFPROGRADE`) to shield the lateral battery packs and scientific instruments behind the conical shock wave during hypersonic deceleration.
+   * **Subsonic Backflip**: Once the atmosphere decelerates the vehicle to safe subsonic velocities ($< 280\text{ m/s}$ / $< 6,000\text{ m}$), execute an autonomous **180º backflip** to retrograde (`LOCK STEERING TO SRFRETROGRADE`), placing the nosecone into the trailing wake for clean, thermal-free parachute deployment.
+5. **Autonomous Avionics & Parachute Reserve Protection**:
    * Enforce an inviolable **100 EC battery safety floor** in kOS to guarantee 100% powered avionics, real-time CommNet telemetry streaming, and automated parachute arming.
-5. **Precision Coastal Splashdown & Naval Recovery**:
+6. **Precision Coastal Splashdown & Naval Recovery**:
    * Touch down via `SR.Nosecone.625` parachute in the calm waters of the northern boreal bay ($\approx \text{Lat } +47.6^\circ\text{N}, \text{Lon } -74.7^\circ\text{W}$), $\sim 499\text{ km}$ downrange from KSC for immediate recovery ship salvage.
 
 ---
