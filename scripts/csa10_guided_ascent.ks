@@ -279,16 +279,31 @@ PRINT "Beginning atmospheric descent along northern coast...".
 PRINT "==================================================".
 
 // ----------------------------------------------------------------------------
-// Phase 7: Atmospheric Entry & Parachute Deployment
+// Phase 7: Aerothermal Atmospheric Reentry & Subsonic Backflip
 // ----------------------------------------------------------------------------
-WHEN SHIP:ALTITUDE < 70000 THEN {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Re-entering atmosphere (< 70 km).".
-}
+WAIT UNTIL SHIP:ALTITUDE < 70000.
+PRINT "==================================================".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: RE-ENTERING ATMOSPHERE (< 70 km)!".
+PRINT "LOCKING NOSECONE-FORWARD (SRFPROGRADE) FOR AEROTHERMAL SHIELDING.".
+PRINT "Shielding lateral batteries & sensors behind conical shock wave...".
+PRINT "==================================================".
+LOCK STEERING TO SRFPROGRADE.
 
-WHEN SHIP:ALTITUDE < 15000 AND SHIP:VERTICALSPEED < 0 THEN {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Altitude < 15,000m. Pre-arming recovery parachute...".
-    deploy_parachute_system().
-}
+// Plunge nosecone-first through peak dynamic pressure & hypersonic deceleration
+WAIT UNTIL SHIP:ALTITUDE < 6000 OR (SHIP:ALTITUDE < 10000 AND SHIP:AIRSPEED < 280).
+PRINT "==================================================".
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SUBSONIC VELOCITY ATTAINED (Airspeed: " + ROUND(SHIP:AIRSPEED, 1) + " m/s).".
+PRINT "EXECUTING REENTRY BACKFLIP MANEUVER (FLIPPING TO SRFRETROGRADE)...".
+LOCK STEERING TO SRFRETROGRADE.
+WAIT 3.0. // Allow reaction wheel to complete the 180º flip so nosecone faces up into trailing wake
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Backflip complete! Nosecone oriented upwards in trailing wake.".
+PRINT "DEPLOYING MECHANICAL PARACHUTE SYSTEM!".
+PRINT "==================================================".
+deploy_parachute_system().
+WAIT 2.0.
+UNLOCK STEERING.
+SAS OFF.
+PRINT "Steering unlocked, SAS OFF (Zero parasitic draw for final descent).".
 
 // Low-altitude final touchdown monitor
 WAIT UNTIL SHIP:ALTITUDE < 5000.
