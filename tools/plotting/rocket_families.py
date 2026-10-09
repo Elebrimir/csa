@@ -411,6 +411,57 @@ class CSA08Plotter(CoroltIIIFamilyPlotter):
         ))
         return markers
 
+class CSA09Plotter(CoroltIIIFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-09", alt_ceil=180000.0, vel_ceil=1600.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                alt = float(r.get("altitude", 0.0))
+                self.valid_rows.append(r)
+                if alt <= 0.0 and met > 1200:
+                    break
+            except (ValueError, TypeError):
+                continue
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IIIb (Deep Space Sounding - Flight 2)"
+
+    def get_mission_objective(self) -> str:
+        return "Deep space apogee, power-managed science architecture & safe aerodynamic parachute recovery"
+
+    def get_mission_outcome(self) -> str:
+        return "🟢 Recovery Success (85.5% Value) | Apogee 162.6 km | Full Vessel & Payload Intact"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=923.9,
+            altitude=162558.3,
+            label="Apogee 162.6 km (Low Space)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="middle",
+            dx=0,
+            dy=-18
+        ))
+        markers.append(PlotMarker(
+            time=self.landing_time,
+            altitude=self.landing_alt,
+            label="Safe Splashdown (85.5% Recov)",
+            color="#22c55e",
+            circle_color="#22c55e",
+            anchor="end",
+            dx=-10,
+            dy=-15
+        ))
+        return markers
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -425,6 +476,7 @@ MISSION_REGISTRY: Dict[str, Type[BaseMissionPlotter]] = {
     "CSA-06": CSA06Plotter,
     "CSA-07": CSA07Plotter,
     "CSA-08": CSA08Plotter,
+    "CSA-09": CSA09Plotter,
 }
 
 def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:

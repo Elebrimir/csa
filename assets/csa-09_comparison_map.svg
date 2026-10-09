@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" style="background:#0a1120; font-family: 'Courier New', Courier, monospace;">
+    <defs>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+        <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#172554" stroke-width="0.7" opacity="0.4"/>
+        </pattern>
+    </defs>
+
+    <!-- Deep Ocean Background -->
+    <rect x="0" y="0" width="960" height="640" fill="#0b1b2d" />
+    <rect x="0" y="0" width="960" height="640" fill="url(#gridPattern)" />
+
+    <!-- Equatorial Continent Landmass -->
+    <polygon points="784.9,590.0 784.9,321.3 772.4,185.0 738.0,117.5 566.0,77.0 50.0,50.0 50.0,590.0" fill="#142c23" stroke="#22c55e" stroke-width="1.6" opacity="0.9" />
+
+    <!-- Lat/Lon Coordinate Grid -->
+    <g stroke="#1e3a5f" stroke-width="1" stroke-dasharray="3,3" opacity="0.6">
+        <line x1="50" y1="455.0" x2="910" y2="455.0" />
+        <line x1="50" y1="320.0" x2="910" y2="320.0" stroke="#38bdf8" stroke-dasharray="6,4" stroke-width="1.4" />
+        <line x1="50" y1="185.0" x2="910" y2="185.0" />
+        
+        <line x1="136.0" y1="50" x2="136.0" y2="590" />
+        <line x1="308.0" y1="50" x2="308.0" y2="590" />
+        <line x1="480.0" y1="50" x2="480.0" y2="590" />
+        <line x1="652.0" y1="50" x2="652.0" y2="590" />
+        <line x1="824.0" y1="50" x2="824.0" y2="590" />
+    </g>
+
+    <!-- Labels -->
+    <text x="55" y="314.0" fill="#38bdf8" font-size="10" font-weight="bold">EQUATOR 0º (FLIGHT VECTOR 270º)</text>
+    <text x="55" y="181.0" fill="#64748b" font-size="10">10º N</text>
+    <text x="55" y="451.0" fill="#64748b" font-size="10">10º S</text>
+    <text x="799.0" y="605" fill="#64748b" font-size="10">70º W</text>
+    <text x="627.0" y="605" fill="#64748b" font-size="10">90º W</text>
+    <text x="450.0" y="605" fill="#64748b" font-size="10">110º W</text>
+    <text x="278.0" y="605" fill="#64748b" font-size="10">130º W</text>
+    <text x="106.0" y="605" fill="#64748b" font-size="10">150º W</text>
+
+    <!-- Planned Trajectory Corridor (Dashed Cyan) -->
+    <path d="M 784.8 321.3 L 183.3 321.4" stroke="#06b6d4" stroke-width="3" stroke-dasharray="8,6" opacity="0.6" />
+
+    <!-- Actual Flown Trajectory (Solid Magenta/Violet with Glow) -->
+    <path d="M 784.8 321.3 L 784.8 321.3 L 784.8 321.3 L 784.8 321.3 L 784.7 321.3 L 784.6 321.3 L 784.4 321.3 L 784.1 321.3 L 783.6 321.3 L 782.3 321.3 L 780.4 321.3 L 777.7 321.3 L 773.7 321.3 L 768.9 321.3 L 764.2 321.3 L 759.6 321.3 L 755.0 321.3 L 750.6 321.3 L 746.2 321.3 L 741.8 321.3 L 737.6 321.3 L 733.4 321.3 L 730.2 321.3 L 730.0 321.3 L 729.8 321.3 L 729.7 321.3 L 729.5 321.3 L 725.5 321.3 L 721.4 321.3 L 717.5 321.3 L 713.6 321.3 L 709.6 321.3 L 705.6 321.3 L 701.7 321.3 L 697.8 321.3 L 693.9 321.3 L 690.0 321.3 L 686.1 321.3 L 682.3 321.3 L 678.4 321.3 L 674.5 321.3 L 671.9 321.3 L 671.8 321.3 L 671.6 321.3 L 671.4 321.3 L 667.5 321.3 L 663.6 321.3 L 659.7 321.3 L 655.8 321.3 L 651.8 321.3 L 647.9 321.3 L 643.9 321.3 L 639.9 321.3 L 637.6 321.3 L 637.4 321.3 L 637.2 321.3 L 634.7 321.3 L 634.6 321.3 L 634.4 321.3 L 631.4 321.3 L 629.9 321.3 L 625.7 321.3 L 622.7 321.3 L 618.9 321.3 L 615.6 321.3 L 612.5 321.3 L 608.1 321.3 L 603.6 321.3 L 599.1 321.3 L 594.5 321.3 L 589.8 321.2 L 585.1 321.2 L 580.2 321.2 L 575.4 321.2 L 570.6 321.2 L 567.0 321.2 L 565.2 321.2 L 564.5 321.2 L 564.2 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 1426.0 320.0" stroke="#e879f9" stroke-width="3.5" filter="url(#glow)" />
+    <path d="M 784.8 321.3 L 784.8 321.3 L 784.8 321.3 L 784.8 321.3 L 784.7 321.3 L 784.6 321.3 L 784.4 321.3 L 784.1 321.3 L 783.6 321.3 L 782.3 321.3 L 780.4 321.3 L 777.7 321.3 L 773.7 321.3 L 768.9 321.3 L 764.2 321.3 L 759.6 321.3 L 755.0 321.3 L 750.6 321.3 L 746.2 321.3 L 741.8 321.3 L 737.6 321.3 L 733.4 321.3 L 730.2 321.3 L 730.0 321.3 L 729.8 321.3 L 729.7 321.3 L 729.5 321.3 L 725.5 321.3 L 721.4 321.3 L 717.5 321.3 L 713.6 321.3 L 709.6 321.3 L 705.6 321.3 L 701.7 321.3 L 697.8 321.3 L 693.9 321.3 L 690.0 321.3 L 686.1 321.3 L 682.3 321.3 L 678.4 321.3 L 674.5 321.3 L 671.9 321.3 L 671.8 321.3 L 671.6 321.3 L 671.4 321.3 L 667.5 321.3 L 663.6 321.3 L 659.7 321.3 L 655.8 321.3 L 651.8 321.3 L 647.9 321.3 L 643.9 321.3 L 639.9 321.3 L 637.6 321.3 L 637.4 321.3 L 637.2 321.3 L 634.7 321.3 L 634.6 321.3 L 634.4 321.3 L 631.4 321.3 L 629.9 321.3 L 625.7 321.3 L 622.7 321.3 L 618.9 321.3 L 615.6 321.3 L 612.5 321.3 L 608.1 321.3 L 603.6 321.3 L 599.1 321.3 L 594.5 321.3 L 589.8 321.2 L 585.1 321.2 L 580.2 321.2 L 575.4 321.2 L 570.6 321.2 L 567.0 321.2 L 565.2 321.2 L 564.5 321.2 L 564.2 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 564.1 321.2 L 1426.0 320.0" stroke="#ffffff" stroke-width="1.2" opacity="0.9" />
+
+    <!-- CSA-08 Historical Reference -->
+    <g transform="translate(603.6, 73.4)">
+        <circle r="7" fill="#ef4444" opacity="0.3" />
+        <circle r="4" fill="#ef4444" />
+        <text x="12" y="4" fill="#f87171" font-size="11" font-weight="bold">CSA-08 Impact (Lon -95.6º, Lat +18.3º)</text>
+        <text x="12" y="16" fill="#94a3b8" font-size="9">Battery failure at T+113s | Lost at Sea</text>
+    </g>
+
+    <!-- Simulated Target Footprint -->
+    <g transform="translate(183.3, 321.4)">
+        <circle r="18" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="4,4" />
+        <circle r="5" fill="#06b6d4" />
+        <text x="-15" y="-24" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">Planned Target (Lon -144.5º)</text>
+        <text x="-15" y="-12" fill="#94a3b8" font-size="9" text-anchor="middle">Inland Highlands (733 km West)</text>
+    </g>
+
+    <!-- Actual CSA-09 Recovery Splashdown -->
+    <g transform="translate(564.1, 321.2)">
+        <circle r="22" fill="#22c55e" opacity="0.25" filter="url(#glow)" />
+        <circle r="9" fill="#22c55e" stroke="#ffffff" stroke-width="2" />
+        <!-- Custom Recovery Icon -->
+        <text x="0" y="4" fill="#000000" font-size="10" font-weight="bold" text-anchor="middle">✓</text>
+        
+        <text x="-15" y="28" fill="#4ade80" font-size="12" font-weight="bold">CSA-09 Touchdown (Lon -100.2º, Lat -0.09º)</text>
+        <text x="-15" y="42" fill="#cbd5e1" font-size="10">🟢 100% RECOVERED INTACT (85.5% Value)</text>
+        <text x="-15" y="55" fill="#94a3b8" font-size="9">Distance from KSC: 268.0 km West | Apogee: 162.6 km</text>
+    </g>
+
+    <!-- KSC Launch Site Marker -->
+    <g transform="translate(784.8, 321.3)">
+        <circle r="6" fill="#38bdf8" stroke="#ffffff" stroke-width="2" />
+        <text x="14" y="4" fill="#38bdf8" font-size="12" font-weight="bold">KSC Launch Pad 09</text>
+        <text x="14" y="16" fill="#94a3b8" font-size="9">Lon -74.56º, Lat -0.10º</text>
+    </g>
+
+    <!-- Header & Mission Comparison Info Card -->
+    <rect x="50" y="25" width="560" height="78" rx="8" fill="#030712" stroke="#334155" stroke-width="1.5" opacity="0.95" />
+    <text x="65" y="48" fill="#38bdf8" font-size="14" font-weight="bold">MISSION CSA-09: FLIGHT PROFILE COMPARISON</text>
+    <text x="65" y="68" fill="#e2e8f0" font-size="10">Planned: Due West Corridor (733 km West, Apogee 277 km) | Model: Corolt-IIIb (800 EC)</text>
+    <text x="65" y="85" fill="#4ade80" font-size="10" font-weight="bold">Actual: 268 km West | Apogee 162.6 km | 100% Vessel Salvaged (85.5% Recovery Funds)</text>
+
+    <!-- Legend -->
+    <rect x="670" y="25" width="240" height="120" rx="6" fill="#030712" stroke="#334155" stroke-width="1.2" opacity="0.9" />
+    <text x="685" y="45" fill="#94a3b8" font-size="10" font-weight="bold">MISSION LEGEND</text>
+    
+    <line x1="685" y1="62" x2="715" y2="62" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="6,4" />
+    <text x="725" y="66" fill="#e2e8f0" font-size="10">Planned Flight (Simulated)</text>
+    
+    <line x1="685" y1="82" x2="715" y2="82" stroke="#e879f9" stroke-width="3" />
+    <text x="725" y="86" fill="#e2e8f0" font-size="10">Actual Flown Trajectory</text>
+    
+    <circle cx="700" cy="102" r="4.5" fill="#22c55e" />
+    <text x="725" y="106" fill="#4ade80" font-size="10">Safe Recovery Touchdown</text>
+
+    <circle cx="700" cy="122" r="4.5" fill="#ef4444" />
+    <text x="725" y="126" fill="#f87171" font-size="10">CSA-08 Impact Site (Water)</text>
+
+    <!-- Water/Land biome context notes -->
+    <text x="65" y="565" fill="#64748b" font-size="10">Note: CSA-09 was recovered in coastal waters at Lon -100.2º (268 km from KSC).</text>
+    <text x="65" y="580" fill="#64748b" font-size="10">The entire payload &amp; avionics remained powered and structurally intact throughout splashdown.</text>
+</svg>
