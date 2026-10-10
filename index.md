@@ -10,37 +10,37 @@ hero:
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 View Flight CSA-07
-      link: /missions/csa-07
+      text: 🚀 View Flight CSA-11
+      link: /missions/csa-11
     - theme: alt
-      text: 📡 Corolt-III Fleet
-      link: /vehicles/corolt-3
+      text: 🛰️ Corolt-IV Fleet
+      link: /vehicles/corolt-4
 
 features:
-  - title: 🌌 SUBORBITAL & ORBITAL CONQUEST
-    details: High-altitude space exploration (245 km), gravity turn ascent profiles, and autonomous CoroltNet constellation.
+  - title: 🌌 ORBITAL ERA & COMMS CONSTELLATION
+    details: Heavy liquid launcher debut (Corolt-IV), 269.1 km trans-atmospheric insertion, and Kerbin Comms Constellation deployment.
   - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
-    details: Real-time science transmission, Mach 5+ aerothermal heating, Van Allen radiation belts, and strict power budgeting.
-  - title: 💻 AUTONOMOUS kOS CONTROL & TELEMETRY
-    details: Ground-independent KerboScript flight execution and continuous high-rate multivariable telemetry streams.
+    details: High-rate telemetry streaming, component reliability management, Van Allen radiation boundary, and strict power budgeting.
+  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.1
+    details: Closed-loop gravity turn ascent, real-time dynamic Max Q throttling, symmetrical apogee circularization, and failsafe abort routines.
 ---
 
 <div class="csa-stats-grid">
   <div class="csa-stat-card">
-    <div class="csa-stat-val">245.0 km</div>
+    <div class="csa-stat-val">269.1 km</div>
     <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">Mach 5.4</div>
-    <div class="csa-stat-lbl">Hypersonic Velocity</div>
+    <div class="csa-stat-val">2,289 m/s</div>
+    <div class="csa-stat-lbl">Peak Orbital Velocity</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">100 %</div>
-    <div class="csa-stat-lbl">Autonomous Recovery</div>
+    <div class="csa-stat-val">1,082 km</div>
+    <div class="csa-stat-lbl">Downrange Distance</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">kOS v1.0</div>
-    <div class="csa-stat-lbl">Programmable Avionics</div>
+    <div class="csa-stat-val">kOS v4.1</div>
+    <div class="csa-stat-lbl">Autonomous Guidance</div>
   </div>
 </div>
 

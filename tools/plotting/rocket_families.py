@@ -462,6 +462,153 @@ class CSA09Plotter(CoroltIIIFamilyPlotter):
         ))
         return markers
 
+class CSA10Plotter(CoroltIIIFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-10", alt_ceil=180000.0, vel_ceil=1600.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                alt = float(r.get("altitude", 0.0))
+                self.valid_rows.append(r)
+                if alt <= 1585.0 and met > 1200:
+                    break
+            except (ValueError, TypeError):
+                continue
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IIIb (Upgraded 800 EC Upper Stage)"
+
+    def get_mission_objective(self) -> str:
+        return "Inland boreal mountain corridor (Heading 355º NNW) & 100% solid-ground mountain recovery"
+
+    def get_mission_outcome(self) -> str:
+        return "🟢 Total Mission Accomplished | 100% Solid-Ground Mountain Recovery (1,584m ASL) | Apogee 162.65 km"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=self.landing_time,
+            altitude=self.landing_alt,
+            label="Mountain Touchdown (1,584m ASL)",
+            color="#22c55e",
+            circle_color="#22c55e",
+            anchor="end",
+            dx=-10,
+            dy=-15
+        ))
+        return markers
+
+# ==============================================================================
+# FAMÍLIA COROLT-IV (Orbital Heavy Launchers & Autonomous Guidance)
+# ==============================================================================
+class CoroltIVFamilyPlotter(BaseMissionPlotter):
+    def get_vehicle_family(self) -> str:
+        return "Corolt-IV Family"
+
+class CSA11Plotter(CoroltIVFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-11", alt_ceil=280000.0, vel_ceil=2200.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        liftoff_met = None
+        for r in self.raw_rows:
+            try:
+                alt = float(r.get("altitude", 0.0))
+                met = float(r.get("MET", 0.0))
+                if liftoff_met is None and alt > 88.0 and met > 800:
+                    liftoff_met = met - 1.0
+            except (ValueError, TypeError):
+                continue
+
+        if liftoff_met is None:
+            liftoff_met = 834.7
+
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                if met >= liftoff_met:
+                    t_flight = met - liftoff_met
+                    alt = float(r.get("altitude", 0.0))
+                    r_copy = dict(r)
+                    r_copy["MET"] = str(t_flight)
+                    self.valid_rows.append(r_copy)
+                    if alt <= 833.0 and t_flight > 1378.0:
+                        break
+            except (ValueError, TypeError):
+                continue
+
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IV B (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)"
+
+    def get_mission_objective(self) -> str:
+        return "Kerbin Comms Constellation Anchor (CoroltSat-1A) 300x300 km orbit insertion via kOS"
+
+    def get_mission_outcome(self) -> str:
+        return "🟡 Historic Partial Success / Engine Failure | Suborbital Apogee 269.1 km | Guidance & Ascent Validated | Re-entry 1,082 km Downrange"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=12.1,
+            altitude=509.5,
+            label="SRB Staging (T+12s)",
+            color="#fbbf24",
+            circle_color="#fbbf24",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=62.0,
+            altitude=8800.0,
+            label="Max Q: 17.8 kPa (T+62s)",
+            color="#f97316",
+            circle_color="#f97316",
+            anchor="start",
+            dx=8,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=125.1,
+            altitude=46000.0,
+            label="Stage 1 MECO (T+125s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=237.6,
+            altitude=132256.0,
+            label="Belle-RLX81 Failure (T+238s)",
+            color="#ef4444",
+            circle_color="#ef4444",
+            anchor="start",
+            dx=10,
+            dy=-18
+        ))
+        markers.append(PlotMarker(
+            time=1380.4,
+            altitude=832.7,
+            label="Surface Impact: T+23.0m (1,082 km Downrange)",
+            color="#f43f5e",
+            circle_color="#f43f5e",
+            anchor="end",
+            dx=-10,
+            dy=-15
+        ))
+        return markers
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -477,6 +624,8 @@ MISSION_REGISTRY: Dict[str, Type[BaseMissionPlotter]] = {
     "CSA-07": CSA07Plotter,
     "CSA-08": CSA08Plotter,
     "CSA-09": CSA09Plotter,
+    "CSA-10": CSA10Plotter,
+    "CSA-11": CSA11Plotter,
 }
 
 def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:

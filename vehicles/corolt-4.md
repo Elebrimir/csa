@@ -161,3 +161,12 @@ Staging Order:
    * **Core Burnout**: Altitude $\sim 48\text{ km}$, apoapsis $\sim 95 - 110\text{ km}$. Stage 1 separates.
    * **Coast Phase**: Vehicle coasts unpowered through the exosphere ($70\text{ km}$ to apoapsis).
    * **Circularization Burn**: Belle-RLX81 ignites at $T - 15\text{ s}$ before apoapsis ($\Delta v \approx 420\text{ m/s}$) to close orbit into $120\times 120\text{ km}$ or continues to $300\times 300\text{ km}$.
+
+---
+
+## 📜 Operational Flight Log & Production Fleet
+
+| Serial / Unit | Configuration | Mission Assigned | Payload | Flight Date | Apogee / Outcome |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`COROLT IVB - B1`** | Corolt-IV B | **[CSA-11](/missions/csa-11)** | `CoroltSat-1A` ($248\text{ kg}$) | Year 1, Day 93 | 🟡 **269.1 km** (Historic maiden ascent, kOS guidance validated, upper stage Belle anomaly) |
+| **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-11)** | `CoroltSat-1B` ($248\text{ kg}$) | Scheduled | 🟢 **Target: $300\times 300\text{ km}$** (Kerbin Comms Constellation Anchor Deployment) |
