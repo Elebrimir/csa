@@ -609,6 +609,122 @@ class CSA11Plotter(CoroltIVFamilyPlotter):
         ))
         return markers
 
+class CSA12Plotter(CoroltIVFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-12", alt_ceil=320000.0, vel_ceil=2200.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        liftoff_met = None
+        for r in self.raw_rows:
+            try:
+                alt = float(r.get("altitude", 0.0))
+                met = float(r.get("MET", 0.0))
+                if liftoff_met is None and alt > 88.0 and met > 300:
+                    liftoff_met = met - 1.0
+            except (ValueError, TypeError):
+                continue
+
+        if liftoff_met is None:
+            liftoff_met = 370.7
+
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                if met >= liftoff_met:
+                    t_flight = met - liftoff_met
+                    r_copy = dict(r)
+                    r_copy["MET"] = str(t_flight)
+                    self.valid_rows.append(r_copy)
+            except (ValueError, TypeError):
+                continue
+
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IV B #2 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)"
+
+    def get_mission_objective(self) -> str:
+        return "Kerbin Comms Constellation Anchor (CoroltSat-1B) 300x300 km equatorial circular orbit insertion"
+
+    def get_mission_outcome(self) -> str:
+        return "🟢 100% Historic Orbital Success | Circular Orbit 305.9x299.6 km (e=0.0035, i=0.13º) | CoroltSat-1B Deployed & Active"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=48.2,
+            altitude=7000.0,
+            label="SRB Staging: Full Burn (T+48s)",
+            color="#fbbf24",
+            circle_color="#fbbf24",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=47.7,
+            altitude=6844.0,
+            label="Max Q: 24.5 kPa (T+48s)",
+            color="#f97316",
+            circle_color="#f97316",
+            anchor="start",
+            dx=8,
+            dy=-15
+        ))
+        markers.append(PlotMarker(
+            time=124.9,
+            altitude=47500.0,
+            label="Stage 1 MECO (T+125s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=240.2,
+            altitude=131500.0,
+            label="SECO-1: Ap 300 km (T+240s)",
+            color="#a855f7",
+            circle_color="#a855f7",
+            anchor="start",
+            dx=8,
+            dy=-10
+        ))
+        markers.append(PlotMarker(
+            time=789.7,
+            altitude=299700.0,
+            label="SECO-2 Ignition (T+790s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=840.7,
+            altitude=300400.0,
+            label="Circular Orbit: 306x300 km (T+841s)",
+            color="#10b981",
+            circle_color="#10b981",
+            anchor="end",
+            dx=-10,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=850.0,
+            altitude=300500.0,
+            label="CoroltSat-1B Deployed",
+            color="#06b6d4",
+            circle_color="#06b6d4",
+            anchor="end",
+            dx=-10,
+            dy=15
+        ))
+        return markers
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -626,6 +742,7 @@ MISSION_REGISTRY: Dict[str, Type[BaseMissionPlotter]] = {
     "CSA-09": CSA09Plotter,
     "CSA-10": CSA10Plotter,
     "CSA-11": CSA11Plotter,
+    "CSA-12": CSA12Plotter,
 }
 
 def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:
@@ -633,3 +750,4 @@ def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:
     if code in MISSION_REGISTRY:
         return MISSION_REGISTRY[code](**kwargs)
     raise KeyError(f"Mission '{mission_code}' not found in CSA registry. Available: {list(MISSION_REGISTRY.keys())}")
+

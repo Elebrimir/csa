@@ -11,8 +11,8 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-4" },
-      { text: "Missions", link: "/missions/csa-11" },
-      { text: "Press", link: "/social_media/csa-11_post" },
+      { text: "Missions", link: "/missions/csa-12" },
+      { text: "Press", link: "/social_media/csa-12_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -32,7 +32,7 @@ export default defineConfig({
           { text: "Corolt-IIb (Radial Booster Variant)", link: "/vehicles/corolt-2b" },
           { text: "Corolt-III (Tandem Orbital Launcher)", link: "/vehicles/corolt-3" },
           { text: "Corolt-IIIb (Active Guidance Variant)", link: "/vehicles/corolt-3b" },
-          { text: "Corolt-IV (Liquid Quasiorbital Launcher)", link: "/vehicles/corolt-4" },
+          { text: "Corolt-IV (Modular Orbital Launcher)", link: "/vehicles/corolt-4" },
         ]
       },
       {
@@ -50,6 +50,7 @@ export default defineConfig({
           { text: "CSA-09: Equatorial Van Allen Probe", link: "/missions/csa-09" },
           { text: "CSA-10: Boreal Mountain Solid-Ground Recovery", link: "/missions/csa-10" },
           { text: "CSA-11: Trans-Atmospheric Ascension & Belle Anomaly", link: "/missions/csa-11" },
+          { text: "CSA-12: Maiden Orbital Insertion & CoroltSat-1B", link: "/missions/csa-12" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -68,6 +69,7 @@ export default defineConfig({
           { text: "CSA-09 Release", link: "/social_media/csa-09_post" },
           { text: "CSA-10 Release", link: "/social_media/csa-10_post" },
           { text: "CSA-11 Release", link: "/social_media/csa-11_post" },
+          { text: "CSA-12 Release", link: "/social_media/csa-12_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }

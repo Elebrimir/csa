@@ -169,4 +169,4 @@ Staging Order:
 | Serial / Unit | Configuration | Mission Assigned | Payload | Flight Date | Apogee / Outcome |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **`COROLT IVB - B1`** | Corolt-IV B | **[CSA-11](/missions/csa-11)** | `CoroltSat-1A` ($248\text{ kg}$) | Year 1, Day 93 | 🟡 **269.1 km** (Historic maiden ascent, kOS guidance validated, upper stage Belle anomaly) |
-| **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-11)** | `CoroltSat-1B` ($248\text{ kg}$) | Scheduled | 🟢 **Target: $300\times 300\text{ km}$** (Kerbin Comms Constellation Anchor Deployment) |
+| **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-12)** | `CoroltSat-1B` ($248\text{ kg}$) | Year 1, Day 159 | 🟢 **$305.9\times 299.6\text{ km}$** (100% Historic Orbital Insertion, $e=0.0035$, CoroltSat-1B Deployed & Active) |

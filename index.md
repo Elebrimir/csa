@@ -10,15 +10,15 @@ hero:
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 View Flight CSA-11
-      link: /missions/csa-11
+      text: 🚀 View Flight CSA-12
+      link: /missions/csa-12
     - theme: alt
       text: 🛰️ Corolt-IV Fleet
       link: /vehicles/corolt-4
 
 features:
-  - title: 🌌 ORBITAL ERA & COMMS CONSTELLATION
-    details: Heavy liquid launcher debut (Corolt-IV), 269.1 km trans-atmospheric insertion, and Kerbin Comms Constellation deployment.
+  - title: 🌌 PERMANENT ORBITAL ERA & COMMS CONSTELLATION
+    details: Modular heavy launcher (Corolt-IV B #2) achieves agency-first 300x300 km orbit, deploying the CoroltSat-1B relay anchor.
   - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
     details: High-rate telemetry streaming, component reliability management, Van Allen radiation boundary, and strict power budgeting.
   - title: 💻 AUTONOMOUS kOS GUIDANCE v4.1
@@ -27,16 +27,16 @@ features:
 
 <div class="csa-stats-grid">
   <div class="csa-stat-card">
-    <div class="csa-stat-val">269.1 km</div>
+    <div class="csa-stat-val">305.9 km</div>
     <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">2,289 m/s</div>
-    <div class="csa-stat-lbl">Peak Orbital Velocity</div>
+    <div class="csa-stat-val">100% Orbit</div>
+    <div class="csa-stat-lbl">305.9 x 299.6 km</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">1,082 km</div>
-    <div class="csa-stat-lbl">Downrange Distance</div>
+    <div class="csa-stat-val">e = 0.0035</div>
+    <div class="csa-stat-lbl">Orbital Eccentricity</div>
   </div>
   <div class="csa-stat-card">
     <div class="csa-stat-val">kOS v4.1</div>
