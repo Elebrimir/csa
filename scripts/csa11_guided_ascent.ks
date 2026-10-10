@@ -62,6 +62,12 @@ FUNCTION jettison_fairings {
             }
         }
     }
+    // Fail-safe: if fairing is mapped to dedicated stage (Stage 1)
+    IF STAGE:NUMBER = 1 {
+        STAGE.
+        SET fairing_jettisoned TO TRUE.
+        PRINT "  [FAIRING] Staged via Stage 1.".
+    }
     RETURN fairing_jettisoned.
 }
 
@@ -84,8 +90,8 @@ FUNCTION separate_payload {
             }
         }
     }
-    // If no specific decoupler event was matched, fire standard stage
-    IF NOT separated {
+    // Fail-safe: trigger Stage 0 for payload release
+    IF (NOT separated) OR (STAGE:NUMBER = 0) {
         PRINT "  [PAYLOAD] Triggering active stage for payload release...".
         STAGE.
     }
