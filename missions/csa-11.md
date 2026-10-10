@@ -49,7 +49,35 @@ Telemetry was captured at high frequency ($2\text{ Hz}$) via `tools/telemetry_re
 
 ## 📈 Flight Telemetry Curves & Trajectory Analysis
 
+### Primary Full-Flight Telemetry Profile
 ![CSA-11 Flight Telemetry Plot](../assets/csa-11_telemetry_plot.svg)
+
+### 6-Panel Flight Operations Deck (Multi-Variable Analytics)
+![CSA-11 6-Panel Operations Deck](../assets/csa-11_advanced_dashboard.svg)
+
+### Dynamic Pressure (Q) Envelope & Structural Deceleration Loads
+![CSA-11 Aerodynamic Pressure & Acceleration Load](../assets/csa-11_dynamic_pressure_plot.svg)
+
+### Autonomous Guidance Attitude (Pitch Law & Compass Azimuth)
+![CSA-11 Guidance Attitude & Heading Steering](../assets/csa-11_attitude_steering_plot.svg)
+
+---
+
+## 🗺️ KAA Airspace Hazard & Trajectory Clearance Notice (NOTAM)
+
+The **Kerbal Aviation Administration (KAA)** published the official Commercial Space Transportation Hazard and Exclusion Notice for Mission **CSA-11**:
+
+![KAA Airspace Hazard & Trajectory Clearance Notice CSA-11](../assets/csa-11_kaa_hazard_map.svg)
+
+### KAA Mission Notices & Exclusion Directives:
+* **NOTAM Reference**: `KAA-CSA11-2026-11` (Launch Window Y1-D93).
+* **Launch Azimuth**: $090.0^\circ$ (Due East Equatorial Corridor).
+* **Zone 1 (SRB Drop Area)**: Offshore maritime drop sector at $\text{Lat } 0.0^\circ, \text{Lon } -73.5^\circ\text{ W}$ for the two jettisoned Shrimp boosters ($T+12\text{ s}$).
+* **Zone 2 (Stage 1 Core MECO Impact)**: Deep-ocean disposal footprint at $\text{Lat } +0.05^\circ\text{ N}, \text{Lon } -58.0^\circ\text{ W}$ for the expended Etoh-140-TU core ($T+125\text{ s}$).
+* **Zone 3 (Suborbital Re-entry Footprint)**: Continental terrestrial impact sector on the eastern landmass at $\text{Lat } +0.2782^\circ\text{ N}, \text{Lon } +28.7625^\circ\text{ E}$ ($1,082\text{ km}$ downrange).
+* **Airspace Clearance**: All equatorial civil and commercial airways between $80^\circ\text{W}$ and $35^\circ\text{E}$ were cleared during the launch and re-entry windows.
+
+---
 
 ### Chronological Flight Events Log:
 * **$T-0.0\text{ s}$ ($MET = 834.7\text{ s}$)**: Terminal countdown zero. Main liquid core (`Etoh-140-TU`) and dual `Shrimp` SRBs ignite. Clamps release cleanly.
