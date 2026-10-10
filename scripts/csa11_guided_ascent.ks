@@ -174,7 +174,7 @@ PRINT "T+0.0s: LIFTOFF! Core Engine & Boosters Ignited!".
 PRINT "==================================================".
 
 // Release launch clamps / umbilicals and ignite propulsion
-UNTIL SHIP:MAXTHRUST > 0 DO {
+UNTIL SHIP:MAXTHRUST > 0 {
     STAGE.
     WAIT 0.5.
 }
@@ -214,7 +214,7 @@ PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [GOVERNOR] Active Dynamic Throttle Enga
 // ----------------------------------------------------------------------------
 // Monitor ascent telemetry while waiting for core liquid fuel depletion or engine flameout
 LOCAL last_telemetry_print IS MISSIONTIME.
-UNTIL (STAGE:LIQUIDFUEL < 0.5) OR (SHIP:MAXTHRUST < 10.0) DO {
+UNTIL (STAGE:LIQUIDFUEL < 0.5) OR (SHIP:MAXTHRUST < 10.0) {
     IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
         LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * CONSTANT:ATMTOKPA, 1).
         LOCAL r_c IS KERBIN_RADIUS + SHIP:ALTITUDE.
@@ -249,7 +249,7 @@ PRINT "Pushing Apoapsis to target altitude (300 km)...".
 LOCK STEERING TO PROGRADE.
 
 // Active loop pushing Ap and checking fairing release altitude deterministically
-UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000) DO {
+UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000) {
     IF (SHIP:ALTITUDE > 55000) AND (NOT fairing_done) {
         jettison_fairings().
         SET fairing_done TO TRUE.
