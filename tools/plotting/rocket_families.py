@@ -512,7 +512,7 @@ class CoroltIVFamilyPlotter(BaseMissionPlotter):
 
 class CSA11Plotter(CoroltIVFamilyPlotter):
     def __init__(self, **kwargs):
-        super().__init__(mission_id="CSA-11", alt_ceil=280000.0, vel_ceil=2000.0, **kwargs)
+        super().__init__(mission_id="CSA-11", alt_ceil=280000.0, vel_ceil=2200.0, **kwargs)
 
     def filter_data(self) -> None:
         self.valid_rows = []
@@ -533,9 +533,13 @@ class CSA11Plotter(CoroltIVFamilyPlotter):
             try:
                 met = float(r.get("MET", 0.0))
                 if met >= liftoff_met:
+                    t_flight = met - liftoff_met
+                    alt = float(r.get("altitude", 0.0))
                     r_copy = dict(r)
-                    r_copy["MET"] = str(met - liftoff_met)
+                    r_copy["MET"] = str(t_flight)
                     self.valid_rows.append(r_copy)
+                    if alt <= 833.0 and t_flight > 1378.0:
+                        break
             except (ValueError, TypeError):
                 continue
 
@@ -549,7 +553,7 @@ class CSA11Plotter(CoroltIVFamilyPlotter):
         return "Kerbin Comms Constellation Anchor (CoroltSat-1A) 300x300 km orbit insertion via kOS"
 
     def get_mission_outcome(self) -> str:
-        return "🟡 Historic Partial Success / Engine Failure | Suborbital Apogee 269.1 km | Guidance & Ascent Validated | Upper Stage Breakdown"
+        return "🟡 Historic Partial Success / Engine Failure | Suborbital Apogee 269.1 km | Guidance & Ascent Validated | Re-entry 1,082 km Downrange"
 
     def get_annotated_markers(self) -> List[PlotMarker]:
         markers = super().get_annotated_markers()
@@ -586,12 +590,22 @@ class CSA11Plotter(CoroltIVFamilyPlotter):
         markers.append(PlotMarker(
             time=237.6,
             altitude=132256.0,
-            label="Belle-RLX81 Engine Failure (T+238s)",
+            label="Belle-RLX81 Failure (T+238s)",
             color="#ef4444",
             circle_color="#ef4444",
             anchor="start",
             dx=10,
             dy=-18
+        ))
+        markers.append(PlotMarker(
+            time=1380.4,
+            altitude=832.7,
+            label="Surface Impact: T+23.0m (1,082 km Downrange)",
+            color="#f43f5e",
+            circle_color="#f43f5e",
+            anchor="end",
+            dx=-10,
+            dy=-15
         ))
         return markers
 

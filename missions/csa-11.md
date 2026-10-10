@@ -34,14 +34,16 @@ Telemetry was captured at high frequency ($2\text{ Hz}$) via `tools/telemetry_re
 | :--- | :--- | :--- | :--- | :--- |
 | **Apoapsis (Ap)** | $300.00\text{ km}$ | **$269.08\text{ km}$** | $-30.92\text{ km}$ ($-10.3\%$) | Cut short by upper stage engine failure at 132.2 km |
 | **Periapsis (Pe)** | $300.00\text{ km}$ | **$-262.44\text{ km}$** | N/A (Ballistic) | Circularization burn (SECO-2) aborted due to flameout |
-| **Max Orbital Speed** | $2,295.0\text{ m/s}$ | **$1,948.2\text{ m/s}$** | $-346.8\text{ m/s}$ | Upper stage delivered $768.4\text{ m/s}$ of planned $1,115\text{ m/s}$ |
-| **Max Surface Speed** | $2,120.0\text{ m/s}$ | **$1,754.1\text{ m/s}$** | $-365.9\text{ m/s}$ | High kinetic energy reached at vacuum burnout |
-| **Max Dynamic Pressure ($Q_{\max}$)** | $\le 34.00\text{ kPa}$ | **$17.77\text{ kPa}$** | $-16.23\text{ kPa}$ | 🟢 Extremely benign aerodynamic environment ($T+62\text{ s}$) |
-| **Max Acceleration ($G_{\max}$)** | $\le 3.80\text{ G}$ | **$3.32\text{ G}$** | $-0.48\text{ G}$ | 🟢 Dynamic governor protected satellite payload bus |
+| **Max Orbital Speed** | $2,295.0\text{ m/s}$ | **$2,289.1\text{ m/s}$** | $-5.9\text{ m/s}$ | Accelerating on re-entry ballistic dive into atmosphere |
+| **Max Surface Speed** | $2,120.0\text{ m/s}$ | **$2,125.3\text{ m/s}$** | $+5.3\text{ m/s}$ | Peak hypersonic re-entry dive velocity ($T+1306.2\text{ s}$) |
+| **Max Dynamic Pressure ($Q_{\max}$)** | $\le 34.00\text{ kPa}$ | **$17.77\text{ kPa}$ (Ascent) / $64.29\text{ kPa}$ (Re-entry)** | Nominal ascent | Ascent was extremely benign; peak $Q$ occurred during unguided dive |
+| **Max Acceleration ($G_{\max}$)** | $\le 3.80\text{ G}$ | **$3.32\text{ G}$ (Ascent) / $9.32\text{ G}$ (Re-entry)** | Safe payload ascent | Peak deceleration load upon atmospheric slam at $T+1340\text{ s}$ |
 | **Liftoff TWR** | $1.45 - 1.55$ | **$1.46$** | Nominal | Clean pad release and positive vertical rate |
 | **Heading Azimuth** | $90.0^\circ$ (Due East) | **$89.96^\circ$** | $-0.04^\circ$ | 🟢 **Near-perfect equatorial plane alignment ($i \approx 0.09^\circ$)** |
 | **Fairing Jettison Alt** | $> 55.0\text{ km}$ | **$55.8\text{ km}$** | $+0.8\text{ km}$ | 🟢 Clean clamshell separation via module event |
-| **Time in Space ($>70\text{ km}$)** | Permanent Orbit | **$592.3\text{ s}$ ($9.9\text{ min}$)**| Suborbital Arc | Prolonged exospheric flight |
+| **Time in Space ($>70\text{ km}$)** | Permanent Orbit | **$1,108.8\text{ s}$ ($18.48\text{ min}$)** | Suborbital Arc | Prolonged exospheric flight arc |
+| **Total Flight Duration** | Mission Lifetime | **$1,379.9\text{ s}$ ($23.00\text{ min}$)** | Complete Flight | Liftoff to ground impact |
+| **Downrange Distance** | Orbital Insertion | **$1,082\text{ km}$ ($103.32^\circ$ East)** | Ballistic Impact | Impacted at $\text{Lat } +0.278^\circ\text{ N}, \text{Lon } +28.76^\circ\text{ E}$ |
 
 ---
 
@@ -53,12 +55,15 @@ Telemetry was captured at high frequency ($2\text{ Hz}$) via `tools/telemetry_re
 * **$T-0.0\text{ s}$ ($MET = 834.7\text{ s}$)**: Terminal countdown zero. Main liquid core (`Etoh-140-TU`) and dual `Shrimp` SRBs ignite. Clamps release cleanly.
 * **$T+12.1\text{ s}$ ($MET = 846.8\text{ s}$ / $h = 509.5\text{ m}$)**: Dual radial SRBs decouple. Core engine continues nominal full-thrust vertical climb.
 * **$T+20.5\text{ s}$ ($MET = 855.2\text{ s}$ / $h = 1,200\text{ m}$)**: Pitch-kick initiated. Attitude steers towards Heading $90.0^\circ$ East with initial pitch $84.0^\circ$.
-* **$T+62.0\text{ s}$ ($MET = 896.7\text{ s}$ / $h = 8.8\text{ km}$)**: Max Q peak reached at **$17.77\text{ kPa}$** ($v_{\text{surf}} = 388\text{ m/s}$). Throttle remains at 100% as $Q$ remains below governor threshold ($24.0\text{ kPa}$).
+* **$T+62.0\text{ s}$ ($MET = 896.7\text{ s}$ / $h = 8.8\text{ km}$)**: Max Q ascent peak reached at **$17.77\text{ kPa}$** ($v_{\text{surf}} = 388\text{ m/s}$). Throttle remains at 100% as $Q$ remains below governor threshold ($24.0\text{ kPa}$).
 * **$T+125.1\text{ s}$ ($MET = 959.8\text{ s}$ / $h = 46.0\text{ km}$)**: Stage 1 Core MECO. Velocity $v_{\text{orb}} = 1,180.2\text{ m/s}$. Interstage separation command fires.
 * **$T+127.2\text{ s}$ ($MET = 961.9\text{ s}$ / $h = 47.6\text{ km}$)**: Stage 2 `Belle-RLX81` ignites cleanly. Throttle commanded to 100%.
 * **$T+136.0\text{ s}$ ($MET = 970.7\text{ s}$ / $h = 55.8\text{ km}$)**: Altitude threshold crossed; aerodynamic fairings jettison deterministically into vacuum.
 * **$T+237.6\text{ s}$ ($MET = 1072.3\text{ s}$ / $h = 132.26\text{ km}$)**: **ENGINE FAILURE**. Kerbalism engine failure triggers. Thrust collapses to zero. Velocity freezes at $v_{\text{orb}} = 1,948.2\text{ m/s}$. Apoapsis peaks at **$269.08\text{ km}$**.
-* **$T+749.1\text{ s}$ ($MET = 1521.4\text{ s}$ / $h = 249.18\text{ km}$)**: End of primary telemetry acquisition during exospheric coast towards apogee.
+* **$T+827.5\text{ s}$ ($MET = 1662.2\text{ s}$ / $h = 269.08\text{ km}$)**: Vehicle reaches true suborbital apogee ($269.08\text{ km}$) after $13.79\text{ min}$ of flight.
+* **$T+1252.0\text{ s}$ ($MET = 2086.7\text{ s}$ / $h = 70.0\text{ km}$)**: Atmospheric re-entry boundary crossed. Vehicle accelerates towards terminal re-entry interface.
+* **$T+1306.2\text{ s}$ ($MET = 2140.9\text{ s}$ / $h = 34.2\text{ km}$)**: Peak hypersonic re-entry dive velocity reached ($v_{\text{surf}} = 2,125.3\text{ m/s}$, $Q = 64.29\text{ kPa}$, $G = 9.32\text{ G}$).
+* **$T+1379.9\text{ s}$ ($MET = 2214.6\text{ s}$ / $h = 832.7\text{ m}$)**: Final ground impact on Kerbin surface at **$227.6\text{ m/s}$**. Total downrange displacement: **$1,082\text{ km}$ ($103.32^\circ$ East)** at coordinates **$\text{Lat } +0.2782^\circ\text{ N}, \text{Lon } +28.7625^\circ\text{ E}$**. Total flight time: **$23.00\text{ min}$**.
 
 ---
 
