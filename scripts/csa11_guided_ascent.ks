@@ -185,8 +185,8 @@ UNTIL SHIP:MAXTHRUST > 0 {
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 0 + Stage 1 climbing vertically...".
 LOCAL initial_thrust IS SHIP:MAXTHRUST.
 
-// Wait for booster burnout (thrust drop or solid fuel exhaustion)
-WAIT UNTIL (SHIP:MAXTHRUST < (initial_thrust * 0.85)) OR (STAGE:SOLIDFUEL < 0.1) OR (MISSIONTIME > 12.0).
+// Wait for booster burnout (solid fuel depletion or thrust drop)
+WAIT UNTIL (SHIP:SOLIDFUEL < 1.0) OR (SHIP:MAXTHRUST < (initial_thrust * 0.70)).
 WAIT 0.5.
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Booster burnout! Decoupling 2x Shrimp SRBs...".
 STAGE. // Jettison radial solid boosters
@@ -243,6 +243,7 @@ WAIT 1.0.
 // Phase 5: Fairing Jettison & Apoapsis Acquisition (Target: 300 km)
 // ----------------------------------------------------------------------------
 LOCAL fairing_done IS FALSE.
+LOCAL engine_failed IS FALSE.
 
 // Upper stage burns along prograde / shallow ascent until Apoapsis reaches 300 km
 PRINT "Pushing Apoapsis to target altitude (300 km)...".
@@ -254,15 +255,32 @@ UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000) {
         jettison_fairings().
         SET fairing_done TO TRUE.
     }
+    // Fail-safe check for engine breakdown / flameout
+    IF (SHIP:MAXTHRUST < 1.0) AND (STAGE:LIQUIDFUEL > 5.0) {
+        PRINT "--------------------------------------------------".
+        PRINT "[EMERGENCY] Upper stage engine flameout/breakdown detected!".
+        PRINT "Current Apoapsis: " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km".
+        PRINT "Deploying solar arrays and communications bus immediately...".
+        deploy_satellite_systems().
+        SET engine_failed TO TRUE.
+        BREAK.
+    }
     WAIT 0.2.
 }
 
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Approaching target Apogee (295 km). Throttling down to 25%...".
-LOCK THROTTLE TO 0.25.
+IF engine_failed {
+    PRINT "Aborting circularization due to engine breakdown.".
+    PRINT "Vessel on suborbital ballistic trajectory (Ap " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km).".
+    UNLOCK STEERING.
+    UNLOCK THROTTLE.
+    SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+} ELSE {
+    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Approaching target Apogee (295 km). Throttling down to 25%...".
+    LOCK THROTTLE TO 0.25.
 
-WAIT UNTIL SHIP:APOAPSIS >= TARGET_APOAPSIS.
-LOCK THROTTLE TO 0.0.
-PRINT "==================================================".
+    WAIT UNTIL SHIP:APOAPSIS >= TARGET_APOAPSIS.
+    LOCK THROTTLE TO 0.0.
+    PRINT "==================================================".
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SECO-1 (First Upper Stage Cutoff)!".
 PRINT "Current Apoapsis: " + ROUND(SHIP:APOAPSIS / 1000, 2) + " km".
 PRINT "Current Periapsis: " + ROUND(SHIP:PERIAPSIS / 1000, 2) + " km".
