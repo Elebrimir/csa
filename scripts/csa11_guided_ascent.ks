@@ -345,11 +345,11 @@ PRINT "  Period:       " + ROUND(final_period / 60, 2) + " min (" + ROUND(final_
 PRINT "  Inclination:  " + ROUND(SHIP:ORBIT:INCLINATION, 3) + "º".
 PRINT "--------------------------------------------------".
 
-// Payload Deployment
+// Payload Activation & Deployment
 WAIT 5.0.
-separate_payload().
-WAIT 2.0.
 deploy_satellite_systems().
+WAIT 3.0.
+separate_payload().
 
 PRINT "==================================================".
 PRINT "      MISSION CSA-11: COROLTSAT-1A DEPLOYED!      ".
