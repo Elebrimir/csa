@@ -47,16 +47,16 @@ FUNCTION jettison_fairings {
     PRINT "--------------------------------------------------".
     PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Jettisoning payload fairings (> 55 km)...".
     LOCAL fairing_jettisoned IS FALSE.
-    FOR p IN SHIP:PARTS {
-        IF p:NAME:CONTAINS("Fairing") OR p:NAME:CONTAINS("Juno4") {
-            FOR m IN p:MODULES {
-                LOCAL part_mod IS p:GETMODULE(m).
+    FOR part_item IN SHIP:PARTS {
+        IF part_item:NAME:CONTAINS("Fairing") OR part_item:NAME:CONTAINS("Juno4") {
+            FOR mod_name IN part_item:MODULES {
+                LOCAL part_mod IS part_item:GETMODULE(mod_name).
                 FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("deploy") OR evl:CONTAINS("jettison") OR evl:CONTAINS("desplegar") OR evl:CONTAINS("soltar") {
                         part_mod:DOEVENT(ev).
                         SET fairing_jettisoned TO TRUE.
-                        PRINT "  [FAIRING] Event fired: " + ev + " on " + p:TITLE.
+                        PRINT "  [FAIRING] Event fired: " + ev + " on " + part_item:TITLE.
                     }
                 }
             }
@@ -77,16 +77,16 @@ FUNCTION separate_payload {
     PRINT "--------------------------------------------------".
     PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SEPARATING PAYLOAD (CoroltSat-1A)...".
     LOCAL separated IS FALSE.
-    FOR p IN SHIP:PARTS {
-        IF p:NAME:CONTAINS("Decoupler") OR p:NAME:CONTAINS("Adapter") OR p:NAME:CONTAINS("OGO") {
-            FOR m IN p:MODULES {
-                LOCAL part_mod IS p:GETMODULE(m).
+    FOR part_item IN SHIP:PARTS {
+        IF part_item:NAME:CONTAINS("Decoupler") OR part_item:NAME:CONTAINS("Adapter") OR part_item:NAME:CONTAINS("OGO") {
+            FOR mod_name IN part_item:MODULES {
+                LOCAL part_mod IS part_item:GETMODULE(mod_name).
                 FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("decouple") OR evl:CONTAINS("desacoplar") OR evl:CONTAINS("separate") {
                         part_mod:DOEVENT(ev).
                         SET separated TO TRUE.
-                        PRINT "  [PAYLOAD] Decoupler triggered: " + ev + " on " + p:TITLE.
+                        PRINT "  [PAYLOAD] Decoupler triggered: " + ev + " on " + part_item:TITLE.
                     }
                 }
             }
@@ -104,9 +104,9 @@ FUNCTION separate_payload {
 FUNCTION deploy_satellite_systems {
     PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Deploying communications and solar arrays...".
     AG3 ON. // Trigger Action Group 3 standard
-    FOR p IN SHIP:PARTS {
-        FOR m IN p:MODULES {
-            LOCAL part_mod IS p:GETMODULE(m).
+    FOR part_item IN SHIP:PARTS {
+        FOR mod_name IN part_item:MODULES {
+            LOCAL part_mod IS part_item:GETMODULE(mod_name).
             FOR ev IN part_mod:ALLEVENTNAMES {
                 LOCAL evl IS ev:TOLOWER.
                 IF evl:CONTAINS("extend") OR evl:CONTAINS("deploy") OR evl:CONTAINS("desplegar") OR evl:CONTAINS("activar") {
@@ -124,8 +124,8 @@ FUNCTION calculate_atmo_throttle {
     LOCAL q_kpa IS SHIP:DYNAMICPRESSURE * 101.325.
 
     // 2. Local gravitational acceleration & maximum available TWR
-    LOCAL r IS KERBIN_RADIUS + SHIP:ALTITUDE.
-    LOCAL g_local IS KERBIN_MU / (r * r).
+    LOCAL rad_local IS KERBIN_RADIUS + SHIP:ALTITUDE.
+    LOCAL g_local IS KERBIN_MU / (rad_local * rad_local).
     LOCAL max_twr IS 0.
     IF (SHIP:MASS > 0) AND (g_local > 0) {
         SET max_twr TO SHIP:AVAILABLETHRUST / (SHIP:MASS * g_local).
@@ -217,8 +217,8 @@ LOCAL last_telemetry_print IS MISSIONTIME.
 UNTIL (STAGE:LIQUIDFUEL < 0.5) OR (SHIP:MAXTHRUST < 10.0) {
     IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
         LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * CONSTANT:ATMTOKPA, 1).
-        LOCAL r_c IS KERBIN_RADIUS + SHIP:ALTITUDE.
-        LOCAL g_c IS KERBIN_MU / (r_c * r_c).
+        LOCAL rad_c IS KERBIN_RADIUS + SHIP:ALTITUDE.
+        LOCAL g_c IS KERBIN_MU / (rad_c * rad_c).
         LOCAL cur_twr IS ROUND(SHIP:THRUST / MAX(0.001, (SHIP:MASS * g_c)), 2).
         PRINT "T+" + ROUND(MISSIONTIME, 0) + "s | Alt: " + ROUND(SHIP:ALTITUDE/1000, 1) + "km | Q: " + q_curr + "kPa | TWR: " + cur_twr + " | Throttle: " + ROUND(THROTTLE * 100, 0) + "%".
         SET last_telemetry_print TO MISSIONTIME.
@@ -285,8 +285,8 @@ IF NOT fairing_done {
 // Phase 7: Symmetric Circularization Burn Calculation & Execution
 // ----------------------------------------------------------------------------
 // Calculate exact orbital speed required at 300 km
-LOCAL r_target IS KERBIN_RADIUS + TARGET_APOAPSIS.
-LOCAL v_circ IS SQRT(KERBIN_MU / r_target).
+LOCAL rad_target IS KERBIN_RADIUS + TARGET_APOAPSIS.
+LOCAL v_circ IS SQRT(KERBIN_MU / rad_target).
 
 // Estimate velocity at apoapsis from current orbital energy
 LOCAL sma_trans IS (SHIP:PERIAPSIS + SHIP:APOAPSIS + 2 * KERBIN_RADIUS) / 2.
