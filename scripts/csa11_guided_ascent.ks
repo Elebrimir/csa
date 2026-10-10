@@ -62,11 +62,13 @@ FUNCTION jettison_fairings {
             }
         }
     }
-    // Fail-safe: if fairing is mapped to dedicated stage (Stage 1)
-    IF STAGE:NUMBER = 1 {
-        STAGE.
-        SET fairing_jettisoned TO TRUE.
-        PRINT "  [FAIRING] Staged via Stage 1.".
+    // Fail-safe fallback if no part module event was found
+    IF NOT fairing_jettisoned {
+        IF STAGE:NUMBER >= 1 {
+            STAGE.
+            SET fairing_jettisoned TO TRUE.
+            PRINT "  [FAIRING] Staged via active stage.".
+        }
     }
     RETURN fairing_jettisoned.
 }
@@ -90,10 +92,11 @@ FUNCTION separate_payload {
             }
         }
     }
-    // Fail-safe: trigger Stage 0 for payload release
-    IF (NOT separated) OR (STAGE:NUMBER = 0) {
+    // Fail-safe fallback: trigger active stage if part event was not found
+    IF NOT separated {
         PRINT "  [PAYLOAD] Triggering active stage for payload release...".
         STAGE.
+        SET separated TO TRUE.
     }
     PRINT "==================================================".
 }
@@ -209,11 +212,11 @@ PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [GOVERNOR] Active Dynamic Throttle Enga
 // ----------------------------------------------------------------------------
 // Phase 4: Stage 1 MECO & Upper Stage (Belle-RLX81) Ignition
 // ----------------------------------------------------------------------------
-// Monitor ascent telemetry while waiting for core liquid fuel depletion
+// Monitor ascent telemetry while waiting for core liquid fuel depletion or engine flameout
 LOCAL last_telemetry_print IS MISSIONTIME.
-UNTIL STAGE:LIQUIDFUEL < 0.5 DO {
+UNTIL (STAGE:LIQUIDFUEL < 0.5) OR (SHIP:MAXTHRUST < 10.0) DO {
     IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
-        LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * 101.325, 1).
+        LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * CONSTANT:ATMTOKPA, 1).
         LOCAL r_c IS KERBIN_RADIUS + SHIP:ALTITUDE.
         LOCAL g_c IS KERBIN_MU / (r_c * r_c).
         LOCAL cur_twr IS ROUND(SHIP:THRUST / MAX(0.001, (SHIP:MASS * g_c)), 2).
@@ -240,16 +243,20 @@ WAIT 1.0.
 // Phase 5: Fairing Jettison & Apoapsis Acquisition (Target: 300 km)
 // ----------------------------------------------------------------------------
 LOCAL fairing_done IS FALSE.
-WHEN (SHIP:ALTITUDE > 55000) AND (NOT fairing_done) THEN {
-    jettison_fairings().
-    SET fairing_done TO TRUE.
-}
 
 // Upper stage burns along prograde / shallow ascent until Apoapsis reaches 300 km
 PRINT "Pushing Apoapsis to target altitude (300 km)...".
 LOCK STEERING TO PROGRADE.
 
-WAIT UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000).
+// Active loop pushing Ap and checking fairing release altitude deterministically
+UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000) DO {
+    IF (SHIP:ALTITUDE > 55000) AND (NOT fairing_done) {
+        jettison_fairings().
+        SET fairing_done TO TRUE.
+    }
+    WAIT 0.2.
+}
+
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Approaching target Apogee (295 km). Throttling down to 25%...".
 LOCK THROTTLE TO 0.25.
 
@@ -267,7 +274,7 @@ PRINT "==================================================".
 PRINT "Coasting through exosphere to Apoapsis...".
 LOCK STEERING TO PROGRADE.
 
-// Ensure fairings are gone if not yet deployed
+// Ensure fairings are jettisoned once in space
 IF NOT fairing_done {
     WAIT UNTIL SHIP:ALTITUDE > 70000.
     jettison_fairings().
@@ -284,7 +291,7 @@ LOCAL v_circ IS SQRT(KERBIN_MU / r_target).
 // Estimate velocity at apoapsis from current orbital energy
 LOCAL sma_trans IS (SHIP:PERIAPSIS + SHIP:APOAPSIS + 2 * KERBIN_RADIUS) / 2.
 LOCAL v_apo_pred IS SQRT(KERBIN_MU * (2 / (KERBIN_RADIUS + SHIP:APOAPSIS) - 1 / sma_trans)).
-LOCAL delta_v_circ IS MAX(10, v_circ - v_apo_pred).
+LOCAL delta_v_circ IS MAX(10.0, v_circ - v_apo_pred).
 
 // Estimate burn time with Belle-RLX81 (Thrust ~ 17.2 kN, Isp ~ 272 s)
 LOCAL engine_thrust IS MAX(1.0, SHIP:MAXTHRUST).
@@ -300,24 +307,24 @@ PRINT "  Estimated Burn Time:   " + ROUND(burn_duration, 1) + " s".
 PRINT "  Ignition Point:        T_Ap - " + ROUND(half_burn, 1) + " s".
 PRINT "--------------------------------------------------".
 
-// Wait until approaching ignition window
-WAIT UNTIL ETA:APOAPSIS <= (half_burn + 5.0).
+// Wait until approaching ignition window (with period wrap-around guard)
+WAIT UNTIL (ETA:APOAPSIS <= (half_burn + 5.0)) OR (ETA:APOAPSIS > (SHIP:ORBIT:PERIOD - 60)).
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Aligning strictly with Orbital Prograde...".
 LOCK STEERING TO PROGRADE.
 
-WAIT UNTIL ETA:APOAPSIS <= half_burn.
+WAIT UNTIL (ETA:APOAPSIS <= half_burn) OR (ETA:APOAPSIS > (SHIP:ORBIT:PERIOD - 30)).
 PRINT "==================================================".
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: IGNITION SECO-2 (Circularization Burn)!".
 PRINT "==================================================".
 LOCK THROTTLE TO 1.0.
 
 // Fine throttling as periapsis approaches target
-WAIT UNTIL (SHIP:PERIAPSIS >= 275000) OR (SHIP:PERIAPSIS >= (SHIP:APOAPSIS - 5000)).
+WAIT UNTIL (SHIP:PERIAPSIS >= 275000) OR ((SHIP:APOAPSIS - SHIP:PERIAPSIS) < 15000).
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Periapsis approaching target. Precision throttle at 15%...".
 LOCK THROTTLE TO 0.15.
 
-// Cutoff condition: Pe within 500m of Ap or Ap reached
-WAIT UNTIL (SHIP:PERIAPSIS >= (TARGET_PERIAPSIS - 500)) OR (SHIP:PERIAPSIS >= SHIP:APOAPSIS).
+// Cutoff condition: Pe reaches target, or Ap and Pe match within 300m, or Pe exceeds Ap
+WAIT UNTIL (SHIP:PERIAPSIS >= (TARGET_PERIAPSIS - 300)) OR ((SHIP:APOAPSIS - SHIP:PERIAPSIS) < 300) OR (ETA:PERIAPSIS < ETA:APOAPSIS).
 LOCK THROTTLE TO 0.0.
 PRINT "==================================================".
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SECO-2 CUTOFF! CIRCULAR ORBIT ACHIEVED!".
@@ -327,15 +334,15 @@ PRINT "==================================================".
 // Phase 8: Final Orbital Assessment & Payload Release
 // ----------------------------------------------------------------------------
 WAIT 3.0.
-LOCAL final_ecc IS SHIP:OBT:ECCENTRICITY.
-LOCAL final_period IS SHIP:OBT:PERIOD.
+LOCAL final_ecc IS SHIP:ORBIT:ECCENTRICITY.
+LOCAL final_period IS SHIP:ORBIT:PERIOD.
 
 PRINT "FINAL ORBITAL TELEMETRY:".
 PRINT "  Apoapsis:     " + ROUND(SHIP:APOAPSIS / 1000, 3) + " km".
 PRINT "  Periapsis:    " + ROUND(SHIP:PERIAPSIS / 1000, 3) + " km".
 PRINT "  Eccentricity: " + ROUND(final_ecc, 5).
 PRINT "  Period:       " + ROUND(final_period / 60, 2) + " min (" + ROUND(final_period, 1) + " s)".
-PRINT "  Inclination:  " + ROUND(SHIP:OBT:INCLINATION, 3) + "º".
+PRINT "  Inclination:  " + ROUND(SHIP:ORBIT:INCLINATION, 3) + "º".
 PRINT "--------------------------------------------------".
 
 // Payload Deployment
