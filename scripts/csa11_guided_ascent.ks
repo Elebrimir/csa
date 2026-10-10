@@ -377,3 +377,5 @@ PRINT "==================================================".
 UNLOCK STEERING.
 UNLOCK THROTTLE.
 SET SHIP:CONTROL:PILOTMAINTHROTTLE TO 0.
+}
+
