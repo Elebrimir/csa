@@ -35,6 +35,11 @@ SET MIN_PITCH TO 15.0.              // Minimum pitch angle before MECO (degrees)
 SET KERBIN_MU TO 3.5316000e12.      // Kerbin standard gravitational parameter
 SET KERBIN_RADIUS TO 600000.        // Kerbin equatorial radius (m)
 
+// Aerodynamic & Load Limits (Dynamic Atmospheric Throttle Governor)
+SET TARGET_MAX_Q_KPA TO 34.0.       // Maximum Dynamic Pressure ceiling (kPa)
+SET MIN_TWR_FLOOR TO 1.30.          // Minimum TWR floor to avoid gravity drag penalty
+SET MAX_G_CEILING TO 3.80.          // Maximum acceleration load (G) to protect payload
+
 // ----------------------------------------------------------------------------
 // Subsystem Helper Functions
 // ----------------------------------------------------------------------------
@@ -105,6 +110,43 @@ FUNCTION deploy_satellite_systems {
     }
 }
 
+FUNCTION calculate_atmo_throttle {
+    // 1. Dynamic pressure in kPa (kOS SHIP:DYNAMICPRESSURE is in atm; 1 atm = 101.325 kPa)
+    LOCAL q_kpa IS SHIP:DYNAMICPRESSURE * 101.325.
+
+    // 2. Local gravitational acceleration & maximum available TWR
+    LOCAL r IS KERBIN_RADIUS + SHIP:ALTITUDE.
+    LOCAL g_local IS KERBIN_MU / (r * r).
+    LOCAL max_twr IS 0.
+    IF (SHIP:MASS > 0) AND (g_local > 0) {
+        SET max_twr TO SHIP:AVAILABLETHRUST / (SHIP:MASS * g_local).
+    }
+
+    LOCAL target_th IS 1.0.
+
+    // 3. Max Q Governor: Throttle back if dynamic pressure approaches or exceeds safety threshold
+    IF q_kpa > 24.0 {
+        // Linear reduction from 24 kPa up to TARGET_MAX_Q_KPA (34 kPa)
+        LOCAL q_excess IS (q_kpa - 24.0) / (TARGET_MAX_Q_KPA - 24.0).
+        SET target_th TO 1.0 - (q_excess * 0.60). // Allows throttle down to ~40%
+    }
+
+    // 4. TWR Safety Floor: Ensure we never drop below MIN_TWR_FLOOR to avoid gravity stall
+    IF max_twr > 0 {
+        LOCAL min_th_for_twr IS MIN_TWR_FLOOR / max_twr.
+        SET target_th TO MAX(target_th, min_th_for_twr).
+    }
+
+    // 5. G-Force Safety Ceiling: Throttle back as propellant burns off and vessel gets light
+    IF max_twr > 0 {
+        LOCAL max_th_for_g IS MAX_G_CEILING / max_twr.
+        SET target_th TO MIN(target_th, max_th_for_g).
+    }
+
+    // Clamp throttle within physical engine limits (20% to 100%)
+    RETURN MIN(1.0, MAX(0.20, target_th)).
+}
+
 // ----------------------------------------------------------------------------
 // Phase 1: Pre-Launch Countdown & Ignition Sequence
 // ----------------------------------------------------------------------------
@@ -154,11 +196,26 @@ PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: EXECUTING PITCH KICK TO " + PITCH_INITI
 LOCK targetPitch TO MAX(MIN_PITCH, PITCH_INITIAL - ((SHIP:ALTITUDE - ALT_KICK) / (ALT_END_TURN - ALT_KICK)) * (PITCH_INITIAL - MIN_PITCH)).
 LOCK STEERING TO HEADING(HEADING_DEG, targetPitch).
 
+// Activate Real-time Dynamic Atmospheric Throttle Governor (Max Q & TWR Protection)
+LOCK THROTTLE TO calculate_atmo_throttle().
+PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: [GOVERNOR] Active Dynamic Throttle Engaged (Max Q: " + TARGET_MAX_Q_KPA + " kPa, Min TWR: " + MIN_TWR_FLOOR + ")".
+
 // ----------------------------------------------------------------------------
 // Phase 4: Stage 1 MECO & Upper Stage (Belle-RLX81) Ignition
 // ----------------------------------------------------------------------------
-// Wait for core liquid fuel depletion
-WAIT UNTIL STAGE:LIQUIDFUEL < 0.5.
+// Monitor ascent telemetry while waiting for core liquid fuel depletion
+LOCAL last_telemetry_print IS MISSIONTIME.
+UNTIL STAGE:LIQUIDFUEL < 0.5 DO {
+    IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
+        LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * 101.325, 1).
+        LOCAL r_c IS KERBIN_RADIUS + SHIP:ALTITUDE.
+        LOCAL g_c IS KERBIN_MU / (r_c * r_c).
+        LOCAL cur_twr IS ROUND(SHIP:THRUST / MAX(0.001, (SHIP:MASS * g_c)), 2).
+        PRINT "T+" + ROUND(MISSIONTIME, 0) + "s | Alt: " + ROUND(SHIP:ALTITUDE/1000, 1) + "km | Q: " + q_curr + "kPa | TWR: " + cur_twr + " | Throttle: " + ROUND(THROTTLE * 100, 0) + "%".
+        SET last_telemetry_print TO MISSIONTIME.
+    }
+    WAIT 0.2.
+}
 PRINT "==================================================".
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 1 Core MECO (Main Engine Cutoff)!".
 LOCK THROTTLE TO 0.0.
