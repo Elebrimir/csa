@@ -4,6 +4,9 @@ export default defineConfig({
   title: "Corolt Space Agency",
   description: "Official flight log, telemetry analysis, and aerospace engineering portal.",
   base: "/csa/",
+  markdown: {
+    math: true
+  },
   themeConfig: {
     logo: "/assets/flag.png",
     siteTitle: "CSA Operations",
