@@ -3,8 +3,8 @@
 * **Mission Code**: `CSA-11`
 * **Flight Director**: CSA Mission Control (Kerbin Space Center)
 * **Launch Vehicle**: [Corolt-IV B (Core Etoh-140-TU + 2x Shrimp SRB + Belle-RLX81 Upper Stage)](/vehicles/corolt-4)
-* **Payload**: `CoroltSat-1A` ($248\text{ kg}$ Anchor Satellite, Stayputnik core, Codac-A23 1Mm relay, dual photovoltaic arrays)
-* **Target Orbit**: $300\times 300\text{ km}$ Equatorial Circular Orbit ($i \approx 0.0^\circ$)
+* **Payload**: `CoroltSat-1A` (248 kg Anchor Satellite, Stayputnik core, Codac-A23 1Mm relay, dual photovoltaic arrays)
+* **Target Orbit**: 300 × 300 km Equatorial Circular Orbit ($i \approx 0.0^\circ$)
 * **Status**: 🟡 **HISTORIC PARTIAL SUCCESS / UPPER STAGE PROPULSION ANOMALY (Apogee 269.1 km)**
 
 ---

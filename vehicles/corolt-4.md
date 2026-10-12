@@ -168,5 +168,7 @@ Staging Order:
 
 | Serial / Unit | Configuration | Mission Assigned | Payload | Flight Date | Apogee / Outcome |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **`COROLT IVB - B1`** | Corolt-IV B | **[CSA-11](/missions/csa-11)** | `CoroltSat-1A` ($248\text{ kg}$) | Year 1, Day 93 | 🟡 **269.1 km** (Historic maiden ascent, kOS guidance validated, upper stage Belle anomaly) |
-| **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-12)** | `CoroltSat-1B` ($248\text{ kg}$) | Year 1, Day 159 | 🟢 **$305.9\times 299.6\text{ km}$** (100% Historic Orbital Insertion, $e=0.0035$, CoroltSat-1B Deployed & Active) |
+| **`COROLT IVB - B1`** | Corolt-IV B | **[CSA-11](/missions/csa-11)** | `CoroltSat-1A` (248 kg) | Year 1, Day 93 | 🟡 **269.1 km** (Historic maiden ascent, kOS guidance validated, upper stage Belle anomaly) |
+| **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-12)** | `CoroltSat-1B` (248 kg) | Year 1, Day 159 | 🟢 **305.9 × 299.6 km** (100% Historic Orbital Insertion, $e=0.0035$, CoroltSat-1B Deployed & Active) |
+| **`COROLT IVB - B3`** | Corolt-IV B | **[CSA-13](/missions/csa-13)** | `CoroltSat-1C` (248 kg) | Year 1, Day 244 | 🟢 **308.8 × 302.7 km** (Constellation Expansion, 4-Orbit Phasing, $\Delta T = -0.171\text{ s}$, CoroltSat-1C Active) |
+
