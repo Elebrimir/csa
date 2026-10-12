@@ -12,10 +12,11 @@ export default defineConfig({
     siteTitle: "CSA Operations",
     nav: [
       { text: "Home", link: "/" },
+      { text: "Constellations", link: "/constellations/" },
       { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-4" },
-      { text: "Missions", link: "/missions/csa-12" },
-      { text: "Press", link: "/social_media/csa-12_post" },
+      { text: "Missions", link: "/missions/csa-13" },
+      { text: "Press", link: "/social_media/csa-13_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -24,6 +25,12 @@ export default defineConfig({
         items: [
           { text: "Manifesto & Goals", link: "/" },
           { text: "Kerbin Science Matrix", link: "/science/" },
+        ]
+      },
+      {
+        text: "Satellite Constellations",
+        items: [
+          { text: "CoroltNet-LEO (300 km Mesh)", link: "/constellations/" },
         ]
       },
       {
@@ -54,6 +61,7 @@ export default defineConfig({
           { text: "CSA-10: Boreal Mountain Solid-Ground Recovery", link: "/missions/csa-10" },
           { text: "CSA-11: Trans-Atmospheric Ascension & Belle Anomaly", link: "/missions/csa-11" },
           { text: "CSA-12: Maiden Orbital Insertion & CoroltSat-1B", link: "/missions/csa-12" },
+          { text: "CSA-13: Constellation Expansion & Orbital Phasing", link: "/missions/csa-13" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -73,6 +81,7 @@ export default defineConfig({
           { text: "CSA-10 Release", link: "/social_media/csa-10_post" },
           { text: "CSA-11 Release", link: "/social_media/csa-11_post" },
           { text: "CSA-12 Release", link: "/social_media/csa-12_post" },
+          { text: "CSA-13 Release", link: "/social_media/csa-13_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }

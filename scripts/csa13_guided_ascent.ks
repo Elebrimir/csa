@@ -60,18 +60,36 @@ FUNCTION set_pad_electric_power {
     LOCAL found IS FALSE.
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("LaunchStand") OR p:NAME:CONTAINS("AM.MLP") OR p:NAME:CONTAINS("AM_MLP") {
-            FOR m IN p:MODULES {
-                IF m = "ModuleGenerator" {
-                    LOCAL gen IS p:GETMODULE(m).
+            FROM {LOCAL i IS 0.} UNTIL i >= p:MODULES:LENGTH STEP {SET i TO i + 1.} DO {
+                IF p:MODULES[i] = "ModuleGenerator" {
+                    LOCAL gen IS p:GETMODULEBYINDEX(i).
+                    // Comprovar si aquest mòdul és el generador de CE (té "Generador: CE" o no conté "fuel")
+                    LOCAL is_fuel_gen IS FALSE.
                     FOR ev IN gen:ALLEVENTNAMES {
-                        LOCAL evl IS ev:TOLOWER.
-                        IF NOT evl:CONTAINS("fuel") {
-                            IF power_state AND (evl:CONTAINS("activate") OR evl:CONTAINS("start") OR evl:CONTAINS("encender")) {
+                        IF ev:TOLOWER:CONTAINS("fuel") OR ev:TOLOWER:CONTAINS("combustible") {
+                            SET is_fuel_gen TO TRUE.
+                        }
+                    }
+                    IF NOT is_fuel_gen {
+                        FOR ev IN gen:ALLEVENTNAMES {
+                            LOCAL evl IS ev:TOLOWER.
+                            IF power_state AND (evl:CONTAINS("activar") OR evl:CONTAINS("activate") OR evl:CONTAINS("start") OR evl:CONTAINS("encender")) {
                                 gen:DOEVENT(ev).
                                 SET found TO TRUE.
                             }
-                            IF (NOT power_state) AND (evl:CONTAINS("shutdown") OR evl:CONTAINS("apagar") OR evl:CONTAINS("stop")) {
+                            IF (NOT power_state) AND (evl:CONTAINS("desactivar") OR evl:CONTAINS("shutdown") OR evl:CONTAINS("apagar") OR evl:CONTAINS("stop")) {
                                 gen:DOEVENT(ev).
+                                SET found TO TRUE.
+                            }
+                        }
+                        FOR act IN gen:ALLACTIONNAMES {
+                            LOCAL actl IS act:TOLOWER.
+                            IF power_state AND (actl:CONTAINS("activate") OR actl:CONTAINS("activar")) {
+                                gen:DOACTION(act, TRUE).
+                                SET found TO TRUE.
+                            }
+                            IF (NOT power_state) AND (actl:CONTAINS("shutdown") OR actl:CONTAINS("desactivar") OR actl:CONTAINS("apagar")) {
+                                gen:DOACTION(act, TRUE).
                                 SET found TO TRUE.
                             }
                         }
@@ -92,18 +110,38 @@ FUNCTION set_pad_fueling {
     LOCAL found IS FALSE.
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("LaunchStand") OR p:NAME:CONTAINS("AM.MLP") OR p:NAME:CONTAINS("AM_MLP") {
-            FOR m IN p:MODULES {
-                IF m = "ModuleGenerator" {
-                    LOCAL gen IS p:GETMODULE(m).
+            FROM {LOCAL i IS 0.} UNTIL i >= p:MODULES:LENGTH STEP {SET i TO i + 1.} DO {
+                IF p:MODULES[i] = "ModuleGenerator" {
+                    LOCAL gen IS p:GETMODULEBYINDEX(i).
+                    LOCAL is_fuel_gen IS FALSE.
                     FOR ev IN gen:ALLEVENTNAMES {
                         LOCAL evl IS ev:TOLOWER.
-                        IF fuel_state AND (evl:CONTAINS("start fueling") OR evl:CONTAINS("iniciar")) {
-                            gen:DOEVENT(ev).
-                            SET found TO TRUE.
+                        IF evl:CONTAINS("fuel") OR evl:CONTAINS("combustible") {
+                            SET is_fuel_gen TO TRUE.
                         }
-                        IF (NOT fuel_state) AND (evl:CONTAINS("stop fueling") OR evl:CONTAINS("detener")) {
-                            gen:DOEVENT(ev).
-                            SET found TO TRUE.
+                    }
+                    IF is_fuel_gen {
+                        FOR ev IN gen:ALLEVENTNAMES {
+                            LOCAL evl IS ev:TOLOWER.
+                            IF fuel_state AND (evl:CONTAINS("start") OR evl:CONTAINS("iniciar") OR evl:CONTAINS("activar")) {
+                                gen:DOEVENT(ev).
+                                SET found TO TRUE.
+                            }
+                            IF (NOT fuel_state) AND (evl:CONTAINS("stop") OR evl:CONTAINS("detener") OR evl:CONTAINS("desactivar")) {
+                                gen:DOEVENT(ev).
+                                SET found TO TRUE.
+                            }
+                        }
+                        FOR act IN gen:ALLACTIONNAMES {
+                            LOCAL actl IS act:TOLOWER.
+                            IF fuel_state AND (actl:CONTAINS("activate") OR actl:CONTAINS("activar") OR actl:CONTAINS("start") OR actl:CONTAINS("toggle")) {
+                                gen:DOACTION(act, TRUE).
+                                SET found TO TRUE.
+                            }
+                            IF (NOT fuel_state) AND (actl:CONTAINS("shutdown") OR actl:CONTAINS("desactivar") OR actl:CONTAINS("stop")) {
+                                gen:DOACTION(act, TRUE).
+                                SET found TO TRUE.
+                            }
                         }
                     }
                 }
@@ -123,21 +161,20 @@ FUNCTION retract_tower_umbilicals {
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("Umbilical") OR p:NAME:CONTAINS("SwingArm") {
             FOR m IN p:MODULES {
-                LOCAL mod IS p:GETMODULE(m).
-                FOR ev IN mod:ALLEVENTNAMES {
+                LOCAL part_mod IS p:GETMODULE(m).
+                FOR ev IN part_mod:ALLEVENTNAMES {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("retract") OR evl:CONTAINS("release") OR evl:CONTAINS("retirar") {
-                        mod:DOEVENT(ev).
+                        part_mod:DOEVENT(ev).
                         PRINT "  [TOWER] Brac retirat: " + p:TITLE.
                     }
                 }
             }
         }
     }
-    IF STAGE:NUMBER >= 6 {
-        STAGE.
-        PRINT "  [TOWER] Fase d'umbilicals (Stage 6) disparada amb exit.".
-    }
+    // RETIRADA D'UMBILICALS SEGURA:
+    // Mai cridem a la comanda STAGE abans de T-0s! Així és impossible que s'encengui el motor o es desperti Stage 5.
+    PRINT "  [TOWER] Retirada d'umbilicals i bracos executada amb exit.".
     PRINT "--------------------------------------------------".
 }
 
@@ -250,8 +287,8 @@ PRINT "==================================================".
 PRINT "AVIS: La carrega de propelents comencara en 5 segons.".
 PRINT "==================================================".
 
-FROM {LOCAL cd IS 5.} UNTIL cd = 0 STEP {SET cd TO cd - 1.} DO {
-    PRINT "T-omplida: " + cd + "...".
+FROM {LOCAL cd_val IS 5.} UNTIL cd_val = 0 STEP {SET cd_val TO cd_val - 1.} DO {
+    PRINT "T-omplida: " + cd_val + "...".
     WAIT 1.0.
 }
 
@@ -272,17 +309,15 @@ set_pad_fueling(TRUE).
 WAIT 1.0.
 
 // ============================================================================
-// PAS 4: MONITORITZAR NIVELL DE COMBUSTIBLE I HOLD FINS A T-1 MINUT
-// ============================================================================
-PRINT "Carrega de combustible en curs (Taxa reduida a 1/3 ~ 12 LF/s)...".
+PRINT "Carrega de combustible en curs (Taxa reduida ~ 6 LF/s, ~120s)...".
 UNTIL (SHIP:LIQUIDFUEL >= TARGET_FULL_LF) {
     LOCAL pct IS ROUND((SHIP:LIQUIDFUEL / 900.0) * 100, 1).
-    PRINT "Carrega: " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0" AT(0, 18).
-    WAIT 1.0.
+    PRINT "Carrega: " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0".
+    WAIT 5.0.
 }
 
-PRINT "==================================================" AT(0, 20).
-PRINT "DIPOSITS DE LA 1A ETAPA PLENS AL 100%!" AT(0, 21).
+PRINT "==================================================".
+PRINT "DIPOSITS DE LA 1A ETAPA PLENS AL 100%!".
 PRINT "Tancant valvules de proveiment terrestre...".
 set_pad_fueling(FALSE).
 WAIT 2.0.
@@ -299,14 +334,16 @@ PRINT "Temps restant fins al llancament:  " + ROUND(effective_launch_ut - TIME:S
 PRINT "--------------------------------------------------".
 
 LOCAL time_to_t60 IS (effective_launch_ut - 60.0) - TIME:SECONDS.
-IF time_to_t60 > 10.0 {
-    PRINT "Estat de HOLD a la rampa fins a T-60s de la finestra de llancament...".
-    IF time_to_t60 > 60.0 {
-        PRINT "Avancant temps (WARPTO) fins a T-70s...".
-        WARPTO(effective_launch_ut - 70.0).
-        WAIT UNTIL (TIME:SECONDS >= (effective_launch_ut - 65.0)) AND (TIME:WARP = 0).
+IF time_to_t60 > 1.0 {
+    PRINT "Estat de HOLD a la rampa fins a T-60s de la finestra de llancament.".
+    PRINT "Pots activar i controlar el Time Warp manualment segons desitgis.".
+    UNTIL TIME:SECONDS >= (effective_launch_ut - 60.0) {
+        LOCAL remaining_hold IS ROUND((effective_launch_ut - 60.0) - TIME:SECONDS, 0).
+        IF remaining_hold > 0 {
+            PRINT "HOLD... Falten " + remaining_hold + "s per a T-60s (Warp manual permés)    " AT(0, 24).
+        }
+        WAIT 1.0.
     }
-    WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 60.0).
 }
 
 // ============================================================================
@@ -346,7 +383,7 @@ PRINT "==================================================".
 PRINT "T-10s: SEQUENCIA TERMINAL D'IGNICIO AUTOMATICA:".
 PRINT "==================================================".
 SAS OFF.
-LOCK THROTTLE TO 1.0.
+LOCK THROTTLE TO 0.0.
 LOCK STEERING TO HEADING(HEADING_DEG, 90.0).
 
 LOCAL countdown_val IS 10.
@@ -364,6 +401,7 @@ PRINT "T+0.0s: IGNICIO! Core Etoh-140-TU & Acceleradors Shrimp!".
 PRINT "ALLIBERANT GRAPES DE LA PLATAFORMA (STAGE 5)!".
 PRINT "==================================================".
 
+LOCK THROTTLE TO 1.0.
 STAGE.
 WAIT 0.5.
 UNTIL SHIP:MAXTHRUST > 0 {
