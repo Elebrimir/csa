@@ -10,36 +10,39 @@ hero:
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 View Flight CSA-12
-      link: /missions/csa-12
+      text: 🚀 View Flight CSA-13
+      link: /missions/csa-13
+    - theme: alt
+      text: 🌐 Satellite Constellation
+      link: /constellations/
     - theme: alt
       text: 🛰️ Corolt-IV Fleet
       link: /vehicles/corolt-4
 
 features:
-  - title: 🌌 PERMANENT ORBITAL ERA & COMMS CONSTELLATION
-    details: Modular heavy launcher (Corolt-IV B #2) achieves agency-first 300x300 km orbit, deploying the CoroltSat-1B relay anchor.
+  - title: 🌐 COROLTNET-LEO SATELLITE MESH
+    details: Operational 9-slot equatorial constellation at 300 km. Two active nodes (CorolSat-1B & 1C) synchronized within 0.17s period match with inter-satellite cross-links.
   - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
     details: High-rate telemetry streaming, component reliability management, Van Allen radiation boundary, and strict power budgeting.
-  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.1
-    details: Closed-loop gravity turn ascent, real-time dynamic Max Q throttling, symmetrical apogee circularization, and failsafe abort routines.
+  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.2
+    details: Closed-loop gravity turn ascent, automated pad fueling servicing, 4-orbit phasing drift, and normal-vector separation.
 ---
 
 <div class="csa-stats-grid">
   <div class="csa-stat-card">
-    <div class="csa-stat-val">305.9 km</div>
+    <div class="csa-stat-val">308.8 km</div>
     <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">100% Orbit</div>
-    <div class="csa-stat-lbl">305.9 x 299.6 km</div>
+    <div class="csa-stat-val">2 Nodes</div>
+    <div class="csa-stat-lbl">CoroltNet Mesh Fleet</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">e = 0.0035</div>
-    <div class="csa-stat-lbl">Orbital Eccentricity</div>
+    <div class="csa-stat-val">ΔT = 0.17 s</div>
+    <div class="csa-stat-lbl">Orbital Sync Accuracy</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">kOS v4.1</div>
+    <div class="csa-stat-val">kOS v4.2</div>
     <div class="csa-stat-lbl">Autonomous Guidance</div>
   </div>
 </div>
