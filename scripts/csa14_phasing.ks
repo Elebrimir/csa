@@ -6,7 +6,7 @@
 // SAFETY INTERLOCK: Desacoblament condicionat a tolerància d'angle estricta (+/-0.50 deg)
 // ============================================================================
 
-DECLARE PARAMETER TARGET_SLOT_DEG IS 240.0. // Target Constellation slot (240.0 for Triangulation, 40.0 for 9-ring)
+DECLARE PARAMETER TARGET_SLOT_DEG IS 40.0.  // Target Constellation slot (Option 2: 40.0 deg for 9-satellite mesh ring)
 DECLARE PARAMETER TARGET_ANCHOR IS "CorolSat-1B".
 DECLARE PARAMETER DESIRED_DRIFT_ORBITS IS 3. // Number of drift revolutions
 

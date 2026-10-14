@@ -26,7 +26,7 @@
 // ============================================================================
 
 DECLARE PARAMETER TARGET_LAUNCH_UT IS 0.   // Set to 0 for immediate sequence or pass exact window UT
-DECLARE PARAMETER TARGET_SLOT_DEG IS 240.0. // Target Constellation slot (240.0 for Triangulation, 40.0 for 9-ring)
+DECLARE PARAMETER TARGET_SLOT_DEG IS 40.0.  // Target Constellation slot (Option 2: 40.0 deg for 9-satellite mesh ring)
 DECLARE PARAMETER TARGET_ANCHOR IS "CorolSat-1B". // Reference anchor vessel name
 
 CLEARSCREEN.
