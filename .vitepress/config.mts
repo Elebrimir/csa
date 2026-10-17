@@ -15,8 +15,8 @@ export default defineConfig({
       { text: "Constellations", link: "/constellations/" },
       { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-4" },
-      { text: "Missions", link: "/missions/csa-13" },
-      { text: "Press", link: "/social_media/csa-13_post" },
+      { text: "Missions", link: "/missions/csa-14" },
+      { text: "Press", link: "/social_media/csa-14_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -62,6 +62,7 @@ export default defineConfig({
           { text: "CSA-11: Trans-Atmospheric Ascension & Belle Anomaly", link: "/missions/csa-11" },
           { text: "CSA-12: Maiden Orbital Insertion & CoroltSat-1B", link: "/missions/csa-12" },
           { text: "CSA-13: Constellation Expansion & Orbital Phasing", link: "/missions/csa-13" },
+          { text: "CSA-14: +40.0° Mesh Slot Lock & Universal Phasing", link: "/missions/csa-14" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -82,6 +83,7 @@ export default defineConfig({
           { text: "CSA-11 Release", link: "/social_media/csa-11_post" },
           { text: "CSA-12 Release", link: "/social_media/csa-12_post" },
           { text: "CSA-13 Release", link: "/social_media/csa-13_post" },
+          { text: "CSA-14 Release", link: "/social_media/csa-14_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }

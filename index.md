@@ -10,8 +10,8 @@ hero:
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 View Flight CSA-13
-      link: /missions/csa-13
+      text: 🚀 View Flight CSA-14
+      link: /missions/csa-14
     - theme: alt
       text: 🌐 Satellite Constellation
       link: /constellations/
@@ -21,11 +21,11 @@ hero:
 
 features:
   - title: 🌐 COROLTNET-LEO SATELLITE MESH
-    details: Operational 9-slot equatorial constellation at 300 km. Two active nodes (CorolSat-1B & 1C) synchronized within 0.17s period match with inter-satellite cross-links.
+    details: Operational 9-slot equatorial constellation at 300 km. Three active nodes (CorolSat-1B, 1D & 1C) synchronized within 0.16s period match with direct 40º mesh cross-links.
   - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
     details: High-rate telemetry streaming, component reliability management, Van Allen radiation boundary, and strict power budgeting.
-  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.2
-    details: Closed-loop gravity turn ascent, automated pad fueling servicing, 4-orbit phasing drift, and normal-vector separation.
+  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.5
+    details: Closed-loop gravity turn ascent, automated pad fueling servicing, universal bidirectional phasing drift, and normal-vector separation.
 ---
 
 <div class="csa-stats-grid">
@@ -34,15 +34,15 @@ features:
     <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">2 Nodes</div>
+    <div class="csa-stat-val">3 Nodes</div>
     <div class="csa-stat-lbl">CoroltNet Mesh Fleet</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">ΔT = 0.17 s</div>
+    <div class="csa-stat-val">ΔT = 0.16 s</div>
     <div class="csa-stat-lbl">Orbital Sync Accuracy</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">kOS v4.2</div>
+    <div class="csa-stat-val">kOS v4.5</div>
     <div class="csa-stat-lbl">Autonomous Guidance</div>
   </div>
 </div>
