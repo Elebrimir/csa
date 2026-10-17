@@ -73,26 +73,16 @@
   <circle cx="400" cy="185" r="10" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.6"/>
   <text x="400" y="170" fill="#f59e0b" font-size="11" font-weight="700" text-anchor="middle" font-family="'Orbitron', sans-serif">KSC DSN</text>
 
-  <!-- Active Cross-Link Beam (CorolSat-1B to CoroltSat-1C) -->
-  <line x1="400" y1="115" x2="474" y2="128" stroke="url(#activeBeam)" stroke-width="2.5" filter="url(#glow)"/>
+  <!-- Active Cross-Link Beam (CorolSat-1B at 0º to CoroltSat-1D at +39.9º) -->
+  <line x1="400" y1="115" x2="535" y2="164" stroke="url(#activeBeam)" stroke-width="2.5" filter="url(#glow)"/>
   
   <!-- Ground Link Beams down to KSC (400, 185) -->
   <line x1="400" y1="115" x2="400" y2="185" stroke="url(#groundBeam)" stroke-width="1.8" stroke-dasharray="3 3"/>
-  <line x1="474" y1="128" x2="400" y2="185" stroke="url(#groundBeam)" stroke-width="1.2" stroke-dasharray="3 3"/>
-
-  <!-- Slot 1: 40º Target -->
-  <circle cx="535" cy="164" r="7" fill="none" stroke="#facc15" stroke-width="1.5" stroke-dasharray="2 2"/>
-  <circle cx="535" cy="164" r="2.5" fill="#facc15"/>
-  <text x="548" y="158" fill="#facc15" font-size="10.5" font-weight="600" font-family="'Orbitron', sans-serif">Slot 1 (+40º)</text>
-  <text x="548" y="172" fill="#94a3b8" font-size="9.5">CoroltSat-1D (Next)</text>
+  <line x1="535" y1="164" x2="400" y2="185" stroke="url(#groundBeam)" stroke-width="1.4" stroke-dasharray="3 3"/>
 
   <!-- Slot 2: 80º -->
   <circle cx="607" cy="289" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
   <text x="618" y="293" fill="#64748b" font-size="9">Slot 2 (+80º)</text>
-
-  <!-- Slot 3: 120º -->
-  <circle cx="582" cy="430" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
-  <text x="593" y="435" fill="#64748b" font-size="9">Slot 3 (+120º)</text>
 
   <!-- Slot 4: 160º -->
   <circle cx="472" cy="522" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
@@ -102,9 +92,11 @@
   <circle cx="328" cy="522" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
   <text x="328" y="542" fill="#64748b" font-size="9" text-anchor="middle">Slot 5 (+200º)</text>
 
-  <!-- Slot 6: 240º -->
-  <circle cx="218" cy="430" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
-  <text x="135" y="435" fill="#64748b" font-size="9">Slot 6 (+240º)</text>
+  <!-- Slot 6: 240º (Next Target) -->
+  <circle cx="218" cy="430" r="7" fill="none" stroke="#facc15" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <circle cx="218" cy="430" r="2.5" fill="#facc15"/>
+  <text x="115" y="428" fill="#facc15" font-size="10.5" font-weight="600" font-family="'Orbitron', sans-serif">Slot 6 (+240º)</text>
+  <text x="115" y="442" fill="#94a3b8" font-size="9.5">CoroltSat-1E (Next)</text>
 
   <!-- Slot 7: 280º -->
   <circle cx="193" cy="289" r="5" fill="none" stroke="#475569" stroke-width="1.2"/>
@@ -123,22 +115,33 @@
     <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
   </g>
   <text x="375" y="90" fill="#22c55e" font-size="12" font-weight="700" text-anchor="end" font-family="'Orbitron', sans-serif">CorolSat-1B</text>
-  <text x="375" y="104" fill="#94a3b8" font-size="9.5" text-anchor="end">Slot 0 (0.0º) // Active Relay</text>
+  <text x="375" y="104" fill="#94a3b8" font-size="9.5" text-anchor="end">Slot 0 (0.0º) // Active Anchor</text>
 
-  <!-- ACTIVE SATELLITE 2: CoroltSat-1C (+20.6º -> 474, 128) -->
-  <g transform="translate(474, 128)">
+  <!-- ACTIVE SATELLITE 2: CoroltSat-1D (Slot 1, +39.9º -> 535, 164) -->
+  <g transform="translate(535, 164)">
     <circle cx="0" cy="0" r="14" fill="none" stroke="#00e5ff" stroke-width="1" opacity="0.4"/>
     <circle cx="0" cy="0" r="6" fill="#00e5ff" filter="url(#glow)"/>
     <line x1="-10" y1="-5" x2="-5" y2="-2.5" stroke="#38bdf8" stroke-width="2.5"/>
     <line x1="5" y1="2.5" x2="10" y2="5" stroke="#38bdf8" stroke-width="2.5"/>
     <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
   </g>
-  <text x="500" y="100" fill="#00e5ff" font-size="12" font-weight="700" font-family="'Orbitron', sans-serif">CoroltSat-1C</text>
-  <text x="500" y="114" fill="#94a3b8" font-size="9.5">+20.6º Phase // Active Relay</text>
+  <text x="556" y="158" fill="#00e5ff" font-size="12" font-weight="700" font-family="'Orbitron', sans-serif">CoroltSat-1D</text>
+  <text x="556" y="172" fill="#94a3b8" font-size="9.5">Slot 1 (+39.9º) // Active Relay</text>
+
+  <!-- ACTIVE SATELLITE 3: CoroltSat-1C (Slot 3, +121.9º -> 582, 430) -->
+  <g transform="translate(582, 430)">
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#22c55e" stroke-width="1" opacity="0.4"/>
+    <circle cx="0" cy="0" r="6" fill="#22c55e" filter="url(#glow)"/>
+    <line x1="-10" y1="5" x2="-5" y2="2.5" stroke="#38bdf8" stroke-width="2.5"/>
+    <line x1="5" y1="-2.5" x2="10" y2="-5" stroke="#38bdf8" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
+  </g>
+  <text x="602" y="428" fill="#22c55e" font-size="12" font-weight="700" font-family="'Orbitron', sans-serif">CoroltSat-1C</text>
+  <text x="602" y="442" fill="#94a3b8" font-size="9.5">Slot 3 (+121.9º) // Active Relay</text>
 
   <!-- Range Indicators / Distance Badge -->
-  <rect x="405" y="60" width="135" height="24" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#00e5ff" stroke-width="0.8"/>
-  <text x="472" y="76" fill="#00e5ff" font-size="9.5" font-weight="700" text-anchor="middle" font-family="'Orbitron', sans-serif">LINK: 323 km (NOMINAL)</text>
+  <rect x="445" y="102" width="155" height="24" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#00e5ff" stroke-width="0.8"/>
+  <text x="522" y="118" fill="#00e5ff" font-size="9.5" font-weight="700" text-anchor="middle" font-family="'Orbitron', sans-serif">1B-1D LINK: 616 km (100%)</text>
 
   <!-- Legend Deck in SVG -->
   <g transform="translate(30, 565)">
