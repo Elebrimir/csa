@@ -4,10 +4,10 @@ Corolt Space Agency (CSA) - Constellation Launch Window Calculator v2.0
 Calculates high-precision launch windows from Kerbin Space Center (KSC) to insert
 CoroltSat-1D into a phased equatorial orbit relative to CorolSat-1B and CoroltSat-1C.
 
-Ground-truth telemetry calibration from CSA-13 flight:
-- dt_ascent: 1149.3 s (from liftoff to SECO-2 circularization)
-- surface_arc: 87.24 deg
-- inertial_arc: 106.39 deg
+Ground-truth telemetry calibration from CSA-14 flight (optimized 1,200m gravity turn):
+- dt_ascent: 778.32 s (from liftoff to SECO-2 circularization, vs 1149.3s in CSA-13)
+- surface_arc: 69.96 deg
+- inertial_arc: 78.50 deg (vs 106.39 deg in CSA-13)
 """
 
 import math
@@ -103,9 +103,9 @@ def calculate_windows(start_ut=None, num_windows=5, target_slot=None):
     kerbin_rot_rate = 2 * math.pi / 21600.0
     ksc_lon = math.radians(-74.55767)
 
-    # Telemetry calibration from CSA-13 flight:
-    dt_ascent = 1149.3  # seconds from liftoff to SECO-2 circularization
-    delta_theta_inertial = math.radians(106.39)  # inertial insertion arc
+    # Telemetry calibration from CSA-14 flight (optimized 1,200m gravity turn):
+    dt_ascent = 778.32  # seconds from liftoff to SECO-2 circularization
+    delta_theta_inertial = math.radians(78.50)  # inertial insertion arc
 
     sma = anchor['sma']
     ecc = anchor['ecc']

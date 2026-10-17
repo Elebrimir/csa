@@ -283,8 +283,8 @@ FUNCTION deorbit_upper_stage {
 
     LOCK THROTTLE TO 1.0.
     LOCAL deorbit_start IS TIME:SECONDS.
-    UNTIL (SHIP:PERIAPSIS <= 0) OR (STAGE:LIQUIDFUEL < 0.2) {
-        PRINT "Deorbit Pe: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km | Fuel: " + ROUND(STAGE:LIQUIDFUEL, 1) + " LF   " AT(0, 32).
+    UNTIL (SHIP:PERIAPSIS <= 0) OR (SHIP:LIQUIDFUEL < 0.2) {
+        PRINT "Deorbit Pe: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km | Fuel: " + ROUND(SHIP:LIQUIDFUEL, 1) + " LF   " AT(0, 32).
         WAIT 0.2.
     }
 
@@ -353,19 +353,15 @@ FUNCTION find_target_satellite {
     IF HASTARGET {
         RETURN TARGET.
     }
-    // Attempt automatic assignment
-    SET TARGET TO VESSEL(name_str).
-    IF HASTARGET {
-        RETURN TARGET.
-    }
-    // Fallback: check alternative naming
-    SET TARGET TO VESSEL("CorolSat-1B").
-    IF HASTARGET {
-        RETURN TARGET.
-    }
-    SET TARGET TO VESSEL("CoroltSat-1B").
-    IF HASTARGET {
-        RETURN TARGET.
+    // Cerca segura iterant sobre la llista de TARGETS per evitar excepcions
+    LOCAL all_vessels IS LIST().
+    LIST TARGETS IN all_vessels.
+    FOR v IN all_vessels {
+        LOCAL vn IS v:NAME:TOLOWER.
+        IF vn:CONTAINS(name_str:TOLOWER) OR vn:CONTAINS("corolsat-1b") OR vn:CONTAINS("coroltsat-1b") {
+            SET TARGET TO v.
+            RETURN TARGET.
+        }
     }
     RETURN SHIP.
 }
@@ -504,26 +500,30 @@ UNTIL SHIP:MAXTHRUST > 0 {
 // ============================================================================
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: VEHICLE CSA-14 EN VOL ASCENDENT!".
 
-// Fase 2: Esgotament de Boosters Shrimp (Full Propellant Burn)
-LOCAL initial_thrust IS SHIP:MAXTHRUST.
-WAIT UNTIL (SHIP:SOLIDFUEL < 1.0) OR (SHIP:MAXTHRUST < (initial_thrust * 0.70)).
-WAIT 0.5.
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Booster burnout! Desacoblant 2x Shrimp SRBs...".
-STAGE.
-WAIT 1.0.
+// Activar regulador aerodinàmic Max Q des del vol atmosfèric
+LOCK THROTTLE TO calculate_atmo_throttle().
 
-// Fase 3: Gir gravitatori (Pitch Kick)
+LOCAL initial_thrust IS SHIP:MAXTHRUST.
+LOCAL srb_separated IS FALSE.
+
+// Fase 2: Gir gravitatori (Pitch Kick) immediat a ALT_KICK (1200 m)
 IF SHIP:ALTITUDE < ALT_KICK {
     WAIT UNTIL SHIP:ALTITUDE >= ALT_KICK.
 }
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: INICIANT GIR GRAVITATORI (PITCH " + PITCH_INITIAL + " deg HDG " + HEADING_DEG + " deg)!".
 LOCK targetPitch TO MAX(MIN_PITCH, PITCH_INITIAL - ((SHIP:ALTITUDE - ALT_KICK) / (ALT_END_TURN - ALT_KICK)) * (PITCH_INITIAL - MIN_PITCH)).
 LOCK STEERING TO HEADING(HEADING_DEG, targetPitch).
-LOCK THROTTLE TO calculate_atmo_throttle().
 
-// Fase 4: MECO Etapa 1
+// Fase 3: Ascens sota guia fins al MECO de la 1a Etapa (amb desacoblament concurrent d'SRBs)
 LOCAL last_telemetry_print IS MISSIONTIME.
-UNTIL (STAGE:LIQUIDFUEL < 0.5) OR (SHIP:MAXTHRUST < 10.0) {
+UNTIL (srb_separated AND (STAGE:LIQUIDFUEL < 0.5)) OR (SHIP:LIQUIDFUEL <= 180.5) OR (SHIP:MAXTHRUST < 10.0) {
+    IF (NOT srb_separated) AND ((SHIP:SOLIDFUEL < 1.0) OR (SHIP:MAXTHRUST < (initial_thrust * 0.70))) {
+        WAIT 0.5.
+        PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Booster burnout! Desacoblant 2x Shrimp SRBs...".
+        STAGE.
+        WAIT 0.5.
+        SET srb_separated TO TRUE.
+    }
     IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
         LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * CONSTANT:ATMTOKPA, 1).
         PRINT "T+" + ROUND(MISSIONTIME, 0) + "s | Alt: " + ROUND(SHIP:ALTITUDE/1000, 1) + "km | Q: " + q_curr + "kPa | Th: " + ROUND(THROTTLE * 100, 0) + "%".
@@ -538,6 +538,7 @@ WAIT 1.0.
 STAGE. // Desacoblament interetapa
 WAIT 1.5.
 
+// Fase 4: Encesa Etapa 2 (Belle-RLX81)
 PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: IGNICIO ETAPA 2 (Belle-RLX81)!".
 LOCK THROTTLE TO 1.0.
 STAGE. // Encesa Belle-RLX81
@@ -650,10 +651,9 @@ IF phase_err <= PHASE_TOLERANCE_DEG {
     PRINT ">>> VALIDACIO EXITOSA: Error (" + ROUND(phase_err, 3) + " deg) <= +/-" + PHASE_TOLERANCE_DEG + " deg! <<<".
     PRINT "Procedint a l'orientacio Normal i desplegament de CoroltSat-1D...".
 
-    // Orientar al vector NORMAL orbital pur (perpendicular al pla per evitar qualsevol component prograda/retrograda)
+    // Orientar al vector NORMAL orbital pur dinàmicament (perpendicular al pla)
     PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Orientant actitud a NORMAL orbital pur...".
-    LOCAL normal_vec IS VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
-    LOCK STEERING TO normal_vec.
+    LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
     WAIT 15.0.
 
     deploy_satellite_systems().

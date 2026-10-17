@@ -34,17 +34,15 @@ IF HASTARGET {
     SET tgt_found TO TRUE.
     PRINT "Objectiu fixat manualment: " + tgt_vessel:NAME.
 } ELSE {
-    SET TARGET TO VESSEL(TARGET_ANCHOR).
-    IF HASTARGET {
-        SET tgt_vessel TO TARGET.
-        SET tgt_found TO TRUE.
-        PRINT "Objectiu assignat automàticament: " + TARGET_ANCHOR.
-    } ELSE {
-        // Fallback names
-        SET TARGET TO VESSEL("CorolSat-1B").
-        IF HASTARGET {
-            SET tgt_vessel TO TARGET.
+    LOCAL all_vessels IS LIST().
+    LIST TARGETS IN all_vessels.
+    FOR v IN all_vessels {
+        LOCAL vn IS v:NAME:TOLOWER.
+        IF (NOT tgt_found) AND (vn:CONTAINS(TARGET_ANCHOR:TOLOWER) OR vn:CONTAINS("corolsat-1b") OR vn:CONTAINS("coroltsat-1b")) {
+            SET TARGET TO v.
+            SET tgt_vessel TO v.
             SET tgt_found TO TRUE.
+            PRINT "Objectiu assignat automàticament: " + v:NAME.
         }
     }
 }
@@ -155,108 +153,202 @@ IF initial_phase_err <= PHASE_TOLERANCE_DEG {
     PRINT "Procedint directament a la seqüència de desacoblament i deorbitació...".
 } ELSE {
     // ----------------------------------------------------------------------------
-    // Càlcul de la Maniobra de Phasing
+    // Càlcul de la Maniobra de Phasing Bidireccional
     // ----------------------------------------------------------------------------
-    LOCAL drift_per_orb IS deg_to_gain / DESIRED_DRIFT_ORBITS.
     LOCAL tgt_period IS tgt_vessel:OBT:PERIOD.
-    LOCAL phasing_period IS tgt_period * (1.0 - (drift_per_orb / 360.0)).
-    LOCAL phasing_sma IS (KERBIN_MU * ((phasing_period / (2 * PI_VAL))^2))^(1/3).
 
-    LOCAL r_ap IS SHIP:APOAPSIS + KERBIN_RADIUS.
-    LOCAL r_pe_target IS (2 * phasing_sma) - r_ap.
-    LOCAL target_pe_alt IS r_pe_target - KERBIN_RADIUS.
+    IF deg_to_gain <= 180.0 {
+        // Cas A: Estem per darrere de l'slot -> Baixar Periapsis a l'Apoapsi (òrbita més ràpida)
+        LOCAL drift_per_orb IS deg_to_gain / DESIRED_DRIFT_ORBITS.
+        LOCAL phasing_period IS tgt_period * (1.0 - (drift_per_orb / 360.0)).
+        LOCAL phasing_sma IS (KERBIN_MU * ((phasing_period / (2 * PI_VAL))^2))^(1/3).
 
-    PRINT "Graus a guanyar:             +" + ROUND(deg_to_gain, 2) + " deg".
-    PRINT "Voltes de drift previstes:   " + DESIRED_DRIFT_ORBITS.
-    PRINT "Drift requerit per volta:    +" + ROUND(drift_per_orb, 2) + " deg / volta".
-    PRINT "Període de drift objectiu:   " + ROUND(phasing_period, 1) + " s (" + ROUND(phasing_period/60, 2) + " min)".
-    PRINT "Periapsis de drift objectiu: " + ROUND(target_pe_alt / 1000, 2) + " km".
-    PRINT "--------------------------------------------------".
+        LOCAL r_ap IS SHIP:APOAPSIS + KERBIN_RADIUS.
+        LOCAL r_pe_target IS (2 * phasing_sma) - r_ap.
+        LOCAL target_pe_alt IS r_pe_target - KERBIN_RADIUS.
 
-    IF target_pe_alt < 80000 {
-        PRINT "ALERTA: Periapsis de fase massa baix (< 80 km)!".
-        PRINT "Augmentant el número de voltes de drift a " + (DESIRED_DRIFT_ORBITS + 2) + "...".
-        SET DESIRED_DRIFT_ORBITS TO DESIRED_DRIFT_ORBITS + 2.
-        SET drift_per_orb TO deg_to_gain / DESIRED_DRIFT_ORBITS.
-        SET phasing_period TO tgt_period * (1.0 - (drift_per_orb / 360.0)).
-        SET phasing_sma TO (KERBIN_MU * ((phasing_period / (2 * PI_VAL))^2))^(1/3).
-        SET r_pe_target TO (2 * phasing_sma) - r_ap.
-        SET target_pe_alt TO r_pe_target - KERBIN_RADIUS.
-        PRINT "Nou Periapsis de fase: " + ROUND(target_pe_alt / 1000, 2) + " km".
-    }
-
-    // FASE 1: Inserció en òrbita de drift a l'Apoapsi
-    PRINT "FASE 1: Esperant arribada a l'Apoapsi per a cremar...".
-    UNTIL (ETA:APOAPSIS < 90) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 15)) {
-        LOCAL cur_p IS get_phase_angle(SHIP, tgt_vessel).
-        PRINT "Apropant-se a l'Apoapsi | ETA Ap: " + ROUND(ETA:APOAPSIS, 0) + " s | Fase: " + ROUND(cur_p, 1) + " deg   " AT(0, 18).
-        WAIT 0.5.
-    }
-
-    SET KUNIVERSE:TIMEWARP:WARP TO 0.
-    PRINT "Alineant actitud en RETROGRAD...                                     " AT(0, 18).
-    LOCK STEERING TO RETROGRADE.
-    WAIT 15.0.
-
-    UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)) {
-        PRINT "Comptador per a l'ignicio retrograda: T-" + ROUND(ETA:APOAPSIS, 0) + " s   " AT(0, 19).
-        WAIT 0.2.
-    }
-
-    PRINT "IGNICIO RETROGRADA EN MARXA! Baixant Periapsis a " + ROUND(target_pe_alt/1000, 1) + " km...".
-    ensure_engines_active().
-    LOCAL burn_phase1 IS TRUE.
-    UNTIL NOT burn_phase1 {
-        LOCAL pe_diff IS SHIP:PERIAPSIS - target_pe_alt.
-        IF pe_diff <= 0 {
-            SET burn_phase1 TO FALSE.
-            LOCK THROTTLE TO 0.0.
-        } ELSE IF pe_diff < 1500 {
-            LOCK THROTTLE TO 0.05.
-        } ELSE IF pe_diff < 5000 {
-            LOCK THROTTLE TO 0.20.
-        } ELSE {
-            LOCK THROTTLE TO 0.60.
+        UNTIL target_pe_alt >= 80000 {
+            SET DESIRED_DRIFT_ORBITS TO DESIRED_DRIFT_ORBITS + 1.
+            SET drift_per_orb TO deg_to_gain / DESIRED_DRIFT_ORBITS.
+            SET phasing_period TO tgt_period * (1.0 - (drift_per_orb / 360.0)).
+            SET phasing_sma TO (KERBIN_MU * ((phasing_period / (2 * PI_VAL))^2))^(1/3).
+            SET r_pe_target TO (2 * phasing_sma) - r_ap.
+            SET target_pe_alt TO r_pe_target - KERBIN_RADIUS.
         }
-        PRINT "Burn Fase 1 | Pe actual: " + ROUND(SHIP:PERIAPSIS/1000, 2) + " km | Obj: " + ROUND(target_pe_alt/1000, 2) + " km | Th: " + ROUND(THROTTLE*100, 0) + "%   " AT(0, 21).
-        WAIT 0.05.
-    }
-    LOCK THROTTLE TO 0.0.
-    PRINT "ORBITA DE DRIFT ESTABLERTA!".
 
-    // FASE 2: Espera de drift
-    FROM {LOCAL orb_idx IS 1.} UNTIL orb_idx > DESIRED_DRIFT_ORBITS STEP {SET orb_idx TO orb_idx + 1.} DO {
-        PRINT "Navegant volta de drift " + orb_idx + " / " + DESIRED_DRIFT_ORBITS + "...".
-        WAIT UNTIL ETA:PERIAPSIS < 30.
-        WAIT UNTIL ETA:APOAPSIS < 90.
-    }
+        PRINT "Mode Phasing:                AVANÇAR (Baixar Pe)".
+        PRINT "Graus a guanyar:             +" + ROUND(deg_to_gain, 2) + " deg".
+        PRINT "Voltes de drift previstes:   " + DESIRED_DRIFT_ORBITS.
+        PRINT "Drift requerit per volta:    +" + ROUND(drift_per_orb, 2) + " deg / volta".
+        PRINT "Període de drift objectiu:   " + ROUND(phasing_period, 1) + " s (" + ROUND(phasing_period/60, 2) + " min)".
+        PRINT "Periapsis de drift objectiu: " + ROUND(target_pe_alt / 1000, 2) + " km".
+        PRINT "--------------------------------------------------".
 
-    // FASE 3: Circularització al target slot
-    PRINT "FASE 3: Circularitzant a l'Apoapsi final...".
-    SET KUNIVERSE:TIMEWARP:WARP TO 0.
-    LOCK STEERING TO PROGRADE.
-    WAIT 15.0.
-
-    WAIT UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)).
-    ensure_engines_active().
-    LOCAL burn_circ IS TRUE.
-    UNTIL NOT burn_circ {
-        LOCAL period_diff IS tgt_period - SHIP:OBT:PERIOD.
-        IF period_diff <= 0.2 {
-            SET burn_circ TO FALSE.
-            LOCK THROTTLE TO 0.0.
-        } ELSE IF period_diff < 5.0 {
-            LOCK THROTTLE TO 0.05.
-        } ELSE IF period_diff < 20.0 {
-            LOCK THROTTLE TO 0.25.
-        } ELSE {
-            LOCK THROTTLE TO 0.70.
+        // FASE 1: Inserció en òrbita de drift a l'Apoapsi
+        PRINT "FASE 1: Esperant arribada a l'Apoapsi per a cremar...".
+        UNTIL (ETA:APOAPSIS < 90) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 15)) {
+            LOCAL cur_p IS get_phase_angle(SHIP, tgt_vessel).
+            PRINT "Apropant-se a l'Apoapsi | ETA Ap: " + ROUND(ETA:APOAPSIS, 0) + " s | Fase: " + ROUND(cur_p, 1) + " deg   " AT(0, 18).
+            WAIT 0.5.
         }
-        PRINT "Circ Burn | Període: " + ROUND(SHIP:OBT:PERIOD, 1) + "s | Obj: " + ROUND(tgt_period, 1) + "s   " AT(0, 27).
-        WAIT 0.05.
+
+        SET KUNIVERSE:TIMEWARP:WARP TO 0.
+        PRINT "Alineant actitud en RETROGRAD...                                     " AT(0, 18).
+        LOCK STEERING TO RETROGRADE.
+        WAIT 15.0.
+
+        UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)) {
+            PRINT "Comptador per a l'ignicio retrograda: T-" + ROUND(ETA:APOAPSIS, 0) + " s   " AT(0, 19).
+            WAIT 0.2.
+        }
+
+        PRINT "IGNICIO RETROGRADA EN MARXA! Baixant Periapsis a " + ROUND(target_pe_alt/1000, 1) + " km...".
+        ensure_engines_active().
+        LOCAL burn_phase1 IS TRUE.
+        UNTIL NOT burn_phase1 {
+            LOCAL pe_diff IS SHIP:PERIAPSIS - target_pe_alt.
+            IF pe_diff <= 0 {
+                SET burn_phase1 TO FALSE.
+                LOCK THROTTLE TO 0.0.
+            } ELSE IF pe_diff < 1500 {
+                LOCK THROTTLE TO 0.05.
+            } ELSE IF pe_diff < 5000 {
+                LOCK THROTTLE TO 0.20.
+            } ELSE {
+                LOCK THROTTLE TO 0.60.
+            }
+            PRINT "Burn Fase 1 | Pe actual: " + ROUND(SHIP:PERIAPSIS/1000, 2) + " km | Obj: " + ROUND(target_pe_alt/1000, 2) + " km | Th: " + ROUND(THROTTLE*100, 0) + "%   " AT(0, 21).
+            WAIT 0.05.
+        }
+        LOCK THROTTLE TO 0.0.
+        PRINT "ORBITA DE DRIFT ESTABLERTA!".
+
+        // FASE 2: Espera de drift
+        FROM {LOCAL orb_idx IS 1.} UNTIL orb_idx > DESIRED_DRIFT_ORBITS STEP {SET orb_idx TO orb_idx + 1.} DO {
+            PRINT "Navegant volta de drift " + orb_idx + " / " + DESIRED_DRIFT_ORBITS + "...".
+            WAIT UNTIL ETA:PERIAPSIS < 30.
+            WAIT UNTIL ETA:APOAPSIS < 90.
+        }
+
+        // FASE 3: Circularització al target slot
+        PRINT "FASE 3: Circularitzant a l'Apoapsi final...".
+        SET KUNIVERSE:TIMEWARP:WARP TO 0.
+        LOCK STEERING TO PROGRADE.
+        WAIT 15.0.
+
+        WAIT UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)).
+        ensure_engines_active().
+        LOCAL burn_circ IS TRUE.
+        UNTIL NOT burn_circ {
+            LOCAL period_diff IS tgt_period - SHIP:OBT:PERIOD.
+            IF period_diff <= 0.2 {
+                SET burn_circ TO FALSE.
+                LOCK THROTTLE TO 0.0.
+            } ELSE IF period_diff < 5.0 {
+                LOCK THROTTLE TO 0.05.
+            } ELSE IF period_diff < 20.0 {
+                LOCK THROTTLE TO 0.25.
+            } ELSE {
+                LOCK THROTTLE TO 0.70.
+            }
+            PRINT "Circ Burn | Període: " + ROUND(SHIP:OBT:PERIOD, 1) + "s | Obj: " + ROUND(tgt_period, 1) + "s   " AT(0, 27).
+            WAIT 0.05.
+        }
+        LOCK THROTTLE TO 0.0.
+        WAIT 3.0.
+
+    } ELSE {
+        // Cas B: Estem per davant de l'slot -> Pujar Apoapsis al Periapsi (òrbita més lenta)
+        LOCAL deg_to_lose IS 360.0 - deg_to_gain.
+        LOCAL drift_per_orb IS deg_to_lose / DESIRED_DRIFT_ORBITS.
+        LOCAL phasing_period IS tgt_period * (1.0 + (drift_per_orb / 360.0)).
+        LOCAL phasing_sma IS (KERBIN_MU * ((phasing_period / (2 * PI_VAL))^2))^(1/3).
+
+        LOCAL r_pe IS SHIP:PERIAPSIS + KERBIN_RADIUS.
+        LOCAL r_ap_target IS (2 * phasing_sma) - r_pe.
+        LOCAL target_ap_alt IS r_ap_target - KERBIN_RADIUS.
+
+        PRINT "Mode Phasing:                RETARDAR (Pujar Ap)".
+        PRINT "Graus a cedir:               -" + ROUND(deg_to_lose, 2) + " deg".
+        PRINT "Voltes de drift previstes:   " + DESIRED_DRIFT_ORBITS.
+        PRINT "Drift requerit per volta:    -" + ROUND(drift_per_orb, 2) + " deg / volta".
+        PRINT "Període de drift objectiu:   " + ROUND(phasing_period, 1) + " s (" + ROUND(phasing_period/60, 2) + " min)".
+        PRINT "Apoapsis de drift objectiu:  " + ROUND(target_ap_alt / 1000, 2) + " km".
+        PRINT "--------------------------------------------------".
+
+        // FASE 1: Inserció en òrbita de drift al Periapsi
+        PRINT "FASE 1: Esperant arribada al Periapsi per a cremar...".
+        UNTIL (ETA:PERIAPSIS < 90) OR (ETA:PERIAPSIS > (SHIP:OBT:PERIOD - 15)) {
+            LOCAL cur_p IS get_phase_angle(SHIP, tgt_vessel).
+            PRINT "Apropant-se al Periapsi | ETA Pe: " + ROUND(ETA:PERIAPSIS, 0) + " s | Fase: " + ROUND(cur_p, 1) + " deg   " AT(0, 18).
+            WAIT 0.5.
+        }
+
+        SET KUNIVERSE:TIMEWARP:WARP TO 0.
+        PRINT "Alineant actitud en PROGRAD...                                       " AT(0, 18).
+        LOCK STEERING TO PROGRADE.
+        WAIT 15.0.
+
+        UNTIL (ETA:PERIAPSIS < 10) OR (ETA:PERIAPSIS > (SHIP:OBT:PERIOD - 5)) {
+            PRINT "Comptador per a l'ignicio prograda: T-" + ROUND(ETA:PERIAPSIS, 0) + " s   " AT(0, 19).
+            WAIT 0.2.
+        }
+
+        PRINT "IGNICIO PROGRADA EN MARXA! Pujant Apoapsis a " + ROUND(target_ap_alt/1000, 1) + " km...".
+        ensure_engines_active().
+        LOCAL burn_phase1 IS TRUE.
+        UNTIL NOT burn_phase1 {
+            LOCAL ap_diff IS target_ap_alt - SHIP:APOAPSIS.
+            IF ap_diff <= 0 {
+                SET burn_phase1 TO FALSE.
+                LOCK THROTTLE TO 0.0.
+            } ELSE IF ap_diff < 1500 {
+                LOCK THROTTLE TO 0.05.
+            } ELSE IF ap_diff < 5000 {
+                LOCK THROTTLE TO 0.20.
+            } ELSE {
+                LOCK THROTTLE TO 0.60.
+            }
+            PRINT "Burn Fase 1 | Ap actual: " + ROUND(SHIP:APOAPSIS/1000, 2) + " km | Obj: " + ROUND(target_ap_alt/1000, 2) + " km | Th: " + ROUND(THROTTLE*100, 0) + "%   " AT(0, 21).
+            WAIT 0.05.
+        }
+        LOCK THROTTLE TO 0.0.
+        PRINT "ORBITA DE DRIFT ESTABLERTA!".
+
+        // FASE 2: Espera de drift
+        FROM {LOCAL orb_idx IS 1.} UNTIL orb_idx > DESIRED_DRIFT_ORBITS STEP {SET orb_idx TO orb_idx + 1.} DO {
+            PRINT "Navegant volta de drift " + orb_idx + " / " + DESIRED_DRIFT_ORBITS + "...".
+            WAIT UNTIL ETA:APOAPSIS < 30.
+            WAIT UNTIL ETA:PERIAPSIS < 90.
+        }
+
+        // FASE 3: Circularització al target slot (al Periapsi, baixant l'Apoapsi)
+        PRINT "FASE 3: Circularitzant al Periapsi final...".
+        SET KUNIVERSE:TIMEWARP:WARP TO 0.
+        LOCK STEERING TO RETROGRADE.
+        WAIT 15.0.
+
+        WAIT UNTIL (ETA:PERIAPSIS < 10) OR (ETA:PERIAPSIS > (SHIP:OBT:PERIOD - 5)).
+        ensure_engines_active().
+        LOCAL burn_circ IS TRUE.
+        UNTIL NOT burn_circ {
+            LOCAL period_diff IS SHIP:OBT:PERIOD - tgt_period.
+            IF period_diff <= 0.2 {
+                SET burn_circ TO FALSE.
+                LOCK THROTTLE TO 0.0.
+            } ELSE IF period_diff < 5.0 {
+                LOCK THROTTLE TO 0.05.
+            } ELSE IF period_diff < 20.0 {
+                LOCK THROTTLE TO 0.25.
+            } ELSE {
+                LOCK THROTTLE TO 0.70.
+            }
+            PRINT "Circ Burn | Període: " + ROUND(SHIP:OBT:PERIOD, 1) + "s | Obj: " + ROUND(tgt_period, 1) + "s   " AT(0, 27).
+            WAIT 0.05.
+        }
+        LOCK THROTTLE TO 0.0.
+        WAIT 3.0.
     }
-    LOCK THROTTLE TO 0.0.
-    WAIT 3.0.
 }
 
 // ----------------------------------------------------------------------------
@@ -281,8 +373,7 @@ IF final_err <= PHASE_TOLERANCE_DEG {
     WAIT 3.0.
 
     PRINT "Orientant actitud a NORMAL orbital pur per a separacio neta...".
-    LOCAL normal_vec IS VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
-    LOCK STEERING TO normal_vec.
+    LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
     WAIT 15.0.
 
     separate_payload().
@@ -302,8 +393,8 @@ IF final_err <= PHASE_TOLERANCE_DEG {
     PRINT "CREMADA DE DEORBITACIO DE LA SEGONA ETAPA (Zero Debris Protocol)...".
     ensure_engines_active().
     LOCK THROTTLE TO 1.0.
-    UNTIL (SHIP:PERIAPSIS <= 0) OR (STAGE:LIQUIDFUEL < 0.2) {
-        PRINT "Deorbit Pe: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km | Fuel: " + ROUND(STAGE:LIQUIDFUEL, 1) + " LF   " AT(0, 36).
+    UNTIL (SHIP:PERIAPSIS <= 0) OR (SHIP:LIQUIDFUEL < 0.2) {
+        PRINT "Deorbit Pe: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km | Fuel: " + ROUND(SHIP:LIQUIDFUEL, 1) + " LF   " AT(0, 36).
         WAIT 0.2.
     }
     LOCK THROTTLE TO 0.0.

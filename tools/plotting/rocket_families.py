@@ -842,6 +842,113 @@ class CSA13Plotter(CoroltIVFamilyPlotter):
         ))
         return markers
 
+class CSA14Plotter(CoroltIVFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-14", alt_ceil=320000.0, vel_ceil=2200.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        liftoff_met = None
+        for r in self.raw_rows:
+            try:
+                alt = float(r.get("altitude", 0.0))
+                met = float(r.get("MET", 0.0))
+                spd = float(r.get("surface_vel", 0.0))
+                if liftoff_met is None and (spd > 1.5 or alt > 80.0):
+                    liftoff_met = max(0.0, met - 0.5)
+            except (ValueError, TypeError):
+                continue
+
+        if liftoff_met is None:
+            liftoff_met = 0.0
+
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                if met >= liftoff_met:
+                    t_flight = met - liftoff_met
+                    r_copy = dict(r)
+                    r_copy["MET"] = str(t_flight)
+                    self.valid_rows.append(r_copy)
+            except (ValueError, TypeError):
+                continue
+
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IV B #4 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)"
+
+    def get_mission_objective(self) -> str:
+        return "Equatorial Constellation Expansion (CoroltSat-1D) 300x300 km orbital insertion and +40.0º constellation phasing"
+
+    def get_mission_outcome(self) -> str:
+        return "🟢 100% Orbital Insertion Success | 303.3x299.3 km Circular Orbit (e=0.0022, i=0.127º) | 53.2% Stage 2 Propellant Retained for Phasing"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=20.7,
+            altitude=1200.0,
+            label="Pitch Kick 84º (T+21s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=48.5,
+            altitude=7050.0,
+            label="SRB Staging & Max Q (T+48.5s)",
+            color="#fbbf24",
+            circle_color="#fbbf24",
+            anchor="start",
+            dx=8,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=137.5,
+            altitude=56720.0,
+            label="Stage 1 MECO (T+137.5s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=218.0,
+            altitude=120400.0,
+            label="SECO-1: Ap 300.0 km (T+218s)",
+            color="#a855f7",
+            circle_color="#a855f7",
+            anchor="start",
+            dx=8,
+            dy=-10
+        ))
+        markers.append(PlotMarker(
+            time=678.0,
+            altitude=299400.0,
+            label="SECO-2 Circ Ignition (T+678s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=716.5,
+            altitude=300220.0,
+            label="Circular Orbit: 303.3x299.3 km (T+717s)",
+            color="#10b981",
+            circle_color="#10b981",
+            anchor="end",
+            dx=-10,
+            dy=-12
+        ))
+        return markers
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -861,6 +968,7 @@ MISSION_REGISTRY: Dict[str, Type[BaseMissionPlotter]] = {
     "CSA-11": CSA11Plotter,
     "CSA-12": CSA12Plotter,
     "CSA-13": CSA13Plotter,
+    "CSA-14": CSA14Plotter,
 }
 
 def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:
