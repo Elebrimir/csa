@@ -66,7 +66,7 @@
     <circle cx="568.8" cy="320.0" r="5" fill="#10b981" />
     <text x="513.8" y="306.0" fill="#10b981" font-size="11" font-weight="bold">SECO-2 (T+741s CIRC)</text>
 
-    <!-- Phasing & Deployment Zone -->
+    <!-- Phasing and Deployment Zone -->
     <circle cx="764.0" cy="318.8" r="5" fill="#06b6d4" />
     <text x="699.0" y="342.8" fill="#06b6d4" font-size="11" font-weight="bold">COROLTSAT-1E SLOT 2 LOCK</text>
     <text x="699.0" y="354.8" fill="#94a3b8" font-size="9">302.6 x 299.6 km // i=0.095º // Slot 2 Bridge Link</text>

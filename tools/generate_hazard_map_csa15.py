@@ -105,7 +105,7 @@ def generate_kaa_clearance_map():
     <circle cx="{seco2_x:.1f}" cy="{seco2_y:.1f}" r="5" fill="#10b981" />
     <text x="{seco2_x-55:.1f}" y="{seco2_y-14:.1f}" fill="#10b981" font-size="11" font-weight="bold">SECO-2 (T+741s CIRC)</text>
 
-    <!-- Phasing & Deployment Zone -->
+    <!-- Phasing and Deployment Zone -->
     <circle cx="{phasing_x:.1f}" cy="{phasing_y:.1f}" r="5" fill="#06b6d4" />
     <text x="{phasing_x-65:.1f}" y="{phasing_y+24:.1f}" fill="#06b6d4" font-size="11" font-weight="bold">COROLTSAT-1E SLOT 2 LOCK</text>
     <text x="{phasing_x-65:.1f}" y="{phasing_y+36:.1f}" fill="#94a3b8" font-size="9">302.6 x 299.6 km // i=0.095º // Slot 2 Bridge Link</text>
