@@ -17,7 +17,7 @@ The **CoroltNet-LEO** system is the flagship orbital telecommunications and scie
 | **CorolSat-1B** | [CSA-12](/missions/csa-12) | 🟢 **ACTIVE** | 311.5 × 300.0 km | 2,882.09 s (48.03 min) | 0.0° (Slot 0 Anchor) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1D** | [CSA-14](/missions/csa-14) | 🟢 **ACTIVE** | 308.3 × 303.2 km | 2,882.25 s (48.04 min) | +39.9° (Slot 1 // 617 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1C** | [CSA-13](/missions/csa-13) | 🟢 **ACTIVE** | 308.8 × 302.7 km | 2,881.92 s (48.03 min) | +121.9° (Slot 3) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1E** | *CSA-15 (Planned)* | ⚪ **PLANNED** | 300.0 × 300.0 km *(Target)* | 2,882.1 s *(Target)* | +240.0° (Slot 6) / +80.0° (Slot 2) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1E** | [CSA-15](/missions/csa-15) | 🟢 **ACTIVE** | 302.7 × 299.6 km | 2,860.0 s (47.67 min) | +78.3° (Slot 2 // 579 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 
 ---
 

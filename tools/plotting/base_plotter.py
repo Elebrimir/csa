@@ -254,7 +254,8 @@ class BaseMissionPlotter(ABC):
             if m.show_circle:
                 c_col = m.circle_color or m.color
                 markers_svg.append(f'<circle cx="{mx:.1f}" cy="{my:.1f}" r="4.5" fill="{c_col}" stroke="#ffffff" stroke-width="1.5"/>')
-            markers_svg.append(f'<text x="{mx + m.dx:.1f}" y="{my + m.dy:.1f}" font-size="11" font-weight="bold" fill="{m.color}" text-anchor="{m.anchor}">{m.label}</text>')
+            clean_label = m.label.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            markers_svg.append(f'<text x="{mx + m.dx:.1f}" y="{my + m.dy:.1f}" font-size="11" font-weight="bold" fill="{m.color}" text-anchor="{m.anchor}">{clean_label}</text>')
 
         annot_svg = "\n  ".join(markers_svg)
 

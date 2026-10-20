@@ -172,4 +172,5 @@ Staging Order:
 | **`COROLT IVB - B2`** | Corolt-IV B | **[CSA-12](/missions/csa-12)** | `CoroltSat-1B` (248 kg) | Year 1, Day 159 | 🟢 **305.9 × 299.6 km** (100% Historic Orbital Insertion, $e=0.0035$, CoroltSat-1B Deployed & Active) |
 | **`COROLT IVB - B3`** | Corolt-IV B | **[CSA-13](/missions/csa-13)** | `CoroltSat-1C` (248 kg) | Year 1, Day 169 | 🟢 **308.8 × 302.7 km** (Constellation Expansion, 4-Orbit Phasing, $\Delta T = -0.171\text{ s}$, CoroltSat-1C Active) |
 | **`COROLT IVB - B4`** | Corolt-IV B | **[CSA-14](/missions/csa-14)** | `CoroltSat-1D` (248 kg) | Year 1, Day 177 | 🟢 **308.3 × 303.2 km** (Optimized 1.2 km Pitch Kick, $53.2\%$ Stage 2 Reserve, $+39.90^\circ$ Slot 1 Lock, $\Delta T = +0.158\text{ s}$) |
+| **`COROLT IVB - B5`** | Corolt-IV B | **[CSA-15](/missions/csa-15)** | `CoroltSat-1E` (248 kg) | Year 1, Day 187 | 🟢 **302.7 × 299.6 km** (Sidereal Launch Window, $\Delta \theta = 2.68^\circ$ pad error, $+78.30^\circ$ Slot 2 Lock, 4-Node Mesh Bridge Lock, Zero Debris S2 Deorbit) |
 
