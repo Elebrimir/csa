@@ -52,11 +52,7 @@ IF TARGET_SLOT_DEG = 9999.0 {
     LOCAL tgt_found IS FALSE.
     LOCAL tgt_vessel IS SHIP.
 
-    IF HASTARGET {
-        SET tgt_vessel TO TARGET.
-        SET tgt_found TO TRUE.
-        PRINT "Objectiu detectat (KSP Target): " + tgt_vessel:NAME.
-    } ELSE IF TARGET_NAME_OPT:LENGTH > 0 {
+    IF TARGET_NAME_OPT:LENGTH > 0 {
         LOCAL all_vessels IS LIST().
         LIST TARGETS IN all_vessels.
         FOR v IN all_vessels {
@@ -67,6 +63,11 @@ IF TARGET_SLOT_DEG = 9999.0 {
                 PRINT "Objectiu assignat per nom: " + v:NAME.
             }
         }
+    }
+    IF (NOT tgt_found) AND HASTARGET {
+        SET tgt_vessel TO TARGET.
+        SET tgt_found TO TRUE.
+        PRINT "Objectiu detectat (KSP Target): " + tgt_vessel:NAME.
     }
 
     IF NOT tgt_found {
