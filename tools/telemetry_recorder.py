@@ -18,6 +18,12 @@ import argparse
 import signal
 from datetime import datetime
 
+try:
+    from mqtt_bridge import SimpleMQTTClient, publish_discovery, format_telemetry_payload, STATE_TOPIC
+    HAS_MQTT_BRIDGE = True
+except Exception:
+    HAS_MQTT_BRIDGE = False
+
 def _handle_sigterm(signum, frame):
     raise KeyboardInterrupt
 
@@ -133,8 +139,10 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
     else:
         print(f"[🔬] MOCK MODE ACTIVE: Generating synthetic verification data...")
 
-    os.makedirs("missions", exist_ok=True)
-    csv_file = f"missions/{mission_name}_telemetry.csv"
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    missions_dir = os.path.join(repo_root, "missions")
+    os.makedirs(missions_dir, exist_ok=True)
+    csv_file = os.path.join(missions_dir, f"{mission_name}_telemetry.csv")
     
     fieldnames = [
         "timestamp", "UT", "MET",
@@ -161,6 +169,16 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
         writer.writeheader()
 
         print(f"[*] Recording telemetry to: {csv_file}")
+        mqtt_client = None
+        if HAS_MQTT_BRIDGE:
+            try:
+                mqtt_client = SimpleMQTTClient()
+                mqtt_client.connect()
+                publish_discovery(mqtt_client)
+                print(f"[📡] MQTT Telemetry Uplink ACTIVE -> 192.168.1.14:1883 ({STATE_TOPIC})")
+            except Exception as e:
+                print(f"[!] MQTT Uplink unavailable ({e}), continuing local recording...")
+                mqtt_client = None
         print(f"    (Press Ctrl+C to stop recording and generate mission summary)\n")
         print(f"{'MET (s)':>7} | {'Alt (m)':>9} | {'Spd (m/s)':>9} | {'Pitch':>6} | {'Apo (km)':>8} | {'Q (kPa)':>7} | {'EC':>6} | {'Skin T (K)':>10}")
         print("-" * 85)
@@ -267,7 +285,7 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                 if alt > 500:
                     min_pitch = min(min_pitch, pitch)
 
-                writer.writerow({
+                row_dict = {
                     "timestamp": round(now, 2),
                     "UT": round(ut, 1),
                     "MET": met,
@@ -303,11 +321,19 @@ def record_flight(mission_name="CSA-07", interval=0.5, mock_mode=False):
                     "temp_core": round(temp_core, 1),
                     "temp_skin": round(temp_skin, 1),
                     "temp_sensor": round(temp_sensor, 1)
-                })
+                }
+                writer.writerow(row_dict)
                 f.flush()
 
+                if mqtt_client is not None:
+                    try:
+                        mqtt_payload = format_telemetry_payload(mission_name, "IN FLIGHT (LIVE)", row_dict)
+                        mqtt_client.publish(STATE_TOPIC, mqtt_payload, retain=True)
+                    except Exception:
+                        pass
+
                 ec_str = f"{res_ec:.0f}" if res_ec >= 0 else "N/A"
-                print(f"{met:>7.1f} | {alt:>9.1f} | {surf_vel:>9.1f} | {pitch:>5.1f}º | {apo/1000:>8.1f} | {q:>7.2f} | {ec_str:>6} | {temp_skin:>10.1f}", end="\r")
+                print(f"{met:>7.1f} | {alt:>9.1f} | {surf_vel:>9.1f} | {pitch:>5.1f}º | {apo/1000:>8.1f} | {q:>7.2f} | {ec_str:>6} | {temp_skin:>10.1f}", end="\r", flush=True)
                 time.sleep(interval)
 
         except KeyboardInterrupt:

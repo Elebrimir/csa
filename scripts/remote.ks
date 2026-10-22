@@ -26,15 +26,20 @@ IF EXISTS(cmd_file) {
 }
 
 UNTIL STOP_REMOTE_BRIDGE {
-    IF EXISTS(cmd_file) {
+    IF HOMECONNECTION:ISCONNECTED AND EXISTS(cmd_file) {
         PRINT "--------------------------------------------------".
         PRINT "[REMOTE UT " + ROUND(TIME:SECONDS, 1) + "s] Executing command from laptop...".
         LOG "START|" + ROUND(TIME:SECONDS, 2) + "|" + SHIP:NAME TO ack_file.
-        RUNPATH(cmd_file).
-        IF EXISTS(cmd_file) {
-            DELETEPATH(cmd_file).
+        LOCAL local_cmd IS "1:/exec_remote.ks".
+        COPYPATH(cmd_file, local_cmd).
+        DELETEPATH(cmd_file).
+        RUNPATH(local_cmd).
+        IF EXISTS(local_cmd) {
+            DELETEPATH(local_cmd).
         }
-        LOG "DONE|" + ROUND(TIME:SECONDS, 2) + "|Ap=" + ROUND(SHIP:APOAPSIS/1000, 2) + "km|Pe=" + ROUND(SHIP:PERIAPSIS/1000, 2) + "km" TO ack_file.
+        IF HOMECONNECTION:ISCONNECTED {
+            LOG "DONE|" + ROUND(TIME:SECONDS, 2) + "|Ap=" + ROUND(SHIP:APOAPSIS/1000, 2) + "km|Pe=" + ROUND(SHIP:PERIAPSIS/1000, 2) + "km" TO ack_file.
+        }
         PRINT "[REMOTE UT " + ROUND(TIME:SECONDS, 1) + "s] Command execution finished.".
         PRINT "--------------------------------------------------".
     }
