@@ -43,6 +43,11 @@
    * The vehicle oriented attitude to pure orbital **Normal** ($\vec{v} \times \vec{r}$), deployed the 3 Codac-A23 antennas and 5 solar arrays, and cleanly separated `CoroltSat-1F`.
    * Exactly 30 seconds after deployment, the `Belle-RLX81` stage executed a retrograde deorbit burn, reducing periapsis to **$-1.75\text{ km}$** ($Pe \le 0\text{ km}$), ensuring rapid destructive ocean disposal under the **CSA Zero Debris Protocol**.
 
+6. **IoT Mission Control Architecture: Home Assistant & Grafana Live Streams**:
+   * Telemetry was continuously broadcast in real time to the local ground operations MQTT broker (`192.168.1.14:1883`, topic `csa/telemetry/state`) via [`tools/mqtt_bridge.py`](https://github.com/Elebrimir/csa/blob/main/tools/mqtt_bridge.py).
+   * Twenty-four live flight telemetry entities were auto-discovered in **Home Assistant**, populating the dedicated operations deck at `/telemetria-csa/csa-mission-control` (with altitude and apogee gauge ranges dynamically re-scaled to a 750 km ceiling to accommodate 600 km MKO flight regimes).
+   * Real-time metrics were simultaneously archived to InfluxDB and visualized across **Grafana** operations displays, providing high-frequency multi-screen flight telemetry, structural envelope monitoring, and historical cross-mission comparative analytics.
+
 ---
 
 ## 📊 Telemetry and Performance: Planned vs. Actual Flight
