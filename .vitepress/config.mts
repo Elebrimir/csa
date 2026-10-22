@@ -64,6 +64,7 @@ export default defineConfig({
           { text: "CSA-13: Constellation Expansion & Orbital Phasing", link: "/missions/csa-13" },
           { text: "CSA-14: +40.0° Mesh Slot Lock & Universal Phasing", link: "/missions/csa-14" },
           { text: "CSA-15: +80.0° Mesh Slot Lock & 4-Node Bridge", link: "/missions/csa-15" },
+          { text: "CSA-16: CoroltNet-MKO Inauguration & 600 km Anchor", link: "/missions/csa-16" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -86,6 +87,7 @@ export default defineConfig({
           { text: "CSA-13 Release", link: "/social_media/csa-13_post" },
           { text: "CSA-14 Release", link: "/social_media/csa-14_post" },
           { text: "CSA-15 Release", link: "/social_media/csa-15_post" },
+          { text: "CSA-16 Release", link: "/social_media/csa-16_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }

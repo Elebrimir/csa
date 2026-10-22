@@ -18,6 +18,17 @@ The **CoroltNet-LEO** system is the flagship orbital telecommunications and scie
 | **CoroltSat-1D** | [CSA-14](/missions/csa-14) | 🟢 **ACTIVE** | 308.3 × 303.2 km | 2,882.25 s (48.04 min) | +39.9° (Slot 1 // 617 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1C** | [CSA-13](/missions/csa-13) | 🟢 **ACTIVE** | 308.8 × 302.7 km | 2,881.92 s (48.03 min) | +121.9° (Slot 3) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1E** | [CSA-15](/missions/csa-15) | 🟢 **ACTIVE** | 302.7 × 299.6 km | 2,860.0 s (47.67 min) | +78.3° (Slot 2 // 579 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1F** | [CSA-16](/missions/csa-16) | 🟢 **ACTIVE** | 601.1 × 598.9 km | 4,395.23 s (73.25 min) | 0.0° (Node 0 Anchor) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+
+---
+
+## 🌐 CoroltNet-MKO: Medium Kerbin Orbit Backbone (600 km)
+
+Inaugurated by **Mission CSA-16**, **CoroltNet-MKO** represents the high-altitude deep-space communications backbone of the Corolt Space Agency:
+* **Nominal Architecture**: 6-satellite regular hexagon at **600.0 km circular equatorial orbit** ($\Delta \theta = 60.0^\circ$).
+* **Payload Power**: 3x Codac-A23 high-gain microwave relays operating in an omnidirectional phased array ($D_{\max} > 1,327\text{ km}$).
+* **Inter-Satellite Geometry**: Adjacent chord distance $d = 1,200.0\text{ km}$, clearing Kerbin's surface by **$439.2\text{ km}$** with zero planetary occlusion.
+* **Drift Suppression**: Operational period locked to $T = 4,395.23\text{ s}$ ($+0.09\text{ s}$ delta), suppressing natural drift to less than $0.036^\circ\text{/day}$.
 
 ---
 
@@ -57,6 +68,6 @@ To guarantee immediate mission utility while the full 9-node ring is assembled:
 ## 🛠️ Ground Station Network Integration (DSN)
 
 * **Primary DSN Hub**: Kerbal Space Center (KSC) — Lat 0.0°, Lon 0.0°
-* **Frequency Tuning**: Frequency Channel `100` (`CoroltSat-LEO` profile in CommNet Constellation)
+* **Frequency Tuning**: Frequency Channel `100` (`CoroltSat-LEO`) and Channel `101` (`CoroltNet-MKO`)
 * **Redundancy Protocol**: Ground station tracking automated via CommNet Constellation scenario routing. When line-of-sight to KSC is lost on the night-side hemisphere, signals hop across adjacent nodes to route science telemetry back to Mission Control in real time.
 

@@ -1057,6 +1057,124 @@ class CSA15Plotter(CoroltIVFamilyPlotter):
         ))
         return markers
 
+class CSA16Plotter(CoroltIVFamilyPlotter):
+    def __init__(self, **kwargs):
+        super().__init__(mission_id="CSA-16", alt_ceil=620000.0, vel_ceil=2400.0, **kwargs)
+
+    def filter_data(self) -> None:
+        self.valid_rows = []
+        liftoff_met = None
+        for r in self.raw_rows:
+            try:
+                alt = float(r.get("altitude", 0.0))
+                met = float(r.get("MET", 0.0))
+                spd = float(r.get("surface_vel", 0.0))
+                if liftoff_met is None and (spd > 1.5 or alt > 85.0):
+                    liftoff_met = max(0.0, met - 0.5)
+            except (ValueError, TypeError):
+                continue
+
+        if liftoff_met is None:
+            liftoff_met = 0.0
+
+        for r in self.raw_rows:
+            try:
+                met = float(r.get("MET", 0.0))
+                if met >= liftoff_met:
+                    t_flight = met - liftoff_met
+                    if t_flight <= 1480.0:
+                        r_copy = dict(r)
+                        r_copy["MET"] = str(t_flight)
+                        self.valid_rows.append(r_copy)
+            except (ValueError, TypeError):
+                continue
+
+        if not self.valid_rows:
+            self.valid_rows = self.raw_rows
+
+    def get_vehicle_name(self) -> str:
+        return "Corolt-IV B #6 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)"
+
+    def get_mission_objective(self) -> str:
+        return "MKO 600 km Constellation Inauguration (CoroltSat-1F) Node 0 Foundation Anchor"
+
+    def get_mission_outcome(self) -> str:
+        return "🟢 100% Mission Success | Node 0 Operational | 601.1x598.9 km Circular Orbit | Upper Stage Deorbited (Pe=-1.75 km)"
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        markers.append(PlotMarker(
+            time=20.1,
+            altitude=1200.0,
+            label="Pitch Kick 84º (T+20s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=46.7,
+            altitude=6492.0,
+            label="Max Q 23.3 kPa & SRBs (T+47s)",
+            color="#fbbf24",
+            circle_color="#fbbf24",
+            anchor="start",
+            dx=8,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=137.5,
+            altitude=56800.0,
+            label="Stage 1 MECO (T+138s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=274.2,
+            altitude=166400.0,
+            label="SECO-1: Ap 600.1 km (T+274s)",
+            color="#a855f7",
+            circle_color="#a855f7",
+            anchor="start",
+            dx=8,
+            dy=-10
+        ))
+        markers.append(PlotMarker(
+            time=1291.4,
+            altitude=599900.0,
+            label="SECO-2 Circ Ignition (T+1291s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=1366.6,
+            altitude=600300.0,
+            label="601.1x598.9 km // Deployment (T+1367s)",
+            color="#10b981",
+            circle_color="#10b981",
+            anchor="end",
+            dx=-10,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=1455.4,
+            altitude=600340.0,
+            label="Stage 2 Deorbit Pe=-1.75 km (T+1455s)",
+            color="#f43f5e",
+            circle_color="#f43f5e",
+            anchor="end",
+            dx=-10,
+            dy=15
+        ))
+        return markers
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -1078,6 +1196,7 @@ MISSION_REGISTRY: Dict[str, Type[BaseMissionPlotter]] = {
     "CSA-13": CSA13Plotter,
     "CSA-14": CSA14Plotter,
     "CSA-15": CSA15Plotter,
+    "CSA-16": CSA16Plotter,
 }
 
 def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" style="background:#090d16; font-family:'Courier New', monospace;">
+    <defs>
+        <pattern id="hazardHatchRed" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="#ef4444" stroke-width="2" opacity="0.7" />
+        </pattern>
+        <pattern id="hazardHatchAmber" width="10" height="10" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#f59e0b" stroke-width="2" opacity="0.7" />
+        </pattern>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Grid lines -->
+    <rect width="1000" height="640" fill="#0b1120" />
+
+    <!-- Header Block -->
+    <rect x="0" y="0" width="1000" height="55" fill="#0f172a" stroke="#334155" stroke-width="1.2" />
+    <text x="25" y="32" fill="#38bdf8" font-size="16" font-weight="bold">KERBAL AVIATION ADMINISTRATION (KAA) // SPACE CLEARANCE NOTICE</text>
+    <text x="700" y="32" fill="#10b981" font-size="12" font-weight="bold">STATUS: MKO ORBIT ACHIEVED</text>
+
+    <!-- Subheader -->
+    <text x="25" y="47" fill="#94a3b8" font-size="10">NOTAM: KAA-CSA16-2026-16 // MISSION CSA-16 (COROLT-IV B #6) // EQUATORIAL CORRIDOR 090.0º</text>
+
+    <!-- Map Grid -->
+    <!-- Equator -->
+    <line x1="60" y1="320.0" x2="940" y2="320.0" stroke="#475569" stroke-width="1.2" stroke-dasharray="4,4" />
+    <text x="65" y="314.0" fill="#64748b" font-size="9">EQUATOR (0.0º LAT)</text>
+
+    <!-- Meridian ticks -->
+    <line x1="248.6" y1="70" x2="248.6" y2="570" stroke="#1e293b" stroke-width="1" />
+    <text x="252.6" y="85" fill="#475569" font-size="9">60º W</text>
+    <line x1="437.1" y1="70" x2="437.1" y2="570" stroke="#1e293b" stroke-width="1" />
+    <text x="441.1" y="85" fill="#475569" font-size="9">30º W</text>
+    <line x1="625.7" y1="70" x2="625.7" y2="570" stroke="#1e293b" stroke-width="1" />
+    <text x="629.7" y="85" fill="#475569" font-size="9">0º PRIME</text>
+    <line x1="814.3" y1="70" x2="814.3" y2="570" stroke="#1e293b" stroke-width="1" />
+    <text x="818.3" y="85" fill="#475569" font-size="9">30º E</text>
+
+    <!-- Zone 1: SRB Drop Sector -->
+    <rect x="132.5" y="291.3" width="50" height="60" fill="url(#hazardHatchAmber)" stroke="#f59e0b" stroke-width="1.5" opacity="0.85" />
+    <text x="135.5" y="285.3" fill="#f59e0b" font-size="9" font-weight="bold">ZONE 1: SRB DROP</text>
+    <text x="135.5" y="363.3" fill="#94a3b8" font-size="8">T+46.7s Maritime Sector</text>
+
+    <!-- Zone 2: Stage 1 Core MECO Impact -->
+    <rect x="131.7" y="281.3" width="90" height="80" fill="url(#hazardHatchRed)" stroke="#ef4444" stroke-width="1.5" opacity="0.85" />
+    <text x="136.7" y="275.3" fill="#ef4444" font-size="9" font-weight="bold">ZONE 2: CORE DISPOSAL</text>
+    <text x="136.7" y="373.3" fill="#94a3b8" font-size="8">Etoh-140-TU Impact Sector</text>
+
+    <!-- Flight Trajectory Ground Track -->
+    <path d="M 157.1,321.3 L 157.5,321.3 L 176.7,321.3 L 282.1,321.1 L 740.7,319.0 L 776.0,318.8 L 940,318.8"
+          fill="none" stroke="#10b981" stroke-width="3" filter="url(#glow)" />
+
+    <!-- Trajectory Points -->
+    <!-- KSC -->
+    <circle cx="157.1" cy="321.3" r="5" fill="#38bdf8" />
+    <text x="107.1" y="309.3" fill="#38bdf8" font-size="11" font-weight="bold">KSC PAD (74.6º W)</text>
+
+    <!-- SECO-1 -->
+    <circle cx="282.1" cy="321.1" r="4" fill="#a855f7" />
+    <text x="257.1" y="307.1" fill="#a855f7" font-size="10">SECO-1 (Ap 600.1 km)</text>
+
+    <!-- SECO-2 -->
+    <circle cx="740.7" cy="319.0" r="5" fill="#10b981" />
+    <text x="685.7" y="305.0" fill="#10b981" font-size="11" font-weight="bold">SECO-2 (T+1367s CIRC)</text>
+
+    <!-- Deployment Zone -->
+    <circle cx="776.0" cy="318.8" r="5" fill="#06b6d4" />
+    <text x="711.0" y="342.8" fill="#06b6d4" font-size="11" font-weight="bold">COROLTSAT-1F NODE 0 LOCK</text>
+    <text x="711.0" y="354.8" fill="#94a3b8" font-size="9">601.1 x 598.9 km // i=0.08º // Stage 2 Deorbit Pe=-1.75 km</text>
+
+    <!-- Telemetry Box / Compliance Legend -->
+    <rect x="60" y="500" width="480" height="70" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="75" y="520" fill="#38bdf8" font-size="11" font-weight="bold">MISSION PARAMETERS &amp; KAA COMPLIANCE:</text>
+    <text x="75" y="538" fill="#94a3b8" font-size="10">• Launch Azimuth: 090.0º Due East | Orbital Inclination: 0.08º (Equatorial)</text>
+    <text x="75" y="554" fill="#10b981" font-size="10">• Exospheric Insertion: 100% Successful | Stage 2 Deorbited (Pe = -1.75 km)</text>
+
+    <!-- Status Badge -->
+    <rect x="680" y="500" width="260" height="70" fill="#064e3b" stroke="#10b981" stroke-width="1.5" />
+    <text x="700" y="525" fill="#6ee7b7" font-size="12" font-weight="bold">ORBITAL CORRIDOR SECURED</text>
+    <text x="700" y="545" fill="#a7f3d0" font-size="10">CoroltSat-1F (Node 0 MKO-600)</text>
+    <text x="700" y="560" fill="#a7f3d0" font-size="9">KAA Clearance Verified (Y1-D196)</text>
+</svg>

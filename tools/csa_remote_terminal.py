@@ -62,7 +62,9 @@ def send_kos_command(raw_cmd, wait_ack=True):
         return
 
     # Built-in shortcuts
-    if cmd.lower() in ("phase15", "run phase15", "run phase15."):
+    if cmd.lower() in ("go16", "launch16", "csa16", "run csa16", "run csa16.", "run go16."):
+        cmd = 'RUNPATH("0:/csa/csa16_guided_ascent.ks").'
+    elif cmd.lower() in ("phase15", "run phase15", "run phase15."):
         cmd = 'RUNPATH("0:/csa/constellation_phasing.ks", 40.0, 1, "CoroltSat-1D").'
     elif cmd.lower() in ("go15", "run go15", "run go15."):
         cmd = 'RUNPATH("0:/csa/csa15_guided_ascent.ks", 4022756.7, 40.0, "CoroltSat-1D").'
@@ -118,7 +120,7 @@ def interactive_loop():
     print("       (100% Crash-Proof File Bridge - Replaces kOS Telnet on Linux)            ")
     print("================================================================================")
     print("1. In KSP kOS window (once), type:  switch to 0. run remote.")
-    print("2. Type any kOS command below (or shortcuts: `phase15`, `status`, `quit`).")
+    print("2. Type any kOS command below (or shortcuts: `go16`, `status`, `quit`).")
     print("--------------------------------------------------------------------------------")
 
     while True:

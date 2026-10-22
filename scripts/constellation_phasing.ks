@@ -194,18 +194,35 @@ IF TARGET_SLOT_DEG = 9999.0 {
         PRINT "Tolerancia admesa:           +/-" + PHASE_TOLERANCE_DEG + " deg".
         PRINT "--------------------------------------------------".
 
-        // Detect if vessel is already in an active elliptical drift orbit (>2% period difference vs target)
-        LOCAL period_ratio_diff IS ABS(SHIP:OBT:PERIOD - tgt_period) / tgt_period.
+        // Detect if vessel orbital period differs from anchor (> 0.20 s)
+        LOCAL abs_period_diff IS ABS(SHIP:OBT:PERIOD - tgt_period).
 
-        IF (initial_phase_err <= PHASE_TOLERANCE_DEG) AND (period_ratio_diff < 0.01) {
-            PRINT ">>> EL VEHICLE JA ES TROBA DINS DE TOLERANCIA (+/-" + PHASE_TOLERANCE_DEG + " deg)! <<<".
+        IF (initial_phase_err <= PHASE_TOLERANCE_DEG) AND (abs_period_diff <= 0.20) {
+            PRINT ">>> EL VEHICLE JA ES TROBA DINS DE TOLERANCIA DE FASE I PERIODE! <<<".
+        } ELSE IF (initial_phase_err <= PHASE_TOLERANCE_DEG) AND (abs_period_diff > 0.20) {
+            PRINT ">>> FASE DINS DE TOLERANCIA (+/-" + PHASE_TOLERANCE_DEG + " deg), AJUSTANT PERIODE SINCRONIC (" + ROUND(SHIP:OBT:PERIOD, 2) + "s -> " + ROUND(tgt_period, 2) + "s)... <<<".
         } ELSE {
 
             IF deg_to_gain <= 180.0 {
                 // ============================================================
                 // MODE A: ADVANCE PHASE (+deg_to_gain) -> Lower Periapsis at Apogee
                 // ============================================================
-                IF SHIP:OBT:PERIOD < (tgt_period * 0.985) {
+                LOCAL is_passive_catchup IS FALSE.
+                IF (SHIP:OBT:PERIOD < (tgt_period - 5.0)) AND (deg_to_gain <= 8.0) {
+                    // Passive catch-up in lower/faster parking orbit (e.g. 300 km vs 305.75 km)
+                    SET is_passive_catchup TO TRUE.
+                    LOCAL actual_drift_per_orb IS 360.0 * (1.0 - (SHIP:OBT:PERIOD / tgt_period)).
+                    PRINT ">>> DETECTADA ORBITA D'ATRAPAMENT PASSIU (+" + ROUND(actual_drift_per_orb, 2) + " deg/volta)! <<<".
+                    PRINT "Derivant passivament fins a l'objectiu (sense gastar delta-v de Fase 1)...".
+                    LOCK STEERING TO PROGRADE.
+                    UNTIL ABS(to_signed_deg(get_phase_angle(SHIP, tgt_vessel) - norm_slot_deg)) <= 0.25 {
+                        LOCAL cp IS get_phase_angle(SHIP, tgt_vessel).
+                        LOCAL ce IS ABS(to_signed_deg(cp - norm_slot_deg)).
+                        PRINT "Passive Drift | Fase: " + ROUND(cp, 2) + " deg | Obj: " + ROUND(norm_slot_deg, 2) + " deg | Err: " + ROUND(ce, 2) + " deg   " AT(0, 21).
+                        WAIT 0.5.
+                    }
+                    SET KUNIVERSE:TIMEWARP:WARP TO 0.
+                } ELSE IF SHIP:OBT:PERIOD < (tgt_period * 0.985) {
                     // Already in faster elliptical drift orbit (post-Phase 1 recovery)
                     LOCAL actual_drift_per_orb IS 360.0 * (1.0 - (SHIP:OBT:PERIOD / tgt_period)).
                     LOCAL rem_orbits IS MAX(1, ROUND(deg_to_gain / actual_drift_per_orb, 0)).
@@ -291,13 +308,16 @@ IF TARGET_SLOT_DEG = 9999.0 {
                     }
                 }
 
-                // FASE 3: Circularization at Apogee
-                PRINT "FASE 3: Circularitzant a l'Apoapsi final...".
+                // FASE 3: Period Lock / Circularization
+                PRINT "FASE 3: Sincronitzant periode orbital amb " + tgt_vessel:NAME + "...".
                 SET KUNIVERSE:TIMEWARP:WARP TO 0.
                 LOCK STEERING TO PROGRADE.
-                WAIT 15.0.
-
-                WAIT UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)).
+                IF NOT is_passive_catchup {
+                    WAIT 15.0.
+                    WAIT UNTIL (ETA:APOAPSIS < 10) OR (ETA:APOAPSIS > (SHIP:OBT:PERIOD - 5)).
+                } ELSE {
+                    WAIT 3.0.
+                }
                 ensure_engines_active().
                 LOCAL burn_circ IS TRUE.
                 UNTIL NOT burn_circ {
@@ -446,6 +466,42 @@ IF TARGET_SLOT_DEG = 9999.0 {
 
         IF final_err <= PHASE_TOLERANCE_DEG {
             PRINT ">>> VALIDACIO EXITOSA! L'angle esta dins del marge admes (+/-" + PHASE_TOLERANCE_DEG + " deg). <<<".
+
+            // Ensure orbital period matches anchor (+/- 0.15 s) before payload release
+            IF ABS(SHIP:OBT:PERIOD - tgt_period) > 0.20 {
+                SET KUNIVERSE:TIMEWARP:WARP TO 0.
+                ensure_engines_active().
+                IF SHIP:OBT:PERIOD < tgt_period {
+                    PRINT "Sincronitzant periode en PROGRAD (" + ROUND(SHIP:OBT:PERIOD, 2) + "s -> " + ROUND(tgt_period, 2) + "s)...".
+                    LOCK STEERING TO PROGRADE.
+                    WAIT 12.0.
+                    LOCAL p_trim IS TRUE.
+                    UNTIL NOT p_trim {
+                        LOCAL rem_p IS tgt_period - SHIP:OBT:PERIOD.
+                        IF rem_p <= 0.15 { SET p_trim TO FALSE. LOCK THROTTLE TO 0.0. }
+                        ELSE IF rem_p < 2.0 { LOCK THROTTLE TO 0.03. }
+                        ELSE IF rem_p < 8.0 { LOCK THROTTLE TO 0.10. }
+                        ELSE { LOCK THROTTLE TO 0.25. }
+                        WAIT 0.05.
+                    }
+                } ELSE {
+                    PRINT "Sincronitzant periode en RETROGRAD (" + ROUND(SHIP:OBT:PERIOD, 2) + "s -> " + ROUND(tgt_period, 2) + "s)...".
+                    LOCK STEERING TO RETROGRADE.
+                    WAIT 12.0.
+                    LOCAL p_trim IS TRUE.
+                    UNTIL NOT p_trim {
+                        LOCAL rem_p IS SHIP:OBT:PERIOD - tgt_period.
+                        IF rem_p <= 0.15 { SET p_trim TO FALSE. LOCK THROTTLE TO 0.0. }
+                        ELSE IF rem_p < 2.0 { LOCK THROTTLE TO 0.03. }
+                        ELSE IF rem_p < 8.0 { LOCK THROTTLE TO 0.10. }
+                        ELSE { LOCK THROTTLE TO 0.25. }
+                        WAIT 0.05.
+                    }
+                }
+                LOCK THROTTLE TO 0.0.
+                PRINT "Periode sincronitzat a " + ROUND(SHIP:OBT:PERIOD, 2) + " s!".
+            }
+
             IF AUTO_DECOUPLE_DEORBIT {
                 PRINT "Procedint al desplegament, desacoblament Normal i deorbitacio...".
                 deploy_satellite_systems().
