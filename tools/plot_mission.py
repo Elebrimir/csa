@@ -43,6 +43,28 @@ def run_mission(code):
         print(f"\n🚀 Processing Mission: {plotter.mission_id} [{plotter.get_vehicle_family()}]")
         print(f"• Vehicle: {plotter.get_vehicle_name()}")
         plotter.run()
+        # For orbital missions (CSA-09 onwards), also generate the 4 multi-charts & KAA map
+        try:
+            num_part = int("".join(ch for ch in plotter.mission_id if ch.isdigit()))
+            if num_part >= 9:
+                from tools.generate_mission_assets import (
+                    analyze_mission_telemetry,
+                    get_mission_metadata,
+                    generate_flight_deck_dashboard,
+                    generate_dynamic_pressure_plot,
+                    generate_attitude_steering_plot,
+                    generate_kaa_clearance_map,
+                )
+                slug = plotter.mission_id.lower()
+                assets_dir = os.path.join(REPO_ROOT, "assets")
+                meta = get_mission_metadata(plotter.mission_id)
+                data, events = analyze_mission_telemetry(plotter.mission_id)
+                generate_flight_deck_dashboard(data, events, meta, os.path.join(assets_dir, f"{slug}_advanced_dashboard.svg"))
+                generate_dynamic_pressure_plot(data, events, meta, os.path.join(assets_dir, f"{slug}_dynamic_pressure_plot.svg"))
+                generate_attitude_steering_plot(data, events, meta, os.path.join(assets_dir, f"{slug}_attitude_steering_plot.svg"))
+                generate_kaa_clearance_map(events, meta, os.path.join(assets_dir, f"{slug}_kaa_hazard_map.svg"))
+        except Exception as sub_e:
+            print(f"[!] Note: Extended orbital assets skipped for {code}: {sub_e}")
         return True
     except FileNotFoundError as e:
         print(f"[!] Warning for {code}: {e}")
@@ -53,9 +75,9 @@ def run_mission(code):
 
 def main():
     parser = argparse.ArgumentParser(description="Corolt Space Agency Mission Plotting & Telemetry Reporting Suite")
-    parser.add_argument("mission", nargs="?", default=None, help="Mission code (e.g. CSA-01, CSA-07)")
+    parser.add_argument("mission", nargs="?", default=None, help="Mission code (e.g. CSA-01, CSA-16, CSA-17)")
     parser.add_argument("--all", action="store_true", help="Generate SVG plots and summaries for all registered missions")
-    parser.add_argument("--family", choices=["corolt-1", "corolt-2", "corolt-3"], help="Process only a specific rocket family")
+    parser.add_argument("--family", choices=["corolt-1", "corolt-2", "corolt-3", "corolt-4"], help="Process only a specific rocket family")
     parser.add_argument("--list", action="store_true", help="List all registered missions and rocket families")
 
     args = parser.parse_args()
@@ -90,3 +112,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

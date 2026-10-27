@@ -1175,6 +1175,132 @@ class CSA16Plotter(CoroltIVFamilyPlotter):
         ))
         return markers
 
+class AutoTelemetryMissionPlotter(CoroltIVFamilyPlotter):
+    """
+    Universal, data-driven plotter that reads metadata from missions_manifest.json
+    and automatically extracts flight milestones (Pitch Kick, Max Q, MECO-1, SECO-1,
+    SECO-2, and Deorbit) directly from <MISSION>_telemetry.csv.
+    """
+    def __init__(self, mission_id: str, **kwargs):
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        manifest_path = os.path.join(base_dir, "missions", "missions_manifest.json")
+        meta = {}
+        if os.path.exists(manifest_path):
+            try:
+                import json
+                with open(manifest_path, "r", encoding="utf-8") as mf:
+                    meta = json.load(mf).get(mission_id.upper(), {})
+            except Exception:
+                pass
+        self._meta = meta
+        target_alt_km = float(meta.get("target_alt_km", 600.0))
+        alt_ceil = max(320000.0, (target_alt_km + 25.0) * 1000.0)
+        vel_ceil = 2400.0 if target_alt_km >= 450.0 else 2200.0
+        super().__init__(mission_id=mission_id.upper(), alt_ceil=alt_ceil, vel_ceil=vel_ceil, **kwargs)
+        self._events = None
+
+    def filter_data(self) -> None:
+        from tools.generate_mission_assets import analyze_mission_telemetry
+        flight_data, events = analyze_mission_telemetry(self.mission_id)
+        self._events = events
+        self.valid_rows = []
+        for d in flight_data:
+            self.valid_rows.append({
+                "MET": str(d["t"]),
+                "altitude": str(d["alt"]),
+                "surface_vel": str(d["spd"]),
+                "dynamic_pressure": str(d["q"] * 1000.0),
+                "g_force": str(d["g"]),
+            })
+
+    def get_vehicle_family(self) -> str:
+        return self._meta.get("family", "Corolt-IV")
+
+    def get_vehicle_name(self) -> str:
+        return self._meta.get("vehicle", f"Corolt-IV B ({self.mission_id})")
+
+    def get_mission_objective(self) -> str:
+        return self._meta.get("objective", f"Orbital insertion and deployment for {self.mission_id}")
+
+    def get_mission_outcome(self) -> str:
+        return self._meta.get("outcome", f"🟢 100% Mission Success | {self.mission_id} Operational")
+
+    def get_annotated_markers(self) -> List[PlotMarker]:
+        markers = super().get_annotated_markers()
+        if not self._events:
+            return markers
+        ev = self._events
+        pk = ev["pitch_kick"]
+        mq = ev["max_q"]
+        meco = ev["meco1"]
+        s1 = ev["seco1"]
+        s2 = ev["seco2"]
+        deorb = ev["deorbit"]
+
+        markers.append(PlotMarker(
+            time=pk["t"],
+            altitude=pk["alt"],
+            label=f"Pitch Kick 84º (T+{pk['t']:.0f}s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=mq["t"],
+            altitude=mq["alt"],
+            label=f"Max Q {mq['q']:.1f} kPa & SRBs (T+{mq['t']:.0f}s)",
+            color="#fbbf24",
+            circle_color="#fbbf24",
+            anchor="start",
+            dx=8,
+            dy=-12
+        ))
+        markers.append(PlotMarker(
+            time=meco["t"],
+            altitude=meco["alt"],
+            label=f"Stage 1 MECO (T+{meco['t']:.0f}s)",
+            color="#38bdf8",
+            circle_color="#38bdf8",
+            anchor="start",
+            dx=8,
+            dy=-5
+        ))
+        markers.append(PlotMarker(
+            time=s1["t"],
+            altitude=s1["alt"],
+            label=f"SECO-1: Ap {s1['ap']/1000:.1f} km (T+{s1['t']:.0f}s)",
+            color="#a855f7",
+            circle_color="#a855f7",
+            anchor="start",
+            dx=8,
+            dy=-10
+        ))
+        markers.append(PlotMarker(
+            time=s2["t"],
+            altitude=s2["alt"],
+            label=f"{s2['ap']/1000:.1f}x{s2['pe']/1000:.1f} km // Circ (T+{s2['t']:.0f}s)",
+            color="#10b981",
+            circle_color="#10b981",
+            anchor="end",
+            dx=-10,
+            dy=-12
+        ))
+        if deorb:
+            markers.append(PlotMarker(
+                time=deorb["t"],
+                altitude=deorb["alt"],
+                label=f"Stage 2 Deorbit Pe={deorb['pe']/1000:.2f} km (T+{deorb['t']:.0f}s)",
+                color="#f43f5e",
+                circle_color="#f43f5e",
+                anchor="end",
+                dx=-10,
+                dy=15
+            ))
+        return markers
+
+
 # ==============================================================================
 # MISSION REGISTRY & FACTORY
 # ==============================================================================
@@ -1203,5 +1329,6 @@ def get_plotter_for_mission(mission_code: str, **kwargs) -> BaseMissionPlotter:
     code = mission_code.upper().replace("_", "-")
     if code in MISSION_REGISTRY:
         return MISSION_REGISTRY[code](**kwargs)
-    raise KeyError(f"Mission '{mission_code}' not found in CSA registry. Available: {list(MISSION_REGISTRY.keys())}")
+    return AutoTelemetryMissionPlotter(mission_id=code, **kwargs)
+
 

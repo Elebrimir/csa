@@ -1,48 +1,49 @@
 // ============================================================================
-// COROLT SPACE AGENCY (CSA) - FLIGHT GUIDANCE SYSTEM v4.8
-// MISSION: CSA-16 (Inaugural Node of 600 km MKO Constellation - CoroltSat-1F)
-// VEHICLE: Corolt-IV B Unit 6 (CSA14 - B6CSF) on Modular Launch Pad (MLP)
-// TARGET:  600.0 km Equatorial Circular Orbit (Node 0 Foundation Anchor)
-//          Inaugurates the 6-satellite MKO constellation (60.0 deg spacing):
-//          Chord distance = 1,200.0 km <= 1,327.4 km (100% compliant with 3x Codac-A23 & rangeModifier=0.65)
-// AUTOMATED PAD OPERATIONS & LAUNCH COUNTDOWN:
-//   1. 5s countdown to tanking initiation.
-//   2. Ground electrical generator connected.
-//   3. Refueling initiated (~120s tanking duration to 900 LF / 1100 Ox).
-//   4. Tank level monitoring (until 898+ LF full) & Hold until T-60s of window.
-//   5. Terminal countdown at T-60s with 10-second milestones.
-//   6. At T-30s: Disconnect ground power & retract umbilicals/swing arms.
-//   7. At T-10s: Terminal single-second countdown.
-//   8. At T-0s: Core & SRB Ignition, pad clamp release, Liftoff!
-// FLIGHT GUIDANCE:
-//   - Immediate pitch kick at 1,200 m (84.0 deg) concurrent with SRB thrust
-//   - Ascent with Max Q throttling governor (Target Q <= 32 kPa)
-//   - Seamless Shrimp SRB separation (~48.5s) via srb_separated MECO guard
-//   - Fairing vacuum separation (> 55 km)
-//   - SECO-1 apogee push (600 km) & exospheric ballistic coast
-//   - SECO-2 circularization at 600 km with 4-tier vernier governor (e <= 0.0008)
-//   - Synchronous period lock (T_tgt = 4,395.14 s within +/- 0.15 s)
-//   - Normal-vector deployment of CoroltSat-1F (5x solar arrays, 3x Codac-A23 relays)
-//   - Belle-RLX81 Stage 2 Retrograde deorbit disposal (Pe <= 0 km, Zero Debris Protocol)
+// COROLT SPACE AGENCY (CSA) - UNIVERSAL FLIGHT GUIDANCE SYSTEM v5.0
+// SCRIPT: universal_guided_ascent.ks
+// DESCRIPTION:
+//   Mission-agnostic, orbit-agnostic automated pad servicing, countdown,
+//   two-burn orbital ascent, synchronous period lock, phase audit & automatic
+//   hand-off to constellation_phasing.ks (or immediate Normal deployment and
+//   Zero Debris Stage 2 deorbit).
+//
+// USAGE EXAMPLES:
+//   1. Node 1 MKO-600 Expansion (CSA-17 / CoroltSat-1G at +60 deg vs CoroltSat-1F):
+//      RUNPATH("0:/csa/universal_guided_ascent.ks", 600.0, 4242865.9, 60.0, "CoroltSat-1F", "CSA-17", "CoroltSat-1G").
+//   2. Node 0 Foundation Anchor (no reference anchor):
+//      RUNPATH("0:/csa/universal_guided_ascent.ks", 600.0, 0, 0.0, "NONE", "CSA-16", "CoroltSat-1F").
 // ============================================================================
 
 DECLARE PARAMETER TARGET_ALT_KM IS 600.0.        // Target orbital altitude in km (default 600 km MKO)
 DECLARE PARAMETER TARGET_LAUNCH_UT IS 0.         // Set to 0 for immediate sequence or pass exact window UT
-DECLARE PARAMETER TARGET_SLOT_DEG IS 0.0.        // Target slot (0.0 deg for Node 0 Foundation Anchor)
-DECLARE PARAMETER TARGET_ANCHOR IS "NONE".       // Reference anchor ("NONE" = Inaugural Anchor of new ring)
+DECLARE PARAMETER TARGET_SLOT_DEG IS 60.0.       // Target slot in deg (e.g. +60.0, -60.0, 0.0)
+DECLARE PARAMETER TARGET_ANCHOR IS "CoroltSat-1F". // Reference anchor ("NONE" = Foundation Anchor)
+DECLARE PARAMETER MISSION_CODE IS "CSA-17".      // Mission identifier for console telemetry
+DECLARE PARAMETER PAYLOAD_NAME IS "CoroltSat-1G". // Payload identifier for console telemetry
 
 CLEARSCREEN.
-PRINT "==================================================".
-PRINT "      COROLT SPACE AGENCY - MISSION CONTROL       ".
-PRINT "   MISSION: CSA-16 | CoroltSat-1F (MKO-600)       ".
-PRINT "   VEHICLE: Corolt-IV B #6 (CSA14 - B6CSF)        ".
-PRINT "   TARGET ORBIT: " + TARGET_ALT_KM + " x " + TARGET_ALT_KM + " km (Equatorial)".
-IF TARGET_ANCHOR = "NONE" OR TARGET_ANCHOR = "" {
-    PRINT "   ROLE: Foundation Anchor (Node 0 / 600 km MKO)  ".
-} ELSE {
-    PRINT "   TARGET SLOT: " + TARGET_SLOT_DEG + " deg (Anchor: " + TARGET_ANCHOR + ")".
+// ----------------------------------------------------------------------------
+// Live Remote Terminal Mirroring (0:/kos_live.log)
+// ----------------------------------------------------------------------------
+LOCAL KOS_LIVE_LOG IS "0:/kos_live.log".
+FUNCTION kprint {
+    PARAMETER msg.
+    PRINT msg.
+    IF HOMECONNECTION:ISCONNECTED {
+        LOG "[UT " + ROUND(TIME:SECONDS, 1) + "s] " + msg TO KOS_LIVE_LOG.
+    }
 }
-PRINT "==================================================".
+kprint("==================================================").
+kprint("      COROLT SPACE AGENCY - MISSION CONTROL       ").
+kprint("   UNIVERSAL FLIGHT GUIDANCE SYSTEM v5.0          ").
+kprint("   MISSION: " + MISSION_CODE + " | PAYLOAD: " + PAYLOAD_NAME).
+kprint("   TARGET ORBIT: " + TARGET_ALT_KM + " x " + TARGET_ALT_KM + " km (Equatorial)").
+IF TARGET_ANCHOR = "NONE" OR TARGET_ANCHOR = "" {
+    kprint("   ROLE: Foundation Anchor (Node 0 / " + TARGET_ALT_KM + " km) ").
+} ELSE {
+    kprint("   TARGET SLOT: " + TARGET_SLOT_DEG + " deg (Anchor: " + TARGET_ANCHOR + ")").
+}
+kprint("==================================================").
 
 // ----------------------------------------------------------------------------
 // Flight Constants & Orbital Targets
@@ -116,15 +117,15 @@ FUNCTION set_pad_electric_power {
         }
     }
     IF power_state {
-        PRINT "  [PAD] Ground external electrical power: CONNECTED.".
+        kprint("  [PAD] Ground external electrical power: CONNECTED").
     } ELSE {
-        PRINT "  [PAD] Ground external electrical power: DISCONNECTED.".
+        kprint("  [PAD] Ground external electrical power: DISCONNECTED").
     }
 }
 
 FUNCTION set_pad_fueling {
     PARAMETER fuel_state. // TRUE = start pumping, FALSE = stop
-    PARAMETER verbose IS TRUE. // Optional: whether to print status messages
+    PARAMETER verbose IS TRUE.
     LOCAL found IS FALSE.
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("LaunchStand") OR p:NAME:CONTAINS("AM.MLP") OR p:NAME:CONTAINS("AM_MLP") {
@@ -167,16 +168,16 @@ FUNCTION set_pad_fueling {
     }
     IF verbose {
         IF fuel_state {
-            PRINT "  [PAD] Propellant transfer lines: OPEN.".
+            kprint("  [PAD] Propellant transfer lines: OPEN").
         } ELSE {
-            PRINT "  [PAD] Propellant transfer lines: CLOSED.".
+            kprint("  [PAD] Propellant transfer lines: CLOSED").
         }
     }
 }
 
 FUNCTION retract_tower_umbilicals {
-    PRINT "--------------------------------------------------".
-    PRINT "T-30s: Retracting fuel umbilicals and service tower swing arms...".
+    kprint("--------------------------------------------------").
+    kprint("T-30s: Retracting fuel umbilicals and service tower swing arms..").
     FOR p IN SHIP:PARTS {
         IF p:NAME:CONTAINS("Umbilical") OR p:NAME:CONTAINS("SwingArm") {
             FOR m IN p:MODULES {
@@ -185,14 +186,14 @@ FUNCTION retract_tower_umbilicals {
                     LOCAL evl IS ev:TOLOWER.
                     IF evl:CONTAINS("retract") OR evl:CONTAINS("release") OR evl:CONTAINS("retirar") {
                         part_mod:DOEVENT(ev).
-                        PRINT "  [TOWER] Arm retracted: " + p:TITLE.
+                        kprint("  [TOWER] Arm retracted: " + p:TITLE).
                     }
                 }
             }
         }
     }
-    PRINT "  [TOWER] Umbilical & swing arm retraction complete.".
-    PRINT "--------------------------------------------------".
+    kprint("  [TOWER] Umbilical & swing arm retraction complete").
+    kprint("--------------------------------------------------").
 }
 
 // ----------------------------------------------------------------------------
@@ -207,8 +208,8 @@ FUNCTION ensure_engines_active {
 }
 
 FUNCTION jettison_fairings {
-    PRINT "--------------------------------------------------".
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Jettisoning payload fairings (> 55 km)...".
+    kprint("--------------------------------------------------").
+    kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Jettisoning payload fairings (> 55 km)..").
     LOCAL fairing_jettisoned IS FALSE.
     FOR part_item IN SHIP:PARTS {
         IF part_item:NAME:CONTAINS("Fairing") OR part_item:NAME:CONTAINS("Juno4") {
@@ -234,7 +235,7 @@ FUNCTION jettison_fairings {
 }
 
 FUNCTION deploy_satellite_systems {
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Deploying antennas and solar arrays (CoroltSat-1F)...".
+    kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Deploying antennas and solar arrays (" + PAYLOAD_NAME + ")..").
     AG3 ON.
     FOR part_item IN SHIP:PARTS {
         FOR mod_name IN part_item:MODULES {
@@ -252,37 +253,35 @@ FUNCTION deploy_satellite_systems {
 }
 
 FUNCTION separate_payload {
-    PRINT "--------------------------------------------------".
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: EXECUTING COROLTSAT-1F PAYLOAD SEPARATION...".
+    kprint("--------------------------------------------------").
+    kprint("T+" + ROUND(MISSIONTIME, 1) + "s: EXECUTING " + PAYLOAD_NAME + " PAYLOAD SEPARATION..").
     LOCAL separated IS FALSE.
 
-    // 1. Trigger directly via ModuleDecouple
     FOR part_item IN SHIP:PARTS {
         IF part_item:HASMODULE("ModuleDecouple") {
             LOCAL part_mod IS part_item:GETMODULE("ModuleDecouple").
             IF part_mod:HASACTION("DecoupleAction") {
                 part_mod:DOACTION("DecoupleAction", TRUE).
                 SET separated TO TRUE.
-                PRINT "  -> DecoupleAction executed on " + part_item:NAME.
+                kprint("  -> DecoupleAction executed on " + part_item:NAME).
             }
             FOR ev IN part_mod:ALLEVENTNAMES {
                 LOCAL evl IS ev:TOLOWER.
                 IF evl:CONTAINS("decouple") OR evl:CONTAINS("desacobl") OR evl:CONTAINS("desacopl") OR evl:CONTAINS("separ") {
                     part_mod:DOEVENT(ev).
                     SET separated TO TRUE.
-                    PRINT "  -> Event " + ev + " executed on " + part_item:NAME.
+                    kprint("  -> Event " + ev + " executed on " + part_item:NAME).
                 }
             }
         }
     }
 
-    // 2. Redundant Staging command
     STAGE.
     WAIT 0.5.
     STAGE.
 
-    PRINT "Payload separation command sent and confirmed!".
-    PRINT "--------------------------------------------------".
+    kprint("Payload separation command sent and confirmed!").
+    kprint("--------------------------------------------------").
     RETURN separated.
 }
 
@@ -290,18 +289,18 @@ FUNCTION synchronize_constellation_period {
     PARAMETER tgt_period_sec.
     LOCAL p_diff IS tgt_period_sec - SHIP:OBT:PERIOD.
     IF ABS(p_diff) <= PERIOD_TOLERANCE_SEC {
-        PRINT "  [SYNC] Orbital period already matched (" + ROUND(SHIP:OBT:PERIOD, 2) + " s vs " + ROUND(tgt_period_sec, 2) + " s).".
+        kprint("  [SYNC] Orbital period already matched (" + ROUND(SHIP:OBT:PERIOD, 2) + " s vs " + ROUND(tgt_period_sec, 2) + " s)").
         RETURN.
     }
 
-    PRINT "--------------------------------------------------".
-    PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SYNCHRONOUS PERIOD LOCK BURN INITIATED".
-    PRINT "  Current Period: " + ROUND(SHIP:OBT:PERIOD, 2) + " s | Target Period: " + ROUND(tgt_period_sec, 2) + " s".
+    kprint("--------------------------------------------------").
+    kprint("T+" + ROUND(MISSIONTIME, 1) + "s: SYNCHRONOUS PERIOD LOCK BURN INITIATED").
+    kprint("  Current Period: " + ROUND(SHIP:OBT:PERIOD, 2) + " s | Target Period: " + ROUND(tgt_period_sec, 2) + " s").
     SET KUNIVERSE:TIMEWARP:WARP TO 0.
     ensure_engines_active().
 
     IF p_diff > 0 {
-        PRINT "  Steering PROGRADE to raise orbital period (+ " + ROUND(p_diff, 2) + " s)...".
+        kprint("  Steering PROGRADE to raise orbital period (+ " + ROUND(p_diff, 2) + " s)..").
         LOCK STEERING TO PROGRADE.
         WAIT 12.0.
         LOCAL sync_burn IS TRUE.
@@ -321,7 +320,7 @@ FUNCTION synchronize_constellation_period {
             WAIT 0.05.
         }
     } ELSE {
-        PRINT "  Steering RETROGRADE to lower orbital period (" + ROUND(p_diff, 2) + " s)...".
+        kprint("  Steering RETROGRADE to lower orbital period (" + ROUND(p_diff, 2) + " s)..").
         LOCK STEERING TO RETROGRADE.
         WAIT 12.0.
         LOCAL sync_burn IS TRUE.
@@ -342,19 +341,19 @@ FUNCTION synchronize_constellation_period {
         }
     }
     LOCK THROTTLE TO 0.0.
-    PRINT "  [SYNC] Period locked at " + ROUND(SHIP:OBT:PERIOD, 2) + " s (Drift < 0.02 deg/rev)!".
-    PRINT "--------------------------------------------------".
+    kprint("  [SYNC] Period locked at " + ROUND(SHIP:OBT:PERIOD, 2) + " s (Drift < 002 deg/rev)!").
+    kprint("--------------------------------------------------").
 }
 
 FUNCTION deorbit_upper_stage {
-    PRINT "Waiting 30-second safety clearance interval from deployed satellite...".
+    kprint("Waiting 30-second safety clearance interval from deployed satellite..").
     WAIT 30.0.
 
-    PRINT "Orienting upper stage to RETROGRADE for disposal burn (Zero Debris Protocol)...".
+    kprint("Orienting upper stage to RETROGRADE for disposal burn (Zero Debris Protocol)..").
     LOCK STEERING TO RETROGRADE.
     WAIT 15.0.
 
-    PRINT "EXECUTING STAGE 2 DEORBIT BURN (Belle-RLX81)...".
+    kprint("EXECUTING STAGE 2 DEORBIT BURN (Belle-RLX81)..").
     ensure_engines_active().
 
     LOCK THROTTLE TO 1.0.
@@ -366,8 +365,8 @@ FUNCTION deorbit_upper_stage {
 
     LOCK THROTTLE TO 0.0.
     LOCAL deorbit_dur IS TIME:SECONDS - deorbit_start.
-    PRINT "DEORBIT BURN COMPLETE (" + ROUND(deorbit_dur, 1) + " s)! PERIAPSIS: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km.".
-    PRINT "Belle-RLX81 upper stage targeted for destructive ocean disposal. Zero Debris!".
+    kprint("DEORBIT BURN COMPLETE (" + ROUND(deorbit_dur, 1) + " s)! PERIAPSIS: " + ROUND(SHIP:PERIAPSIS / 1000, 1) + " km").
+    kprint("Belle-RLX81 upper stage targeted for destructive ocean disposal Zero Debris!").
 
     LOCK STEERING TO RETROGRADE.
     WAIT 10.0.
@@ -454,36 +453,34 @@ FUNCTION find_target_satellite {
 // ============================================================================
 // STEP 1: PROPELLANT LOADING INITIATION (5-SECOND COUNTDOWN)
 // ============================================================================
-PRINT "==================================================".
-PRINT "NOTICE: Propellant tanking sequence starts in 5 seconds.".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("NOTICE: Propellant tanking sequence starts in 5 seconds").
+kprint("==================================================").
 
 FROM {LOCAL cd_val IS 5.} UNTIL cd_val = 0 STEP {SET cd_val TO cd_val - 1.} DO {
-    PRINT "T-tanking: " + cd_val + "...".
+    kprint("T-tanking: " + cd_val + "..").
     WAIT 1.0.
 }
 
 // ============================================================================
 // STEP 2: CONNECT PAD GROUND ELECTRICAL POWER
 // ============================================================================
-PRINT "--------------------------------------------------".
-PRINT "Activating ground electrical power supply...".
+kprint("--------------------------------------------------").
+kprint("Activating ground electrical power supply..").
 set_pad_electric_power(TRUE).
 WAIT 1.0.
 
 // ============================================================================
 // STEP 3: OPEN PROPELLANT TRANSFER VALVES (PULSED 25% DUTY CYCLE FOR 1/4 FLOW RATE)
 // ============================================================================
-PRINT "--------------------------------------------------".
-PRINT "Opening launch tower propellant fill valves (1/4 flow rate mode)...".
+kprint("--------------------------------------------------").
+kprint("Opening launch tower propellant fill valves (1/4 flow rate mode)..").
 set_pad_fueling(TRUE, TRUE).
 WAIT 1.0.
 
-// ============================================================================
-PRINT "Propellant loading in progress (Quarter-rate ~ 1.5 LF/s, ~480s)...".
+kprint("Propellant loading in progress (Quarter-rate ~ 15 LF/s, ~480s)...").
 LOCAL cycle_count IS 0.
 UNTIL (SHIP:LIQUIDFUEL >= TARGET_FULL_LF) {
-    // 25% Duty cycle: 1.0s ON, 3.0s OFF (effective 1/4 flow rate)
     set_pad_fueling(TRUE, FALSE).
     WAIT 1.0.
     IF SHIP:LIQUIDFUEL >= TARGET_FULL_LF {
@@ -492,37 +489,48 @@ UNTIL (SHIP:LIQUIDFUEL >= TARGET_FULL_LF) {
     set_pad_fueling(FALSE, FALSE).
 
     SET cycle_count TO cycle_count + 1.
-    // Display status update every cycle (~4 seconds)
     LOCAL pct IS ROUND((SHIP:LIQUIDFUEL / 900.0) * 100, 1).
-    PRINT "Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0".
+    kprint("Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 9000 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0").
     WAIT 3.0.
 }
 
-PRINT "==================================================".
-PRINT "STAGE 1 & STAGE 2 PROPELLANT TANKS AT 100%!".
-PRINT "Closing ground transfer valves...".
+kprint("==================================================").
+kprint("STAGE 1 & STAGE 2 PROPELLANT TANKS AT 100%!").
+kprint("Closing ground transfer valves..").
 set_pad_fueling(FALSE, TRUE).
 WAIT 2.0.
 
-// Determine launch window UT
+// Determine launch window UT (and support live dynamic override via 0:/override_ut.txt!)
+LOCAL override_file IS "0:/override_ut.txt".
+IF EXISTS(override_file) { DELETEPATH(override_file). }
+
 LOCAL effective_launch_ut IS TARGET_LAUNCH_UT.
 IF effective_launch_ut <= TIME:SECONDS {
     SET effective_launch_ut TO TIME:SECONDS + 70.0.
 }
 
-PRINT "--------------------------------------------------".
-PRINT "Target launch window set to UT: " + ROUND(effective_launch_ut, 1) + " s".
-PRINT "Time remaining until liftoff:   " + ROUND(effective_launch_ut - TIME:SECONDS, 1) + " s".
-PRINT "--------------------------------------------------".
+kprint("--------------------------------------------------").
+kprint("Target launch window set to UT: " + ROUND(effective_launch_ut, 1) + " s").
+kprint("Time remaining until liftoff:   " + ROUND(effective_launch_ut - TIME:SECONDS, 1) + " s").
+kprint("(Tip: You can change window anytime from laptop via `setut <NEW_UT>`)").
+kprint("--------------------------------------------------").
 
 LOCAL time_to_t60 IS (effective_launch_ut - 60.0) - TIME:SECONDS.
 IF time_to_t60 > 1.0 {
-    PRINT "Pad HOLD active until T-60s of launch window.".
-    PRINT "Manual Time Warp is permitted during pad HOLD.".
+    kprint("Pad HOLD active until T-60s of launch window").
+    kprint("Manual Time Warp is permitted during pad HOLD").
     UNTIL TIME:SECONDS >= (effective_launch_ut - 60.0) {
+        IF EXISTS(override_file) {
+            RUNPATH(override_file).
+            DELETEPATH(override_file).
+            IF DEFINED NEW_TARGET_LAUNCH_UT {
+                SET effective_launch_ut TO NEW_TARGET_LAUNCH_UT.
+                kprint("  [OVERRIDE] Launch window UT updated dynamically to: " + ROUND(effective_launch_ut, 1) + " s!").
+            }
+        }
         LOCAL remaining_hold IS ROUND((effective_launch_ut - 60.0) - TIME:SECONDS, 0).
         IF remaining_hold > 0 {
-            PRINT "HOLD... T-60s countdown starts in " + remaining_hold + "s (Warp allowed)    " AT(0, 24).
+            kprint("HOLD... T-60s countdown starts in " + remaining_hold + "s (Warp allowed)    ", 0 AT(24)).
         }
         WAIT 1.0.
     }
@@ -532,46 +540,46 @@ IF time_to_t60 > 1.0 {
 // STEP 5: TERMINAL COUNTDOWN AT T-60 SECONDS (10-SECOND MILESTONES)
 // ============================================================================
 SET KUNIVERSE:TIMEWARP:WARP TO 0.
-PRINT "==================================================".
-PRINT "T-60s: TERMINAL COUNTDOWN INITIATED".
-PRINT "All vehicle and pad systems are GO.".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T-60s: TERMINAL COUNTDOWN INITIATED").
+kprint("All vehicle and pad systems are GO").
+kprint("==================================================").
 
 WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 50.0).
-PRINT "T-50s: Flight tank pressurization confirmed.".
+kprint("T-50s: Flight tank pressurization confirmed").
 
 WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 40.0).
-PRINT "T-40s: kOS guidance computer and telemetry nominal.".
+kprint("T-40s: kOS guidance computer and telemetry nominal").
 
 WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 30.0).
 
 // ============================================================================
 // STEP 6: AT T-30s: TRANSFER TO INTERNAL POWER & RETRACT UMBILICALS
 // ============================================================================
-PRINT "==================================================".
-PRINT "T-30s: VEHICLE ON INTERNAL BATTERY POWER!".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T-30s: VEHICLE ON INTERNAL BATTERY POWER!").
+kprint("==================================================").
 set_pad_electric_power(FALSE).
 retract_tower_umbilicals().
 
 WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 20.0).
-PRINT "T-20s: Power status: INTERNAL (Onboard battery bank at 100%).".
+kprint("T-20s: Power status: INTERNAL (Onboard battery bank at 100%)").
 
 WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - 10.0).
 
 // ============================================================================
 // STEP 7: AT T-10s: SINGLE-SECOND TERMINAL COUNTDOWN
 // ============================================================================
-PRINT "==================================================".
-PRINT "T-10s: AUTOMATIC IGNITION SEQUENCE START:".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T-10s: AUTOMATIC IGNITION SEQUENCE START:").
+kprint("==================================================").
 SAS OFF.
 LOCK THROTTLE TO 0.0.
 LOCK STEERING TO HEADING(HEADING_DEG, 90.0).
 
 LOCAL countdown_val IS 10.
 UNTIL countdown_val <= 0 {
-    PRINT "T-" + countdown_val + "...".
+    kprint("T-" + countdown_val + "..").
     SET countdown_val TO countdown_val - 1.
     WAIT UNTIL TIME:SECONDS >= (effective_launch_ut - countdown_val).
 }
@@ -579,10 +587,10 @@ UNTIL countdown_val <= 0 {
 // ============================================================================
 // STEP 8: IGNITION AND PAD RELEASE (T-0)
 // ============================================================================
-PRINT "==================================================".
-PRINT "T+0.0s: IGNITION! Etoh-140-TU Core & Dual Shrimp SRBs!".
-PRINT "RELEASING LAUNCH PAD HOLD-DOWN CLAMPS!".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T+00s: IGNITION! Etoh-140-TU Core & Dual Shrimp SRBs!").
+kprint("RELEASING LAUNCH PAD HOLD-DOWN CLAMPS!").
+kprint("==================================================").
 
 LOCK THROTTLE TO 1.0.
 STAGE.
@@ -593,55 +601,50 @@ UNTIL SHIP:MAXTHRUST > 0 {
 }
 
 // ============================================================================
-// FLIGHT PHASES: ASCENT, STAGING & ULTRA-CIRCULAR ORBITAL INSERTION (600 KM)
+// FLIGHT PHASES: ASCENT, STAGING & ULTRA-CIRCULAR ORBITAL INSERTION
 // ============================================================================
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: VEHICLE CSA-16 LIFTOFF CONFIRMED!".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: VEHICLE " + MISSION_CODE + " LIFTOFF CONFIRMED!").
 
-// Activate Max Q aerodynamic throttle governor
 LOCK THROTTLE TO calculate_atmo_throttle().
 
 LOCAL initial_thrust IS SHIP:MAXTHRUST.
 LOCAL srb_separated IS FALSE.
 
-// Phase 2: Immediate Gravity Turn (Pitch Kick) at ALT_KICK (1,200 m)
 IF SHIP:ALTITUDE < ALT_KICK {
     WAIT UNTIL SHIP:ALTITUDE >= ALT_KICK.
 }
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: INITIATING GRAVITY TURN (PITCH " + PITCH_INITIAL + " deg HDG " + HEADING_DEG + " deg)!".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: INITIATING GRAVITY TURN (PITCH " + PITCH_INITIAL + " deg HDG " + HEADING_DEG + " deg)!").
 LOCK targetPitch TO MAX(MIN_PITCH, PITCH_INITIAL - ((SHIP:ALTITUDE - ALT_KICK) / (ALT_END_TURN - ALT_KICK)) * (PITCH_INITIAL - MIN_PITCH)).
 LOCK STEERING TO HEADING(HEADING_DEG, targetPitch).
 
-// Phase 3: Guided Ascent to Stage 1 MECO (with concurrent SRB separation)
 LOCAL last_telemetry_print IS MISSIONTIME.
 UNTIL (srb_separated AND (STAGE:LIQUIDFUEL < 0.5)) OR (SHIP:LIQUIDFUEL <= 180.5) OR (SHIP:MAXTHRUST < 10.0) {
     IF (NOT srb_separated) AND ((SHIP:SOLIDFUEL < 1.0) OR (SHIP:MAXTHRUST < (initial_thrust * 0.70))) {
         WAIT 0.5.
-        PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Booster burnout! Jettisoning 2x Shrimp SRBs...".
+        kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Booster burnout! Jettisoning 2x Shrimp SRBs..").
         STAGE.
         WAIT 0.5.
         SET srb_separated TO TRUE.
     }
     IF (MISSIONTIME - last_telemetry_print) >= 5.0 {
         LOCAL q_curr IS ROUND(SHIP:DYNAMICPRESSURE * CONSTANT:ATMTOKPA, 1).
-        PRINT "T+" + ROUND(MISSIONTIME, 0) + "s | Alt: " + ROUND(SHIP:ALTITUDE/1000, 1) + "km | Q: " + q_curr + "kPa | Th: " + ROUND(THROTTLE * 100, 0) + "%".
+        kprint("T+" + ROUND(MISSIONTIME, 0) + "s | Alt: " + ROUND(SHIP:ALTITUDE/1000, 1) + "km | Q: " + q_curr + "kPa | Th: " + ROUND(THROTTLE * 100, 0) + "%").
         SET last_telemetry_print TO MISSIONTIME.
     }
     WAIT 0.2.
 }
 
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Stage 1 Core MECO!".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Stage 1 Core MECO!").
 LOCK THROTTLE TO 0.0.
 WAIT 1.0.
 STAGE. // Interstage decoupling
 WAIT 1.5.
 
-// Phase 4: Stage 2 Ignition (Belle-RLX81)
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: STAGE 2 IGNITION (Belle-RLX81)!".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: STAGE 2 IGNITION (Belle-RLX81)!").
 LOCK THROTTLE TO 1.0.
 STAGE. // Belle-RLX81 ignition
 WAIT 1.0.
 
-// Phase 5: Fairing Jettison & Apogee Acquisition (Target: 600 km)
 LOCAL fairing_done IS FALSE.
 LOCK STEERING TO PROGRADE.
 
@@ -653,14 +656,13 @@ UNTIL SHIP:APOAPSIS >= (TARGET_APOAPSIS - 5000) {
     WAIT 0.2.
 }
 
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Approaching target apogee (" + ROUND((TARGET_APOAPSIS-5000)/1000, 0) + " km). Throttling down to 20%...".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Approaching target apogee (" + ROUND((TARGET_APOAPSIS-5000)/1000, 0) + " km) Throttling down to 20%...").
 LOCK THROTTLE TO 0.20.
 
 WAIT UNTIL SHIP:APOAPSIS >= TARGET_APOAPSIS.
 LOCK THROTTLE TO 0.0.
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SECO-1! Target apogee acquired at " + ROUND(TARGET_APOAPSIS/1000, 1) + " km.".
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: SECO-1! Target apogee acquired at " + ROUND(TARGET_APOAPSIS/1000, 1) + " km").
 
-// Phase 6: Exospheric Coast to Apogee (600 km)
 LOCK STEERING TO PROGRADE.
 IF NOT fairing_done {
     WAIT UNTIL SHIP:ALTITUDE > 70000.
@@ -668,7 +670,6 @@ IF NOT fairing_done {
     SET fairing_done TO TRUE.
 }
 
-// Phase 7: Ultra-Precision Circularization at 600 km (e <= 0.0008)
 LOCAL rad_target IS KERBIN_RADIUS + TARGET_APOAPSIS.
 LOCAL v_circ IS SQRT(KERBIN_MU / rad_target).
 LOCAL sma_trans IS (SHIP:PERIAPSIS + SHIP:APOAPSIS + 2 * KERBIN_RADIUS) / 2.
@@ -677,15 +678,15 @@ LOCAL delta_v_circ IS MAX(10.0, v_circ - v_apo_pred).
 LOCAL burn_duration IS (delta_v_circ * SHIP:MASS) / MAX(1.0, SHIP:MAXTHRUST).
 LOCAL half_burn IS burn_duration / 2.
 
-PRINT "Coast to Apogee (" + ROUND(TARGET_APOAPSIS/1000, 0) + " km) in progress. Circularization burn ~ " + ROUND(burn_duration, 1) + " s.".
+kprint("Coast to Apogee (" + ROUND(TARGET_APOAPSIS/1000, 0) + " km) in progress Circularization burn ~ " + ROUND(burn_duration, 1) + " s.").
 WAIT UNTIL (ETA:APOAPSIS <= (half_burn + 5.0)) OR (ETA:APOAPSIS > (SHIP:ORBIT:PERIOD - 60)).
 SET KUNIVERSE:TIMEWARP:WARP TO 0.
 LOCK STEERING TO PROGRADE.
 WAIT UNTIL (ETA:APOAPSIS <= half_burn) OR (ETA:APOAPSIS > (SHIP:ORBIT:PERIOD - 30)).
 
-PRINT "==================================================".
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SECO-2 IGNITION (600 km Circularization Burn)!".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: SECO-2 IGNITION (" + TARGET_ALT_KM + " km Circularization Burn)!").
+kprint("==================================================").
 
 LOCK THROTTLE TO 1.0.
 LOCAL best_ecc IS SHIP:ORBIT:ECCENTRICITY.
@@ -714,54 +715,84 @@ UNTIL NOT burn_active {
 }
 
 LOCK THROTTLE TO 0.0.
-PRINT "==================================================".
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: SECO-2 CUTOFF! 600 KM CIRCULAR ORBIT ACHIEVED!".
-PRINT "  Final Ap:   " + ROUND(SHIP:APOAPSIS / 1000, 3) + " km".
-PRINT "  Final Pe:   " + ROUND(SHIP:PERIAPSIS / 1000, 3) + " km".
-PRINT "  Final Ecc:  " + ROUND(SHIP:ORBIT:ECCENTRICITY, 6).
-PRINT "  Final Per:  " + ROUND(SHIP:ORBIT:PERIOD, 2) + " s (Target: " + ROUND(TARGET_THEORETICAL_PERIOD, 2) + " s)".
-PRINT "==================================================".
+kprint("==================================================").
+kprint("T+" + ROUND(MISSIONTIME, 1) + "s: SECO-2 CUTOFF! CIRCULAR ORBIT ACHIEVED!").
+kprint("  Final Ap:   " + ROUND(SHIP:APOAPSIS / 1000, 3) + " km").
+kprint("  Final Pe:   " + ROUND(SHIP:PERIAPSIS / 1000, 3) + " km").
+kprint("  Final Ecc:  " + ROUND(SHIP:ORBIT:ECCENTRICITY, 6)).
+kprint("  Final Per:  " + ROUND(SHIP:ORBIT:PERIOD, 2) + " s (Target: " + ROUND(TARGET_THEORETICAL_PERIOD, 2) + " s)").
+kprint("==================================================").
 
 // ============================================================================
-// PHASE 8: SYNCHRONOUS PERIOD LOCK & PAYLOAD SEPARATION
+// PHASE 8: ORBITAL PHASE AUDIT, AUTOMATIC PHASING HAND-OFF OR DEPLOYMENT
 // ============================================================================
 WAIT 3.0.
 
 LOCAL is_foundation_node IS (TARGET_ANCHOR = "NONE" OR TARGET_ANCHOR = "").
-LOCAL target_sync_period IS TARGET_THEORETICAL_PERIOD.
 
-IF NOT is_foundation_node {
+IF is_foundation_node {
+    synchronize_constellation_period(TARGET_THEORETICAL_PERIOD).
+
+    kprint("Proceeding to Normal orientation and " + PAYLOAD_NAME + " deployment..").
+    LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
+    WAIT 15.0.
+
+    deploy_satellite_systems().
+    WAIT 3.0.
+
+    separate_payload().
+    kprint("==================================================").
+    kprint("      MISSION " + MISSION_CODE + ": " + PAYLOAD_NAME + " DEPLOYED!").
+    kprint("   NODE 0 FOUNDATION ANCHOR AT " + TARGET_ALT_KM + " KM ESTABLISHED!").
+    kprint("==================================================").
+
+    deorbit_upper_stage().
+} ELSE {
     LOCAL tgt_anchor IS find_target_satellite(TARGET_ANCHOR).
-    IF tgt_anchor <> SHIP {
-        SET target_sync_period TO tgt_anchor:OBT:PERIOD.
+    LOCAL norm_target_slot IS MOD(TARGET_SLOT_DEG, 360.0).
+    IF norm_target_slot < 0 { SET norm_target_slot TO norm_target_slot + 360.0. }
+
+    IF tgt_anchor = SHIP {
+        kprint("WARNING: Reference anchor " + TARGET_ANCHOR + " not found! Locking theoretical period..").
+        synchronize_constellation_period(TARGET_THEORETICAL_PERIOD).
+    } ELSE {
+        LOCAL final_phase IS get_phase_angle(SHIP, tgt_anchor).
+        LOCAL phase_err IS ABS(to_signed_deg(final_phase - norm_target_slot)).
+
+        kprint("==================================================").
+        kprint("        ORBITAL PHASE AUDIT: " + MISSION_CODE).
+        kprint("  Reference Anchor:        " + tgt_anchor:NAME).
+        kprint("  Target Slot:             " + ROUND(to_signed_deg(norm_target_slot), 2) + " deg (" + ROUND(norm_target_slot, 2) + "º)").
+        kprint("  Achieved Relative Phase: " + ROUND(to_signed_deg(final_phase), 3) + " deg (" + ROUND(final_phase, 2) + "º)").
+        kprint("  Absolute Phase Error:    " + ROUND(phase_err, 3) + " deg").
+        kprint("  Release Gate Tolerance:  +/-" + PHASE_TOLERANCE_DEG + " deg").
+        kprint("==================================================").
+
+        IF phase_err <= PHASE_TOLERANCE_DEG {
+            kprint(">>> DIRECT INSERTION WITHIN GATE (" + ROUND(phase_err, 3) + " deg <= +/-" + PHASE_TOLERANCE_DEG + " deg)! <<<").
+            synchronize_constellation_period(tgt_anchor:OBT:PERIOD).
+
+            kprint("T+" + ROUND(MISSIONTIME, 1) + "s: Steering attitude to pure orbital NORMAL..").
+            LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
+            WAIT 15.0.
+
+            deploy_satellite_systems().
+            WAIT 3.0.
+
+            separate_payload().
+            kprint("==================================================").
+            kprint("      MISSION " + MISSION_CODE + ": " + PAYLOAD_NAME + " DEPLOYED!").
+            kprint("   CONSTELLATION NODE LOCKED AT " + TARGET_SLOT_DEG + " DEG!").
+            kprint("==================================================").
+
+            deorbit_upper_stage().
+        } ELSE {
+            kprint(">>> Phase offset (" + ROUND(phase_err, 3) + " deg) exceeds direct gate (+/-" + PHASE_TOLERANCE_DEG + " deg) <<<").
+            kprint(">>> Automatically invoking constellation_phasingks to fine-tune slot! <<<").
+            WAIT 2.0.
+            RUNPATH("0:/csa/constellation_phasing.ks", TARGET_SLOT_DEG, 3, tgt_anchor:NAME, PHASE_TOLERANCE_DEG, TRUE).
+        }
     }
 }
 
-// Fine-tune orbital period to exact theoretical/anchor period (+/- 0.20 s)
-synchronize_constellation_period(target_sync_period).
-
-PRINT "Proceeding to Normal orientation and CoroltSat-1F deployment...".
-
-// Orient attitude to pure orbital NORMAL vector (VCRS(vel, pos))
-PRINT "T+" + ROUND(MISSIONTIME, 1) + "s: Steering attitude to pure orbital NORMAL...".
-LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
-WAIT 15.0.
-
-deploy_satellite_systems().
-WAIT 3.0.
-
-separate_payload().
-PRINT "==================================================".
-PRINT "      MISSION CSA-16: COROLTSAT-1F DEPLOYED!      ".
-IF is_foundation_node {
-    PRINT "   NODE 0 FOUNDATION ANCHOR AT 600 KM ESTABLISHED! ".
-    PRINT "   NEW 6-SATELLITE MKO CONSTELLATION INAUGURATED! ".
-} ELSE {
-    PRINT "   ORBITAL RING AT 600 KM SYNCHRONIZED!          ".
-}
-PRINT "==================================================".
-
-// Deorbit spent upper stage under Zero Debris Protocol
-deorbit_upper_stage().
-
-PRINT "Sequence csa16_guided_ascent completed successfully.".
+kprint("Sequence universal_guided_ascent (" + MISSION_CODE + ") completed").

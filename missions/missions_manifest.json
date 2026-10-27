@@ -1,0 +1,74 @@
+{
+  "CSA-09": {
+    "family": "Corolt-III",
+    "vehicle": "Corolt-III C #1 (Core LV-T45 + 2x BACC + Terrier Upper Stage)",
+    "payload": "Orbital Science Probe & Reentry Capsule",
+    "target_alt_km": 100.0,
+    "objective": "First Orbital Insertion Attempt & Suborbital High-Energy Reentry Test",
+    "outcome": "🟡 High-Energy Suborbital Flight | Stage 2 Underperformance | Safe Capsule Recovery"
+  },
+  "CSA-10": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV A #1 (Core Etoh-140-TU + Belle-RLX81 Upper Stage)",
+    "payload": "Corolt-IV Orbital Testbeds & Science Package",
+    "target_alt_km": 120.0,
+    "objective": "First Successful Equatorial Low Kerbin Orbit (LKO) Insertion & Deorbit Recovery",
+    "outcome": "🟢 100% Mission Success | First Stable Orbit Achieved | Safe Ocean Splashdown & Recovery"
+  },
+  "CSA-11": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #1 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1A (Stayputnik Relay Prototype)",
+    "target_alt_km": 250.0,
+    "objective": "First Commercial Communications Relay Deployment in 250 km Equatorial Orbit",
+    "outcome": "🟢 Orbital Insertion Success | CoroltSat-1A Deployed at 250 km"
+  },
+  "CSA-12": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #2 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1B (Node 0 LEO Anchor)",
+    "target_alt_km": 300.0,
+    "objective": "Inaugural 300x300 km CoroltNet-LEO Constellation Anchor (CoroltSat-1B)",
+    "outcome": "🟢 100% Mission Success | 311.5x300.0 km Circular Orbit | Node 0 LEO Anchor Operational"
+  },
+  "CSA-13": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #3 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1C (Slot 3 LEO Relay, +120.0º)",
+    "target_alt_km": 300.0,
+    "objective": "Equatorial Constellation Expansion (CoroltSat-1C) 300x300 km Insertion & +120.0º Phasing",
+    "outcome": "🟢 100% Mission Success | 308.8x302.7 km Circular Orbit | Slot 3 (+120º) Operational"
+  },
+  "CSA-14": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #4 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1D (Slot 1 LEO Relay, +40.0º)",
+    "target_alt_km": 300.0,
+    "objective": "Equatorial Constellation Expansion (CoroltSat-1D) 300x300 km Insertion & +40.0º Phasing",
+    "outcome": "🟢 100% Mission Success | 308.3x303.2 km Circular Orbit | Slot 1 (+40º) Operational"
+  },
+  "CSA-15": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #5 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1E (Slot 2 LEO Relay, +80.0º)",
+    "target_alt_km": 300.0,
+    "objective": "Equatorial Constellation Expansion (CoroltSat-1E) Slot 2 (+80.0º vs 1B / +40.0º vs 1D) 4-Node Mesh Bridge",
+    "outcome": "🟢 100% Mission Success | 4-Node Mesh Ring Operational | 302.6x299.6 km Circular Orbit | Stage 2 Deorbited (Pe=-1.41 km)"
+  },
+  "CSA-16": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #6 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1F (Node 0 MKO-600 Anchor, 3x Codac-A23)",
+    "target_alt_km": 600.0,
+    "objective": "MKO 600 km Constellation Inauguration (CoroltSat-1F) Node 0 Foundation Anchor",
+    "outcome": "🟢 100% Mission Success | Node 0 Operational | 601.1x598.9 km Circular Orbit | Stage 2 Deorbited (Pe=-1.75 km)"
+  },
+  "CSA-17": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #7 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1G (Node 1 MKO-600 Relay, 3x Codac-A23)",
+    "target_alt_km": 600.0,
+    "objective": "CoroltNet-MKO 600 km Constellation Expansion (CoroltSat-1G) Node 1 (+60.0º / -60.0º vs CoroltSat-1F)",
+    "outcome": "🟢 100% Mission Success | Node 1 Synchronized at 600 km MKO | Stage 2 Deorbited (Zero Debris Protocol)"
+  }
+}
