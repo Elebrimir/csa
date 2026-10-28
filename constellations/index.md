@@ -18,7 +18,9 @@ The **CoroltNet-LEO** system is the flagship orbital telecommunications and scie
 | **CoroltSat-1D** | [CSA-14](/missions/csa-14) | 🟢 **ACTIVE** | 308.3 × 303.2 km | 2,882.25 s (48.04 min) | +39.9° (Slot 1 // 617 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1C** | [CSA-13](/missions/csa-13) | 🟢 **ACTIVE** | 308.8 × 302.7 km | 2,881.92 s (48.03 min) | +121.9° (Slot 3) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
 | **CoroltSat-1E** | [CSA-15](/missions/csa-15) | 🟢 **ACTIVE** | 302.7 × 299.6 km | 2,860.0 s (47.67 min) | +78.3° (Slot 2 // 579 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1F** | [CSA-16](/missions/csa-16) | 🟢 **ACTIVE** | 601.1 × 598.9 km | 4,395.23 s (73.25 min) | 0.0° (Node 0 Anchor) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1F** | [CSA-16](/missions/csa-16) | 🟢 **ACTIVE** | 601.15 × 598.88 km | 4,395.16 s (73.25 min) | 0.0° (Node 0 MKO Anchor) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1G** | [CSA-17](/missions/csa-17) | 🟢 **ACTIVE** | 601.15 × 598.93 km | 4,395.28 s (73.25 min) | +59.7° (Node 1 // 1,195 km) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1H** | [CSA-18](/missions/csa-18) | 🟢 **ACTIVE** | 601.14 × 598.90 km | 4,395.16 s (73.25 min) | +120.2° (Node 2 // 1,209 km) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
 
 ---
 

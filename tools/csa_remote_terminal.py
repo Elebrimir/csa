@@ -112,20 +112,20 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
         return
 
     # Built-in shortcuts
-    if cmd.lower() in ("go17", "launch17", "csa17", "run csa17", "run csa17.", "run go17."):
-        cmd = 'RUNPATH("0:/csa/universal_guided_ascent.ks", 600.0, 0, 60.0, "CoroltSat-1F", "CSA-17", "CoroltSat-1G").'
+    if cmd.lower() in ("go18", "launch18", "csa18", "run csa18", "run csa18.", "run go18."):
+        cmd = 'RUNPATH("0:/csa/universal_guided_ascent.ks", 600.0, 0, 120.0, "CoroltSat-1F", "CSA-18", "CoroltSat-1H").'
     elif cmd.lower().startswith("go "):
         parts = cmd.split()
         ut_val = float(parts[1]) if len(parts) > 1 else 0
-        slot_val = float(parts[2]) if len(parts) > 2 else 60.0
-        m_code = parts[3].upper() if len(parts) > 3 else "CSA-17"
-        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1G"
+        slot_val = float(parts[2]) if len(parts) > 2 else 120.0
+        m_code = parts[3].upper() if len(parts) > 3 else "CSA-18"
+        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1H"
         ref_sat = parts[5] if len(parts) > 5 else "CoroltSat-1F"
         alt_km = float(parts[6]) if len(parts) > 6 else 600.0
         cmd = f'RUNPATH("0:/csa/universal_guided_ascent.ks", {alt_km:.1f}, {ut_val:.1f}, {slot_val:.1f}, "{ref_sat}", "{m_code}", "{p_name}").'
     elif cmd.lower().startswith("phase "):
         parts = cmd.split()
-        slot_val = float(parts[1]) if len(parts) > 1 else 60.0
+        slot_val = float(parts[1]) if len(parts) > 1 else 120.0
         orbits_val = int(parts[2]) if len(parts) > 2 else 3
         ref_sat = parts[3] if len(parts) > 3 else "CoroltSat-1F"
         cmd = f'RUNPATH("0:/csa/constellation_phasing.ks", {slot_val:.1f}, {orbits_val}, "{ref_sat}").'
