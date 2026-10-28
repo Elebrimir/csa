@@ -26,6 +26,7 @@ CLEARSCREEN.
 // Live Remote Terminal Mirroring (0:/kos_live.log)
 // ----------------------------------------------------------------------------
 LOCAL KOS_LIVE_LOG IS "0:/kos_live.log".
+IF EXISTS(KOS_LIVE_LOG) { DELETEPATH(KOS_LIVE_LOG). }
 FUNCTION kprint {
     PARAMETER msg.
     PRINT msg.
@@ -123,46 +124,55 @@ FUNCTION set_pad_electric_power {
     }
 }
 
+LOCAL CACHED_FUEL_GENS IS LIST().
+LOCAL FUEL_GENS_INITIALIZED IS FALSE.
+
 FUNCTION set_pad_fueling {
     PARAMETER fuel_state. // TRUE = start pumping, FALSE = stop
     PARAMETER verbose IS TRUE.
     LOCAL found IS FALSE.
-    FOR p IN SHIP:PARTS {
-        IF p:NAME:CONTAINS("LaunchStand") OR p:NAME:CONTAINS("AM.MLP") OR p:NAME:CONTAINS("AM_MLP") {
-            FROM {LOCAL i IS 0.} UNTIL i >= p:MODULES:LENGTH STEP {SET i TO i + 1.} DO {
-                IF p:MODULES[i] = "ModuleGenerator" {
-                    LOCAL gen IS p:GETMODULEBYINDEX(i).
-                    LOCAL is_fuel_gen IS FALSE.
-                    FOR ev IN gen:ALLEVENTNAMES {
-                        IF ev:TOLOWER:CONTAINS("fuel") OR ev:TOLOWER:CONTAINS("combustible") {
-                            SET is_fuel_gen TO TRUE.
-                        }
-                    }
-                    IF is_fuel_gen {
+
+    IF NOT FUEL_GENS_INITIALIZED {
+        CACHED_FUEL_GENS:CLEAR().
+        FOR p IN SHIP:PARTS {
+            IF p:NAME:CONTAINS("LaunchStand") OR p:NAME:CONTAINS("AM.MLP") OR p:NAME:CONTAINS("AM_MLP") {
+                FROM {LOCAL i IS 0.} UNTIL i >= p:MODULES:LENGTH STEP {SET i TO i + 1.} DO {
+                    IF p:MODULES[i] = "ModuleGenerator" {
+                        LOCAL gen IS p:GETMODULEBYINDEX(i).
                         FOR ev IN gen:ALLEVENTNAMES {
-                            LOCAL evl IS ev:TOLOWER.
-                            IF fuel_state AND (evl:CONTAINS("start") OR evl:CONTAINS("iniciar") OR evl:CONTAINS("activar")) {
-                                gen:DOEVENT(ev).
-                                SET found TO TRUE.
-                            }
-                            IF (NOT fuel_state) AND (evl:CONTAINS("stop") OR evl:CONTAINS("detener") OR evl:CONTAINS("desactivar")) {
-                                gen:DOEVENT(ev).
-                                SET found TO TRUE.
-                            }
-                        }
-                        FOR act IN gen:ALLACTIONNAMES {
-                            LOCAL actl IS act:TOLOWER.
-                            IF fuel_state AND (actl:CONTAINS("activate") OR actl:CONTAINS("activar") OR actl:CONTAINS("start") OR actl:CONTAINS("toggle")) {
-                                gen:DOACTION(act, TRUE).
-                                SET found TO TRUE.
-                            }
-                            IF (NOT fuel_state) AND (actl:CONTAINS("shutdown") OR actl:CONTAINS("desactivar") OR actl:CONTAINS("stop")) {
-                                gen:DOACTION(act, TRUE).
-                                SET found TO TRUE.
+                            IF ev:TOLOWER:CONTAINS("fuel") OR ev:TOLOWER:CONTAINS("combustible") {
+                                CACHED_FUEL_GENS:ADD(gen).
+                                BREAK.
                             }
                         }
                     }
                 }
+            }
+        }
+        SET FUEL_GENS_INITIALIZED TO TRUE.
+    }
+
+    FOR gen IN CACHED_FUEL_GENS {
+        FOR ev IN gen:ALLEVENTNAMES {
+            LOCAL evl IS ev:TOLOWER.
+            IF fuel_state AND (evl:CONTAINS("start") OR evl:CONTAINS("iniciar") OR evl:CONTAINS("activar")) {
+                gen:DOEVENT(ev).
+                SET found TO TRUE.
+            }
+            IF (NOT fuel_state) AND (evl:CONTAINS("stop") OR evl:CONTAINS("detener") OR evl:CONTAINS("desactivar")) {
+                gen:DOEVENT(ev).
+                SET found TO TRUE.
+            }
+        }
+        FOR act IN gen:ALLACTIONNAMES {
+            LOCAL actl IS act:TOLOWER.
+            IF fuel_state AND (actl:CONTAINS("activate") OR actl:CONTAINS("activar") OR actl:CONTAINS("start") OR actl:CONTAINS("toggle")) {
+                gen:DOACTION(act, TRUE).
+                SET found TO TRUE.
+            }
+            IF (NOT fuel_state) AND (actl:CONTAINS("shutdown") OR actl:CONTAINS("desactivar") OR actl:CONTAINS("stop")) {
+                gen:DOACTION(act, TRUE).
+                SET found TO TRUE.
             }
         }
     }
@@ -490,7 +500,9 @@ UNTIL (SHIP:LIQUIDFUEL >= TARGET_FULL_LF) {
 
     SET cycle_count TO cycle_count + 1.
     LOCAL pct IS ROUND((SHIP:LIQUIDFUEL / 900.0) * 100, 1).
-    kprint("Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0").
+    IF MOD(cycle_count, 5) = 1 OR SHIP:LIQUIDFUEL >= (TARGET_FULL_LF - 15.0) {
+        kprint("Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0").
+    }
     WAIT 3.0.
 }
 
