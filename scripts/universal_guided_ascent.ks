@@ -16,10 +16,10 @@
 
 DECLARE PARAMETER TARGET_ALT_KM IS 600.0.        // Target orbital altitude in km (default 600 km MKO)
 DECLARE PARAMETER TARGET_LAUNCH_UT IS 0.         // Set to 0 for immediate sequence or pass exact window UT
-DECLARE PARAMETER TARGET_SLOT_DEG IS 60.0.       // Target slot in deg (e.g. +60.0, -60.0, 0.0)
+DECLARE PARAMETER TARGET_SLOT_DEG IS 120.0.      // Target slot in deg (e.g. +120.0, +60.0, -60.0, 0.0)
 DECLARE PARAMETER TARGET_ANCHOR IS "CoroltSat-1F". // Reference anchor ("NONE" = Foundation Anchor)
-DECLARE PARAMETER MISSION_CODE IS "CSA-17".      // Mission identifier for console telemetry
-DECLARE PARAMETER PAYLOAD_NAME IS "CoroltSat-1G". // Payload identifier for console telemetry
+DECLARE PARAMETER MISSION_CODE IS "CSA-18".      // Mission identifier for console telemetry
+DECLARE PARAMETER PAYLOAD_NAME IS "CoroltSat-1H". // Payload identifier for console telemetry
 
 CLEARSCREEN.
 // ----------------------------------------------------------------------------
@@ -490,7 +490,7 @@ UNTIL (SHIP:LIQUIDFUEL >= TARGET_FULL_LF) {
 
     SET cycle_count TO cycle_count + 1.
     LOCAL pct IS ROUND((SHIP:LIQUIDFUEL / 900.0) * 100, 1).
-    kprint("Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 9000 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0").
+    kprint("Loading (1/4 rate): " + ROUND(SHIP:LIQUIDFUEL, 1) + " / 900.0 LF (" + pct + "%) | Ox: " + ROUND(SHIP:OXIDIZER, 1) + " / 1100.0").
     WAIT 3.0.
 }
 
@@ -530,7 +530,7 @@ IF time_to_t60 > 1.0 {
         }
         LOCAL remaining_hold IS ROUND((effective_launch_ut - 60.0) - TIME:SECONDS, 0).
         IF remaining_hold > 0 {
-            kprint("HOLD... T-60s countdown starts in " + remaining_hold + "s (Warp allowed)    ", 0 AT(24)).
+            PRINT "HOLD... T-60s countdown starts in " + remaining_hold + "s (Warp allowed)    " AT(0, 24).
         }
         WAIT 1.0.
     }

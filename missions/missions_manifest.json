@@ -70,5 +70,13 @@
     "target_alt_km": 600.0,
     "objective": "CoroltNet-MKO 600 km Constellation Expansion (CoroltSat-1G) Node 1 (+60.0º / -60.0º vs CoroltSat-1F)",
     "outcome": "🟢 100% Mission Success | Node 1 Synchronized at 600 km MKO | Stage 2 Deorbited (Zero Debris Protocol)"
+  },
+  "CSA-18": {
+    "family": "Corolt-IV",
+    "vehicle": "Corolt-IV B #8 (Core Etoh-140-TU + 2x Shrimp + Belle-RLX81)",
+    "payload": "CoroltSat-1H (Node 2 MKO-600 Relay, 3x Codac-A23)",
+    "target_alt_km": 600.0,
+    "objective": "CoroltNet-MKO 600 km Constellation Expansion (CoroltSat-1H) Node 2 (+120.0º vs CoroltSat-1F / +60.0º vs CoroltSat-1G)",
+    "outcome": "🟢 100% Mission Success | Node 2 (+120.0º) Synchronized at 600 km MKO | Stage 2 Deorbited (Zero Debris Protocol)"
   }
 }
