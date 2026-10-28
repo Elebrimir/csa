@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 """
-Corolt Space Agency (CSA) - Remote kOS Terminal Bridge v2.1 (with Live Console Mirroring)
+Corolt Space Agency (CSA) - Remote kOS Terminal Bridge v3.0 (Local & LAN Laptop Support)
 Crash-proof alternative to kOS Telnet on Linux (avoids Mono libKernel32 crash).
-Allows sending live kOS commands or scripts from any SSH laptop session directly
-to the active spacecraft running `run remote.` in KSP, while streaming live
-kOS terminal output (`0:/kos_live.log`) and Telemachus orbital/attitude telemetry!
+Works seamlessly both locally on the KSP host and remotely from a laptop over LAN (--host 192.168.1.50)!
 
 Usage:
-  Interactive shell:
-    python3 tools/csa_remote_terminal.py
+  Interactive shell (from Laptop over LAN):
+    python3 tools/csa_remote_terminal.py --host 192.168.1.50
   One-shot command + live console tail:
-    python3 tools/csa_remote_terminal.py -c "go 4292554.6 60"
+    python3 tools/csa_remote_terminal.py --host 192.168.1.50 -c "go 4292554.6 60"
   Follow live kOS console output only:
-    python3 tools/csa_remote_terminal.py --tail
+    python3 tools/csa_remote_terminal.py --host 192.168.1.50 --tail
 """
 
 import argparse
@@ -28,15 +26,23 @@ CMD_FILE_PATH = os.path.join(KOS_SCRIPT_ROOT, "remote_cmd.ks")
 ACK_FILE_PATH = os.path.join(KOS_SCRIPT_ROOT, "remote_ack.txt")
 LIVE_LOG_PATH = os.path.join(KOS_SCRIPT_ROOT, "kos_live.log")
 OVERRIDE_UT_PATH = os.path.join(KOS_SCRIPT_ROOT, "override_ut.txt")
-PROXY_URL = "http://127.0.0.1:9105/csa_raw"
-TELEMACHUS_URL = "http://127.0.0.1:8085/telemachus/datalink?ut=t.universalTime&met=v.missionTime&alt=v.altitude&ap=o.ApA&pe=o.PeA&ecc=o.eccentricity&period=o.period&th=f.throttle"
+
+TARGET_HOST = os.environ.get("CSA_HOST", "127.0.0.1")
+
+
+def _proxy_base():
+    return f"http://{TARGET_HOST}:9105"
+
+
+def _is_local_fs():
+    return TARGET_HOST in ("127.0.0.1", "localhost") and os.path.isdir(KOS_SCRIPT_ROOT)
 
 
 def get_live_telemetry():
     # 1. Read from Zero-Leak RAM Proxy (:9105/csa_raw) -> 0 TCP/GC load on KSP!
     try:
-        req = urllib.request.Request(PROXY_URL)
-        with urllib.request.urlopen(req, timeout=0.6) as resp:
+        req = urllib.request.Request(f"{_proxy_base()}/csa_raw")
+        with urllib.request.urlopen(req, timeout=0.8) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             if data.get("_live") and "ut" in data:
                 return data
@@ -46,7 +52,8 @@ def get_live_telemetry():
         pass
     # 2. Fallback to Telemachus if proxy service is stopped
     try:
-        req = urllib.request.Request(TELEMACHUS_URL)
+        t_url = f"http://{TARGET_HOST}:8085/telemachus/datalink?ut=t.universalTime&met=v.missionTime&alt=v.altitude&ap=o.ApA&pe=o.PeA&ecc=o.eccentricity&period=o.period&th=f.throttle"
+        req = urllib.request.Request(t_url)
         with urllib.request.urlopen(req, timeout=0.8) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             if "ut" in data:
@@ -54,6 +61,55 @@ def get_live_telemetry():
     except Exception:
         pass
     return None
+
+
+def read_kos_log():
+    if _is_local_fs():
+        if os.path.exists(LIVE_LOG_PATH):
+            with open(LIVE_LOG_PATH, "r", encoding="utf-8", errors="ignore") as f:
+                return f.read()
+        return ""
+    try:
+        req = urllib.request.Request(f"{_proxy_base()}/kos_log")
+        with urllib.request.urlopen(req, timeout=1.0) as resp:
+            return resp.read().decode("utf-8", errors="ignore")
+    except Exception:
+        return ""
+
+
+def read_kos_ack():
+    if _is_local_fs():
+        if os.path.exists(ACK_FILE_PATH):
+            with open(ACK_FILE_PATH, "r", encoding="utf-8", errors="ignore") as f:
+                return f.read()
+        return ""
+    try:
+        req = urllib.request.Request(f"{_proxy_base()}/kos_ack")
+        with urllib.request.urlopen(req, timeout=1.0) as resp:
+            return resp.read().decode("utf-8", errors="ignore")
+    except Exception:
+        return ""
+
+
+def write_kos_file(filename, content):
+    if _is_local_fs():
+        target = OVERRIDE_UT_PATH if filename == "override_ut.txt" else CMD_FILE_PATH
+        with open(target, "w", encoding="utf-8") as f:
+            f.write(content)
+        return True
+    try:
+        body = json.dumps({"file": filename, "content": content}).encode("utf-8")
+        req = urllib.request.Request(
+            f"{_proxy_base()}/kos_cmd",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        with urllib.request.urlopen(req, timeout=1.5) as resp:
+            return resp.status == 200
+    except Exception as e:
+        print(f"⚠️ Error sending command to {TARGET_HOST}:9105/kos_cmd: {e}")
+        return False
 
 
 def format_status_bar(t_data):
@@ -74,38 +130,35 @@ def format_status_bar(t_data):
 
 
 def tail_live_log(initial_lines=20):
-    """Streams 0:/kos_live.log + Telemachus status bar in real time to the laptop terminal."""
+    """Streams 0:/kos_live.log + Telemachus status bar in real time to local or laptop terminal."""
     print("================================================================================")
-    print(" 📺 LIVE kOS CONSOLE STREAM (0:/kos_live.log) — Press Ctrl+C to return to prompt")
+    print(f" 📺 LIVE kOS CONSOLE STREAM ({TARGET_HOST}) — Press Ctrl+C to return to prompt")
     print("================================================================================")
-    pos = 0
-    if os.path.exists(LIVE_LOG_PATH):
-        with open(LIVE_LOG_PATH, "r", encoding="utf-8", errors="ignore") as f:
-            lines = f.readlines()
-            for line in lines[-initial_lines:]:
-                print(f"  {line.rstrip()}")
-            pos = f.tell()
+    content = read_kos_log()
+    pos = len(content)
+    if content:
+        for line in content.splitlines()[-initial_lines:]:
+            print(f"  {line.rstrip()}")
 
     last_stat_time = 0.0
     try:
         while True:
-            if os.path.exists(LIVE_LOG_PATH):
-                cur_size = os.path.getsize(LIVE_LOG_PATH)
-                if cur_size < pos:
-                    pos = 0
-                if cur_size > pos:
-                    with open(LIVE_LOG_PATH, "r", encoding="utf-8", errors="ignore") as f:
-                        f.seek(pos)
-                        for line in f:
-                            print(f"  {line.rstrip()}")
-                        pos = f.tell()
+            content = read_kos_log()
+            cur_len = len(content)
+            if cur_len < pos:
+                pos = 0
+            if cur_len > pos:
+                new_chunk = content[pos:]
+                for line in new_chunk.splitlines():
+                    print(f"  {line.rstrip()}")
+                pos = cur_len
             now = time.time()
             if now - last_stat_time >= 5.0:
                 t_data = get_live_telemetry()
-                if t_data and t_data.get("met", 0) > 0:
+                if t_data and (t_data.get("met", t_data.get("mtime", 0)) or 0) > 0:
                     print(f"  \033[36m{format_status_bar(t_data)}\033[0m")
                 last_stat_time = now
-            time.sleep(0.3)
+            time.sleep(0.4)
     except KeyboardInterrupt:
         print("\n[Stopped live stream — spacecraft continues running autonomously]")
 
@@ -119,8 +172,7 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
     if cmd.lower().startswith("setut "):
         parts = cmd.split()
         new_ut = float(parts[1])
-        with open(OVERRIDE_UT_PATH, "w", encoding="utf-8") as f:
-            f.write(f"GLOBAL NEW_TARGET_LAUNCH_UT IS {new_ut:.1f}.\n")
+        write_kos_file("override_ut.txt", f"GLOBAL NEW_TARGET_LAUNCH_UT IS {new_ut:.1f}.\n")
         print(f"✅ Sent live launch window override to 0:/override_ut.txt -> UT {new_ut:.1f} s!")
         return
 
@@ -131,8 +183,8 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
         parts = cmd.split()
         ut_val = float(parts[1]) if len(parts) > 1 else 0
         slot_val = float(parts[2]) if len(parts) > 2 else 120.0
-        m_code = parts[3].upper() if len(parts) > 3 else "CSA-18"
-        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1H"
+        m_code = parts[3].upper() if len(parts) > 3 else "CSA-19"
+        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1I"
         ref_sat = parts[5] if len(parts) > 5 else "CoroltSat-1F"
         alt_km = float(parts[6]) if len(parts) > 6 else 600.0
         cmd = f'RUNPATH("0:/csa/universal_guided_ascent.ks", {alt_km:.1f}, {ut_val:.1f}, {slot_val:.1f}, "{ref_sat}", "{m_code}", "{p_name}").'
@@ -147,13 +199,14 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
     elif not cmd.endswith(".") and not cmd.endswith("}"):
         cmd += "."
 
-    ack_start_size = os.path.getsize(ACK_FILE_PATH) if os.path.exists(ACK_FILE_PATH) else 0
+    ack_before = read_kos_ack()
+    ack_start_len = len(ack_before)
 
-    with open(CMD_FILE_PATH, "w", encoding="utf-8") as f:
-        f.write("// Auto-generated by CSA Remote Terminal Bridge\n")
-        f.write(cmd + "\n")
+    file_content = "// Auto-generated by CSA Remote Terminal Bridge\n" + cmd + "\n"
+    if not write_kos_file("remote_cmd.ks", file_content):
+        return
 
-    print(f"📡 Sent to kOS (0:/remote_cmd.ks): {cmd}")
+    print(f"📡 Sent to kOS (0:/remote_cmd.ks on {TARGET_HOST}): {cmd}")
 
     if not wait_ack:
         return
@@ -162,11 +215,10 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
     t0 = time.time()
     started = False
     while time.time() - t0 < 15.0:
-        if os.path.exists(ACK_FILE_PATH) and os.path.getsize(ACK_FILE_PATH) > ack_start_size:
-            with open(ACK_FILE_PATH, "r", encoding="utf-8", errors="ignore") as af:
-                af.seek(ack_start_size)
-                new_lines = af.read().strip().splitlines()
-                ack_start_size = af.tell()
+        ack_now = read_kos_ack()
+        if len(ack_now) > ack_start_len:
+            new_lines = ack_now[ack_start_len:].strip().splitlines()
+            ack_start_len = len(ack_now)
             for line in new_lines:
                 if line.startswith("START|"):
                     started = True
@@ -174,9 +226,6 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
                 elif line.startswith("DONE|"):
                     print(f"🏁 Vessel kOS DONE: {line}")
                     return
-        if not os.path.exists(CMD_FILE_PATH) and started:
-            print("✅ Command file consumed by kOS.")
-            break
         if started:
             break
         time.sleep(0.3)
@@ -191,12 +240,12 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
 
 def interactive_loop():
     print("================================================================================")
-    print("       COROLT SPACE AGENCY - SSH REMOTE kOS TERMINAL BRIDGE v2.1                ")
-    print("       (Live Console Mirroring + Crash-Proof File Bridge)                       ")
+    print(f"       COROLT SPACE AGENCY - REMOTE kOS TERMINAL BRIDGE v3.0 ({TARGET_HOST})     ")
+    print("       (Live Console Mirroring + Local/LAN HTTP Bridge)                         ")
     print("================================================================================")
     print('1. In KSP kOS window (once), type:  RUNPATH("0:/csa/remote.ks").')
     print("2. Quick commands:")
-    print("   • go <UT> <SLOT>       -> Launch CSA-17 at exact UT & slot (e.g. `go 4292554.6 60`)")
+    print("   • go <UT> <SLOT>       -> Launch mission at exact UT & slot (e.g. `go 4292554.6 60`)")
     print("   • setut <NEW_UT>       -> Change launch window UT live during Pad HOLD!")
     print("   • tail / log           -> Watch live kOS terminal output in real time!")
     print("   • phase <SLOT> [ORBS]  -> Run constellation_phasing.ks (e.g. `phase 60 3`)")
@@ -207,7 +256,7 @@ def interactive_loop():
         t_data = get_live_telemetry()
         print(format_status_bar(t_data))
         try:
-            user_in = input("kOS-SSH> ").strip()
+            user_in = input("kOS-LAN> ").strip()
         except (EOFError, KeyboardInterrupt):
             print("\nExiting CSA Remote Terminal.")
             break
@@ -227,10 +276,16 @@ def interactive_loop():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="CSA Crash-Proof SSH Remote kOS Terminal v2.1")
+    parser = argparse.ArgumentParser(description="CSA Crash-Proof Remote kOS Terminal v3.0 (Local & LAN)")
+    parser.add_argument("--host", type=str, default=None, help="KSP host IP on LAN (e.g. 192.168.1.50)")
     parser.add_argument("-c", "--command", type=str, default=None, help="Send a single kOS command or shortcut and stream live output")
     parser.add_argument("-t", "--tail", action="store_true", help="Stream live kOS console output (0:/kos_live.log) in real time")
     args = parser.parse_args()
+
+    if args.host:
+        TARGET_HOST = args.host
+    elif TARGET_HOST in ("127.0.0.1", "localhost") and not os.path.isdir(KOS_SCRIPT_ROOT):
+        TARGET_HOST = "192.168.1.50"
 
     if args.tail:
         tail_live_log()
