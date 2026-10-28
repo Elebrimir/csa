@@ -25,6 +25,7 @@ export default defineConfig({
         items: [
           { text: "Manifesto & Goals", link: "/" },
           { text: "Kerbin Science Matrix", link: "/science/" },
+          { text: "Year 2 Science Plan", link: "/science/year2_plan" },
         ]
       },
       {
