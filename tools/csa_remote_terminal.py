@@ -28,13 +28,26 @@ CMD_FILE_PATH = os.path.join(KOS_SCRIPT_ROOT, "remote_cmd.ks")
 ACK_FILE_PATH = os.path.join(KOS_SCRIPT_ROOT, "remote_ack.txt")
 LIVE_LOG_PATH = os.path.join(KOS_SCRIPT_ROOT, "kos_live.log")
 OVERRIDE_UT_PATH = os.path.join(KOS_SCRIPT_ROOT, "override_ut.txt")
+PROXY_URL = "http://127.0.0.1:9105/csa_raw"
 TELEMACHUS_URL = "http://127.0.0.1:8085/telemachus/datalink?ut=t.universalTime&met=v.missionTime&alt=v.altitude&ap=o.ApA&pe=o.PeA&ecc=o.eccentricity&period=o.period&th=f.throttle"
 
 
 def get_live_telemetry():
+    # 1. Read from Zero-Leak RAM Proxy (:9105/csa_raw) -> 0 TCP/GC load on KSP!
+    try:
+        req = urllib.request.Request(PROXY_URL)
+        with urllib.request.urlopen(req, timeout=0.6) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data.get("_live") and "ut" in data:
+                return data
+            if "_live" in data and not data.get("_live"):
+                return None
+    except Exception:
+        pass
+    # 2. Fallback to Telemachus if proxy service is stopped
     try:
         req = urllib.request.Request(TELEMACHUS_URL)
-        with urllib.request.urlopen(req, timeout=1.0) as resp:
+        with urllib.request.urlopen(req, timeout=0.8) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             if "ut" in data:
                 return data
@@ -46,14 +59,14 @@ def get_live_telemetry():
 def format_status_bar(t_data):
     if not t_data:
         return "[Telemachus: OFFLINE]"
-    ut = t_data.get("ut", 0.0)
-    met = t_data.get("met", 0.0)
-    alt = t_data.get("alt", 0.0) / 1000.0
-    ap = t_data.get("ap", 0.0) / 1000.0
-    pe = t_data.get("pe", 0.0) / 1000.0
-    ecc = t_data.get("ecc", 0.0)
-    per = t_data.get("period", 0.0)
-    th = t_data.get("th", 0.0) * 100.0
+    ut = t_data.get("ut", 0.0) or 0.0
+    met = t_data.get("met", t_data.get("mtime", 0.0)) or 0.0
+    alt = (t_data.get("alt", 0.0) or 0.0) / 1000.0
+    ap = (t_data.get("ap", t_data.get("apo", 0.0)) or 0.0) / 1000.0
+    pe = (t_data.get("pe", t_data.get("peri", 0.0)) or 0.0) / 1000.0
+    ecc = t_data.get("ecc", 0.0) or 0.0
+    per = t_data.get("period", 0.0) or 0.0
+    th = (t_data.get("th", t_data.get("throttle", 0.0)) or 0.0) * 100.0
     return (
         f"[UT: {ut:9.1f}s | MET: {met:6.1f}s | Alt: {alt:6.2f}km | "
         f"Orbit: {ap:6.2f} x {pe:6.2f}km (e={ecc:.5f}, T={per:.1f}s) | Th: {th:3.0f}%]"
