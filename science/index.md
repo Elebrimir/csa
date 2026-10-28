@@ -6,6 +6,11 @@
 
 ---
 
+> [!TIP]
+> 🚀 **Year 2 Scientific Flight Manifest Active**: Review the comprehensive flight and research plan in [**Program «Nova Scientia»: Kerbin Year 2 Science Campaign**](./year2_plan.md), featuring 7 Kick Missions, 3 Science Missions, and 1 Flag Mission to the Mun!
+
+---
+
 ## 📊 Global Science Indicators
 
 | Key Metric | Value Achieved | Details |
