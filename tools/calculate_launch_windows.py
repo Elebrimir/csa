@@ -394,10 +394,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="CSA Universal Sidereal Launch Window Calculator v4.0"
     )
-    parser.add_argument("--mission", type=str, default="CSA-17", help="Mission code (default: CSA-17)")
+    parser.add_argument("--mission", type=str, default="CSA-19", help="Mission code (default: CSA-19)")
     parser.add_argument("--ref", type=str, default="CoroltSat-1F", help="Reference anchor satellite name (default: CoroltSat-1F)")
-    parser.add_argument("--slot", type=float, nargs="+", default=None, help="Target phase angle slot(s) in deg (e.g. 60 -60)")
-    parser.add_argument("--calibrate-from", type=str, default="CSA-16", help="Mission code to auto-calibrate ascent profile from (default: CSA-16)")
+    parser.add_argument("--slot", type=float, nargs="+", default=[180.0], help="Target phase angle slot(s) in deg (default: 180.0)")
+    parser.add_argument("--calibrate-from", type=str, default="CSA-18", help="Mission code to auto-calibrate ascent profile from (default: CSA-18)")
+
     parser.add_argument("--day", type=int, default=None, help="Kerbin calendar day to search from")
     parser.add_argument("--ut", type=float, default=None, help="Exact starting UT in seconds")
     parser.add_argument("--count", type=int, default=6, help="Number of windows per slot to generate")
