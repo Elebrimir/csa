@@ -76,19 +76,66 @@ def analyze_mission_telemetry(mission_code):
             alt = float(r.get("altitude", 0) or 0)
             vspd = float(r.get("vert_speed", 0) or 0)
             if vspd > 2.0 or alt > 95.0:
-                liftoff_idx = max(0, i - 1)
+                if i > 0:
+                    prev_met = float(rows[i - 1].get("MET", 0) or 0)
+                    curr_met = float(r.get("MET", 0) or 0)
+                    # If KSP reset MET at liftoff (pad hold recorded wall-clock MET, then flight started near 0)
+                    if curr_met < prev_met:
+                        liftoff_idx = i
+                    else:
+                        liftoff_idx = i - 1
+                else:
+                    liftoff_idx = 0
                 break
         except (ValueError, TypeError):
             continue
 
-    ut0 = float(rows[liftoff_idx].get("UT", 0) or 0)
-    met0 = float(rows[liftoff_idx].get("MET", 0) or 0)
+    first_met = float(rows[liftoff_idx].get("MET", 0) or 0)
+    first_ut = float(rows[liftoff_idx].get("UT", 0) or 0)
+    # If liftoff_idx already has KSP post-liftoff MET (e.g. 0..10s after a pad hold reset),
+    # anchor met0 = 0.0 and ut0 = first_ut - first_met so T+0s matches exact KSP liftoff
+    if liftoff_idx > 0 and first_met < float(rows[liftoff_idx - 1].get("MET", 0) or 0) and first_met < 30.0:
+        met0 = 0.0
+        ut0 = first_ut - first_met
+    else:
+        met0 = first_met
+        ut0 = first_ut
 
     flight = []
+    # Prepend synthetic T+0.0s pad baseline frame if liftoff_idx started after MET reset
+    if met0 == 0.0 and liftoff_idx > 0 and first_met > 0.0:
+        pad_r = rows[liftoff_idx - 1]
+        try:
+            flight.append({
+                "t": 0.0,
+                "ut": ut0,
+                "alt": float(pad_r.get("altitude", 85.4) or 85.4),
+                "spd": float(pad_r.get("surface_vel", 0.0) or 0.0),
+                "v_spd": 0.0,
+                "orb_v": float(pad_r.get("orbital_vel", 174.9) or 174.9),
+                "q": 0.0,
+                "g": float(pad_r.get("g_force", 1.0) or 1.0),
+                "pitch": float(pad_r.get("pitch", 90.0) or 90.0),
+                "hdg": float(pad_r.get("heading", 90.0) or 90.0),
+                "lat": float(pad_r.get("latitude", -0.0972) or -0.0972),
+                "lon": float(pad_r.get("longitude", -74.5577) or -74.5577),
+                "ap": float(pad_r.get("apoapsis", 85.4) or 85.4),
+                "pe": float(pad_r.get("periapsis", -599900.0) or -599900.0),
+                "ecc": float(pad_r.get("eccentricity", 1.0) or 1.0),
+                "inc": float(pad_r.get("inclination", 0.097) or 0.097),
+                "th": 1.0,
+                "sf": float(pad_r.get("solid_fuel", 360.0) or 360.0),
+                "lf": float(pad_r.get("liquid_fuel", 2430.0) or 2430.0),
+            })
+        except (ValueError, TypeError):
+            pass
+
     for r in rows[liftoff_idx:]:
         try:
             met = float(r.get("MET", 0) or 0)
             t = max(0.0, met - met0)
+            if flight and t <= flight[-1]["t"]:
+                continue
             ut = float(r.get("UT", 0) or 0)
             alt = float(r.get("altitude", 0) or 0)
             spd = float(r.get("surface_vel", 0) or 0)
@@ -133,8 +180,14 @@ def analyze_mission_telemetry(mission_code):
     atmo_q = [d for d in flight if d["t"] <= 120.0 and d["alt"] < 35000.0]
     max_q_pt = max(atmo_q, key=lambda d: d["q"]) if atmo_q else flight[0]
 
-    # SRB Burnout / Staging (where solid_fuel drops < 1.0 after T+15s, or fallback to max_q_pt)
-    srb_pt = next((d for d in flight if d["t"] > 15.0 and d["sf"] < 1.0), max_q_pt)
+    # SRB Burnout / Staging (where solid_fuel drops < 1.0 after T+15s if solid_fuel was recorded,
+    # otherwise detect the G-load drop > 0.25 G between T+35s and T+60s, or fallback to max_q_pt)
+    has_sf_telemetry = any(d["t"] > 5.0 and d["sf"] > 10.0 for d in flight[:100])
+    if has_sf_telemetry:
+        srb_pt = next((d for d in flight if d["t"] > 15.0 and d["sf"] < 1.0), max_q_pt)
+    else:
+        srb_window = [d for d in flight if 35.0 <= d["t"] <= 60.0]
+        srb_pt = next((d for d in srb_window if d["t"] >= 45.0 and d["g"] < 1.50), max_q_pt)
 
     # Stage 1 MECO / Max G (between T+75s and T+185s)
     meco_window = [d for d in flight if 75.0 <= d["t"] <= 185.0]
@@ -163,17 +216,42 @@ def analyze_mission_telemetry(mission_code):
     else:
         seco2_pt = max(flight, key=lambda d: d["alt"])
 
+    # SECO-2 Ignition (first point after SECO-1+60s where throttle > 0.1)
+    seco2_ign_pt = next(
+        (d for d in flight if d["t"] > seco1_pt["t"] + 60.0 and d["th"] > 0.1),
+        seco2_pt,
+    )
+
     # Stage 2 Deorbit Burn (after SECO-2 where periapsis drops <= 0 km and lon != 0)
     deorbit_pt = next(
         (d for d in flight if d["t"] > seco2_pt["t"] + 15.0 and d["pe"] <= 0.0 and abs(d["lon"]) > 0.01),
         None,
     )
 
-    # Trim flight data to 30 seconds after deorbit or SECO-2+120s so plots are clean
+    # Trim flight data to 25 seconds after deorbit or SECO-2+120s so plots are clean
     t_cutoff = (deorbit_pt["t"] + 25.0) if deorbit_pt else (seco2_pt["t"] + 120.0)
     trimmed_flight = [d for d in flight if d["t"] <= t_cutoff]
     if not trimmed_flight:
         trimmed_flight = flight
+
+    # Piecewise Time-Axis Compression for long passive ballistic coasts (> 450s)
+    # Preserves full resolution during powered ascent (0 -> SECO-1+30s) and orbital insertion (SECO-2_ign-25s -> end)
+    coast_start_t = seco1_pt["t"] + 30.0
+    coast_end_t = max(coast_start_t, seco2_ign_pt["t"] - 25.0)
+    coast_dur = coast_end_t - coast_start_t
+    coast_compressed_dur = 140.0
+
+    def map_plot_t(t_val):
+        if coast_dur <= 450.0:
+            return t_val
+        if t_val <= coast_start_t:
+            return t_val
+        if t_val <= coast_end_t:
+            return coast_start_t + ((t_val - coast_start_t) / coast_dur) * coast_compressed_dur
+        return coast_start_t + coast_compressed_dur + (t_val - coast_end_t)
+
+    for d in trimmed_flight:
+        d["plot_t"] = map_plot_t(d["t"])
 
     launch_day = int(ut0 // KERBIN_SOLAR_DAY) + 1 if ut0 > 0 else 1
 
@@ -188,8 +266,18 @@ def analyze_mission_telemetry(mission_code):
         "max_g": max_g_pt,
         "meco1": meco_pt,
         "seco1": seco1_pt,
+        "seco2_ign": seco2_ign_pt,
         "seco2": seco2_pt,
         "deorbit": deorbit_pt,
+        "coast_break": {
+            "active": coast_dur > 450.0,
+            "t_start": coast_start_t,
+            "t_end": coast_end_t,
+            "plot_start": coast_start_t,
+            "plot_end": coast_start_t + coast_compressed_dur,
+            "duration": coast_dur,
+        },
+        "map_plot_t": map_plot_t,
     }
 
     return trimmed_flight, events
@@ -197,7 +285,7 @@ def analyze_mission_telemetry(mission_code):
 
 def generate_flight_deck_dashboard(data, events, meta, output_file):
     width, height = 1100, 780
-    t_max = max(d["t"] for d in data) if data else 1000.0
+    t_max = max(d.get("plot_t", d["t"]) for d in data) if data else 1000.0
     max_alt_km = max(d["alt"] for d in data) / 1000.0
     max_ap_km = max(d["ap"] for d in data) / 1000.0
     alt_ceil_km = max(350.0, math.ceil(max(max_alt_km, max_ap_km, meta["target_alt_km"]) / 50.0) * 50.0 + 50.0)
@@ -219,8 +307,9 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
         {"x": 580, "y": 510, "w": 460, "h": 180, "title": "ORBITAL INSERTION (APOAPSIS &amp; PERIAPSIS)", "unit": "km"},
     ]
 
-    def scale_x(t, p):
-        return p["x"] + (t / t_max) * p["w"]
+    def scale_x(d_or_pt, p):
+        pt = d_or_pt.get("plot_t", d_or_pt["t"]) if isinstance(d_or_pt, dict) else float(d_or_pt)
+        return p["x"] + (pt / t_max) * p["w"]
 
     def scale_y(val, val_max, p):
         clamped = max(0.0, min(float(val), float(val_max)))
@@ -228,17 +317,31 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     p1, p2, p3, p4, p5, p6 = panels
 
-    p1_path = "M " + " ".join(f"{scale_x(d['t'], p1):.1f},{scale_y(d['alt']/1000, alt_ceil_km, p1):.1f}" for d in sampled)
-    p2_srf = "M " + " ".join(f"{scale_x(d['t'], p2):.1f},{scale_y(d['spd'], vel_ceil, p2):.1f}" for d in sampled)
-    p2_orb = "M " + " ".join(f"{scale_x(d['t'], p2):.1f},{scale_y(d['orb_v'], vel_ceil, p2):.1f}" for d in sampled)
-    p3_path = "M " + " ".join(f"{scale_x(d['t'], p3):.1f},{scale_y(d['q'], 35, p3):.1f}" for d in sampled)
-    p4_path = "M " + " ".join(f"{scale_x(d['t'], p4):.1f},{scale_y(d['g'], 4.0, p4):.1f}" for d in sampled)
-    p5_pitch = "M " + " ".join(f"{scale_x(d['t'], p5):.1f},{scale_y(max(0, d['pitch']), 90, p5):.1f}" for d in sampled)
+    p1_path = "M " + " ".join(f"{scale_x(d, p1):.1f},{scale_y(d['alt']/1000, alt_ceil_km, p1):.1f}" for d in sampled)
+    p2_srf = "M " + " ".join(f"{scale_x(d, p2):.1f},{scale_y(d['spd'], vel_ceil, p2):.1f}" for d in sampled)
+    p2_orb = "M " + " ".join(f"{scale_x(d, p2):.1f},{scale_y(d['orb_v'], vel_ceil, p2):.1f}" for d in sampled)
+    p3_path = "M " + " ".join(f"{scale_x(d, p3):.1f},{scale_y(d['q'], 35, p3):.1f}" for d in sampled)
+    p4_path = "M " + " ".join(f"{scale_x(d, p4):.1f},{scale_y(d['g'], 4.0, p4):.1f}" for d in sampled)
+    p5_pitch = "M " + " ".join(f"{scale_x(d, p5):.1f},{scale_y(max(0, d['pitch']), 90, p5):.1f}" for d in sampled)
 
-    ap_pts = [f"{scale_x(d['t'], p6):.1f},{scale_y(d['ap']/1000, alt_ceil_km, p6):.1f}" for d in sampled if d["ap"] > 0]
-    pe_pts = [f"{scale_x(d['t'], p6):.1f},{scale_y(max(0, d['pe']/1000), alt_ceil_km, p6):.1f}" for d in sampled if d["pe"] > 0]
+    ap_pts = [f"{scale_x(d, p6):.1f},{scale_y(d['ap']/1000, alt_ceil_km, p6):.1f}" for d in sampled if d["ap"] > 0]
+    pe_pts = [f"{scale_x(d, p6):.1f},{scale_y(max(0, d['pe']/1000), alt_ceil_km, p6):.1f}" for d in sampled if d["pe"] > 0]
     p6_ap = ("M " + " ".join(ap_pts)) if ap_pts else f"M {p6['x']},{p6['y']+p6['h']}"
     p6_pe = ("M " + " ".join(pe_pts)) if pe_pts else f"M {p6['x']},{p6['y']+p6['h']}"
+
+    cb = events.get("coast_break", {})
+    def render_coast_band(p):
+        if not cb.get("active"):
+            return ""
+        x1 = scale_x(cb["plot_start"], p)
+        x2 = scale_x(cb["plot_end"], p)
+        xm = (x1 + x2) / 2.0
+        return (
+            f'<rect x="{x1:.1f}" y="{p["y"]+1}" width="{x2-x1:.1f}" height="{p["h"]-2}" fill="#1e293b" opacity="0.35" />'
+            f'<line x1="{x1:.1f}" y1="{p["y"]}" x2="{x1:.1f}" y2="{p["y"]+p["h"]}" stroke="#475569" stroke-dasharray="3,3" stroke-width="1"/>'
+            f'<line x1="{x2:.1f}" y1="{p["y"]}" x2="{x2:.1f}" y2="{p["y"]+p["h"]}" stroke="#475569" stroke-dasharray="3,3" stroke-width="1"/>'
+            f'<text x="{xm:.1f}" y="{p["y"]+p["h"]-26}" fill="#64748b" font-size="8" text-anchor="middle">COAST ({cb["duration"]/60:.1f}m)</text>'
+        )
 
     s2 = events["seco2"]
     mq = events["max_q"]
@@ -268,6 +371,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 1: Altitude -->
     <rect x="{p1['x']}" y="{p1['y']}" width="{p1['w']}" height="{p1['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p1)}
     <text x="{p1['x']+12}" y="{p1['y']+20}" fill="#38bdf8" font-size="11" font-weight="bold">{p1['title']}</text>
     <text x="{p1['x']+p1['w']-135}" y="{p1['y']+20}" fill="#94a3b8" font-size="10">Final Alt: {s2['alt']/1000:.1f} km</text>
     <line x1="{p1['x']}" y1="{scale_y(70, alt_ceil_km, p1):.1f}" x2="{p1['x']+p1['w']}" y2="{scale_y(70, alt_ceil_km, p1):.1f}" stroke="#f43f5e" stroke-dasharray="3,3" stroke-width="1"/>
@@ -277,6 +381,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 2: Velocity -->
     <rect x="{p2['x']}" y="{p2['y']}" width="{p2['w']}" height="{p2['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p2)}
     <text x="{p2['x']+12}" y="{p2['y']+20}" fill="#f43f5e" font-size="11" font-weight="bold">{p2['title']}</text>
     <text x="{p2['x']+p2['w']-185}" y="{p2['y']+20}" fill="#94a3b8" font-size="10">Orbital Speed: {s2['orb_v']:,.1f} m/s</text>
     <path d="{p2_srf}" fill="none" stroke="#f43f5e" stroke-width="2.0" />
@@ -286,6 +391,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 3: Dynamic Pressure -->
     <rect x="{p3['x']}" y="{p3['y']}" width="{p3['w']}" height="{p3['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p3)}
     <text x="{p3['x']+12}" y="{p3['y']+20}" fill="#fbbf24" font-size="11" font-weight="bold">{p3['title']}</text>
     <text x="{p3['x']+p3['w']-135}" y="{p3['y']+20}" fill="#94a3b8" font-size="10">Max Q: {mq['q']:.2f} kPa</text>
     <line x1="{p3['x']}" y1="{scale_y(32, 35, p3):.1f}" x2="{p3['x']+p3['w']}" y2="{scale_y(32, 35, p3):.1f}" stroke="#ef4444" stroke-dasharray="4,4" stroke-width="1.2"/>
@@ -295,6 +401,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 4: Acceleration -->
     <rect x="{p4['x']}" y="{p4['y']}" width="{p4['w']}" height="{p4['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p4)}
     <text x="{p4['x']+12}" y="{p4['y']+20}" fill="#ec4899" font-size="11" font-weight="bold">{p4['title']}</text>
     <text x="{p4['x']+p4['w']-130}" y="{p4['y']+20}" fill="#94a3b8" font-size="10">Max G: {mg['g']:.2f} G</text>
     <line x1="{p4['x']}" y1="{scale_y(3.8, 4.0, p4):.1f}" x2="{p4['x']+p4['w']}" y2="{scale_y(3.8, 4.0, p4):.1f}" stroke="#ef4444" stroke-dasharray="4,4" stroke-width="1.2"/>
@@ -304,6 +411,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 5: Guidance Attitude -->
     <rect x="{p5['x']}" y="{p5['y']}" width="{p5['w']}" height="{p5['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p5)}
     <text x="{p5['x']+12}" y="{p5['y']+20}" fill="#a855f7" font-size="11" font-weight="bold">{p5['title']}</text>
     <text x="{p5['x']+p5['w']-130}" y="{p5['y']+20}" fill="#94a3b8" font-size="10">Azimuth: 90.0º</text>
     <path d="{p5_pitch}" fill="none" stroke="#a855f7" stroke-width="2.2" />
@@ -311,6 +419,7 @@ def generate_flight_deck_dashboard(data, events, meta, output_file):
 
     <!-- Panel 6: Orbital Insertion -->
     <rect x="{p6['x']}" y="{p6['y']}" width="{p6['w']}" height="{p6['h']}" fill="#0b1120" stroke="#334155" stroke-width="1.2" />
+    {render_coast_band(p6)}
     <text x="{p6['x']+12}" y="{p6['y']+20}" fill="#10b981" font-size="11" font-weight="bold">{p6['title']}</text>
     <text x="{p6['x']+p6['w']-175}" y="{p6['y']+20}" fill="#94a3b8" font-size="10">Orbit: {s2['ap']/1000:.1f} x {s2['pe']/1000:.1f} km</text>
     <path d="{p6_ap}" fill="none" stroke="#38bdf8" stroke-width="2.2" />

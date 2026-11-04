@@ -66,6 +66,27 @@ class BaseMissionPlotter(ABC):
         self.landing_time = 0.0
         self.landing_alt = 0.0
         self.landing_vel = 0.0
+        self.coast_break = None
+        self._map_plot_t = None
+
+    def map_time(self, t: float) -> float:
+        if self._map_plot_t is not None:
+            return self._map_plot_t(t)
+        return t
+
+    def inv_map_time(self, pt: float) -> float:
+        cb = self.coast_break
+        if not cb or not cb.get("active"):
+            return pt
+        cs = cb["plot_start"]
+        ce = cb["plot_end"]
+        ts = cb["t_start"]
+        te = cb["t_end"]
+        if pt <= cs:
+            return pt
+        if pt <= ce:
+            return ts + ((pt - cs) / max(1e-6, ce - cs)) * (te - ts)
+        return te + (pt - ce)
 
     @abstractmethod
     def get_vehicle_name(self) -> str:
@@ -191,7 +212,8 @@ class BaseMissionPlotter(ABC):
         plot_w = w - pad_l - pad_r
         plot_h = h - pad_t - pad_b
 
-        max_t = self.times[-1] if (self.times and self.times[-1] > 0) else 1.0
+        max_raw_t = self.times[-1] if (self.times and self.times[-1] > 0) else 1.0
+        max_t = self.map_time(max_raw_t)
         alt_ceil = self.alt_ceil
         vel_ceil = self.vel_ceil
 
@@ -205,9 +227,10 @@ class BaseMissionPlotter(ABC):
         pts_vel = []
         for r in sub_rows:
             t = float(r.get("MET", 0.0))
+            pt = self.map_time(t)
             a = float(r.get("altitude", 0.0))
             v = float(r.get("surface_vel", 0.0))
-            x = pad_l + (t / max_t) * plot_w
+            x = pad_l + (pt / max_t) * plot_w
             y_alt = pad_t + plot_h - (a / alt_ceil) * plot_h
             y_vel = pad_t + plot_h - (v / vel_ceil) * plot_h
             pts_alt.append(f"{x:.1f},{y_alt:.1f}")
@@ -230,9 +253,21 @@ class BaseMissionPlotter(ABC):
         # Vertical Grid (Time intervals)
         for i in range(7):
             x = pad_l + (i / 6.0) * plot_w
-            val_t = (i / 6.0) * max_t
+            val_pt = (i / 6.0) * max_t
+            val_t = self.inv_map_time(val_pt)
             grid_lines.append(f'<line x1="{x:.1f}" y1="{pad_t}" x2="{x:.1f}" y2="{h - pad_b}" stroke="#1e293b" stroke-dasharray="3,3" stroke-width="1"/>')
             grid_lines.append(f'<text x="{x:.1f}" y="{h - pad_b + 20}" font-size="11" fill="#94a3b8" text-anchor="middle" font-family="monospace">T+{val_t:.0f}s</text>')
+
+        # Optional Coast Break Band
+        cb = self.coast_break
+        if cb and cb.get("active"):
+            cx1 = pad_l + (cb["plot_start"] / max_t) * plot_w
+            cx2 = pad_l + (cb["plot_end"] / max_t) * plot_w
+            cxm = (cx1 + cx2) / 2.0
+            grid_lines.append(f'<rect x="{cx1:.1f}" y="{pad_t}" width="{cx2 - cx1:.1f}" height="{plot_h}" fill="#1e293b" opacity="0.32"/>')
+            grid_lines.append(f'<line x1="{cx1:.1f}" y1="{pad_t}" x2="{cx1:.1f}" y2="{h - pad_b}" stroke="#475569" stroke-dasharray="4,4" stroke-width="1.2"/>')
+            grid_lines.append(f'<line x1="{cx2:.1f}" y1="{pad_t}" x2="{cx2:.1f}" y2="{h - pad_b}" stroke="#475569" stroke-dasharray="4,4" stroke-width="1.2"/>')
+            grid_lines.append(f'<text x="{cxm:.1f}" y="{h - pad_b - 10}" font-size="10" fill="#64748b" font-weight="bold" text-anchor="middle" font-family="monospace">⇄ BALLISTIC COAST ({cb["duration"]/60:.1f} min compressed) ⇄</text>')
 
         grid_svg = "\n    ".join(grid_lines)
 
@@ -249,7 +284,7 @@ class BaseMissionPlotter(ABC):
         # Custom Annotated Markers
         markers_svg = []
         for m in self.get_annotated_markers():
-            mx = pad_l + (m.time / max_t) * plot_w
+            mx = pad_l + (self.map_time(m.time) / max_t) * plot_w
             my = pad_t + plot_h - (m.altitude / alt_ceil) * plot_h
             if m.show_circle:
                 c_col = m.circle_color or m.color
