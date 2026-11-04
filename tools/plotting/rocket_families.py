@@ -1203,6 +1203,8 @@ class AutoTelemetryMissionPlotter(CoroltIVFamilyPlotter):
         from tools.generate_mission_assets import analyze_mission_telemetry
         flight_data, events = analyze_mission_telemetry(self.mission_id)
         self._events = events
+        self.coast_break = events.get("coast_break")
+        self._map_plot_t = events.get("map_plot_t")
         self.valid_rows = []
         for d in flight_data:
             self.valid_rows.append({
@@ -1226,14 +1228,15 @@ class AutoTelemetryMissionPlotter(CoroltIVFamilyPlotter):
         return self._meta.get("outcome", f"🟢 100% Mission Success | {self.mission_id} Operational")
 
     def get_annotated_markers(self) -> List[PlotMarker]:
-        markers = super().get_annotated_markers()
+        markers = []
         if not self._events:
-            return markers
+            return super().get_annotated_markers()
         ev = self._events
         pk = ev["pitch_kick"]
         mq = ev["max_q"]
         meco = ev["meco1"]
         s1 = ev["seco1"]
+        s2_ign = ev.get("seco2_ign")
         s2 = ev["seco2"]
         deorb = ev["deorbit"]
 
@@ -1277,15 +1280,26 @@ class AutoTelemetryMissionPlotter(CoroltIVFamilyPlotter):
             dx=8,
             dy=-10
         ))
+        if s2_ign and abs(s2_ign["t"] - s2["t"]) > 15.0:
+            markers.append(PlotMarker(
+                time=s2_ign["t"],
+                altitude=s2_ign["alt"],
+                label=f"SECO-2 Ignition (T+{s2_ign['t']:.0f}s)",
+                color="#38bdf8",
+                circle_color="#38bdf8",
+                anchor="end",
+                dx=-8,
+                dy=-12
+            ))
         markers.append(PlotMarker(
             time=s2["t"],
             altitude=s2["alt"],
             label=f"{s2['ap']/1000:.1f}x{s2['pe']/1000:.1f} km // Circ (T+{s2['t']:.0f}s)",
             color="#10b981",
             circle_color="#10b981",
-            anchor="end",
-            dx=-10,
-            dy=-12
+            anchor="middle",
+            dx=0,
+            dy=-14
         ))
         if deorb:
             markers.append(PlotMarker(
@@ -1295,8 +1309,8 @@ class AutoTelemetryMissionPlotter(CoroltIVFamilyPlotter):
                 color="#f43f5e",
                 circle_color="#f43f5e",
                 anchor="end",
-                dx=-10,
-                dy=15
+                dx=-6,
+                dy=18
             ))
         return markers
 

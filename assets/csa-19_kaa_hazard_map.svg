@@ -36,37 +36,37 @@
     <text x="818.3" y="85" fill="#475569" font-size="9">30º E</text>
 
     <!-- Zone 1: SRB Drop Sector -->
-    <rect x="714.8" y="289.0" width="50" height="60" fill="url(#hazardHatchAmber)" stroke="#f59e0b" stroke-width="1.5" opacity="0.85" />
-    <text x="717.8" y="283.0" fill="#f59e0b" font-size="9" font-weight="bold">ZONE 1: SRB DROP</text>
-    <text x="717.8" y="361.0" fill="#94a3b8" font-size="8">T+15.1s Maritime Sector</text>
+    <rect x="132.5" y="291.3" width="50" height="60" fill="url(#hazardHatchAmber)" stroke="#f59e0b" stroke-width="1.5" opacity="0.85" />
+    <text x="135.5" y="285.3" fill="#f59e0b" font-size="9" font-weight="bold">ZONE 1: SRB DROP</text>
+    <text x="135.5" y="363.3" fill="#94a3b8" font-size="8">T+47.9s Maritime Sector</text>
 
     <!-- Zone 2: Stage 1 Core MECO Impact -->
-    <rect x="730.9" y="278.8" width="90" height="80" fill="url(#hazardHatchRed)" stroke="#ef4444" stroke-width="1.5" opacity="0.85" />
-    <text x="735.9" y="272.8" fill="#ef4444" font-size="9" font-weight="bold">ZONE 2: CORE DISPOSAL</text>
-    <text x="735.9" y="370.8" fill="#94a3b8" font-size="8">Stage 1 MECO Impact Sector</text>
+    <rect x="132.9" y="281.3" width="90" height="80" fill="url(#hazardHatchRed)" stroke="#ef4444" stroke-width="1.5" opacity="0.85" />
+    <text x="137.9" y="275.3" fill="#ef4444" font-size="9" font-weight="bold">ZONE 2: CORE DISPOSAL</text>
+    <text x="137.9" y="373.3" fill="#94a3b8" font-size="8">Stage 1 MECO Impact Sector</text>
 
     <!-- Flight Trajectory Ground Track -->
-    <path d="M 157.1,321.3 L 739.8,319.0 L 775.9,318.8 L 793.5,318.7 L 770.6,318.8 L 775.9,318.8 L 940,318.8"
+    <path d="M 157.1,321.3 L 157.5,321.3 L 177.9,321.3 L 286.8,321.1 L 740.6,319.0 L 775.9,318.8 L 940,318.8"
           fill="none" stroke="#10b981" stroke-width="3" filter="url(#glow)" />
 
     <!-- Trajectory Points -->
     <circle cx="157.1" cy="321.3" r="5" fill="#38bdf8" />
     <text x="107.1" y="309.3" fill="#38bdf8" font-size="11" font-weight="bold">KSC PAD (74.6º W)</text>
 
-    <circle cx="793.5" cy="318.7" r="4" fill="#a855f7" />
-    <text x="768.5" y="304.7" fill="#a855f7" font-size="10">SECO-1 (Ap 600.4 km)</text>
+    <circle cx="286.8" cy="321.1" r="4" fill="#a855f7" />
+    <text x="261.8" y="307.1" fill="#a855f7" font-size="10">SECO-1 (Ap 600.1 km)</text>
 
-    <circle cx="770.6" cy="318.8" r="5" fill="#10b981" />
-    <text x="715.6" y="304.8" fill="#10b981" font-size="11" font-weight="bold">SECO-2 (T+91s CIRC)</text>
+    <circle cx="740.6" cy="319.0" r="5" fill="#10b981" />
+    <text x="685.6" y="305.0" fill="#10b981" font-size="11" font-weight="bold">SECO-2 (T+1284s CIRC)</text>
 
     <circle cx="775.9" cy="318.8" r="5" fill="#06b6d4" />
     <text x="710.9" y="342.8" fill="#06b6d4" font-size="11" font-weight="bold">COROLTSAT-1I DEPLOYED</text>
-    <text x="710.9" y="354.8" fill="#94a3b8" font-size="9">600.4 x 326.7 km // i=0.15º // Stage 2 Deorbit Pe=-1.75 km</text>
+    <text x="710.9" y="354.8" fill="#94a3b8" font-size="9">601.1 x 598.9 km // i=0.13º // Stage 2 Deorbit Pe=-1.75 km</text>
 
     <!-- Telemetry Box -->
     <rect x="60" y="500" width="480" height="70" fill="#0f172a" stroke="#334155" stroke-width="1" />
     <text x="75" y="520" fill="#38bdf8" font-size="11" font-weight="bold">MISSION PARAMETERS &amp; KAA COMPLIANCE:</text>
-    <text x="75" y="538" fill="#94a3b8" font-size="10">• Launch Azimuth: 090.0º Due East | Orbital Inclination: 0.15º (Equatorial)</text>
+    <text x="75" y="538" fill="#94a3b8" font-size="10">• Launch Azimuth: 090.0º Due East | Orbital Inclination: 0.13º (Equatorial)</text>
     <text x="75" y="554" fill="#10b981" font-size="10">• Exospheric Insertion: 100% Successful | Stage 2 Deorbit Pe=-1.75 km</text>
 
     <!-- Status Badge -->
