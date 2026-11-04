@@ -76,7 +76,15 @@ def calibrate_ascent_from_csv(mission_code):
             alt = float(r.get("altitude", 0) or 0)
             vspd = float(r.get("vert_speed", 0) or 0)
             if vspd > 2.0 or alt > 95.0:
-                liftoff_idx = max(0, i - 1)
+                if i > 0:
+                    prev_met = float(rows[i - 1].get("MET", 0) or 0)
+                    curr_met = float(r.get("MET", 0) or 0)
+                    if curr_met < prev_met and curr_met < 30.0:
+                        liftoff_idx = i
+                    else:
+                        liftoff_idx = i - 1
+                else:
+                    liftoff_idx = 0
                 break
         except (ValueError, TypeError):
             continue
@@ -85,8 +93,14 @@ def calibrate_ascent_from_csv(mission_code):
         return None
 
     liftoff_row = rows[liftoff_idx]
-    ut0 = float(liftoff_row["UT"])
-    lon0 = float(liftoff_row["longitude"])
+    first_met = float(liftoff_row.get("MET", 0) or 0)
+    first_ut = float(liftoff_row["UT"])
+    if liftoff_idx > 0 and first_met < float(rows[liftoff_idx - 1].get("MET", 0) or 0) and first_met < 30.0:
+        ut0 = first_ut - first_met
+        lon0 = float(rows[liftoff_idx - 1]["longitude"])
+    else:
+        ut0 = first_ut
+        lon0 = float(liftoff_row["longitude"])
 
     best_ecc = 999.0
     seco2_row = None
@@ -394,10 +408,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="CSA Universal Sidereal Launch Window Calculator v4.0"
     )
-    parser.add_argument("--mission", type=str, default="CSA-19", help="Mission code (default: CSA-19)")
+    parser.add_argument("--mission", type=str, default="CSA-20", help="Mission code (default: CSA-20)")
     parser.add_argument("--ref", type=str, default="CoroltSat-1F", help="Reference anchor satellite name (default: CoroltSat-1F)")
-    parser.add_argument("--slot", type=float, nargs="+", default=[180.0], help="Target phase angle slot(s) in deg (default: 180.0)")
-    parser.add_argument("--calibrate-from", type=str, default="CSA-18", help="Mission code to auto-calibrate ascent profile from (default: CSA-18)")
+    parser.add_argument("--slot", type=float, nargs="+", default=[240.0], help="Target phase angle slot(s) in deg (default: 240.0)")
+    parser.add_argument("--calibrate-from", type=str, default="CSA-19", help="Mission code to auto-calibrate ascent profile from (default: CSA-19)")
 
     parser.add_argument("--day", type=int, default=None, help="Kerbin calendar day to search from")
     parser.add_argument("--ut", type=float, default=None, help="Exact starting UT in seconds")

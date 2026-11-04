@@ -16,10 +16,10 @@
 
 DECLARE PARAMETER TARGET_ALT_KM IS 600.0.        // Target orbital altitude in km (default 600 km MKO)
 DECLARE PARAMETER TARGET_LAUNCH_UT IS 0.         // Set to 0 for immediate sequence or pass exact window UT
-DECLARE PARAMETER TARGET_SLOT_DEG IS 180.0.      // Target slot in deg (e.g. +180.0, +120.0, +60.0, 0.0)
+DECLARE PARAMETER TARGET_SLOT_DEG IS 240.0.      // Target slot in deg (e.g. +240.0 / -120.0, +180.0, +120.0, +60.0)
 DECLARE PARAMETER TARGET_ANCHOR IS "CoroltSat-1F". // Reference anchor ("NONE" = Foundation Anchor)
-DECLARE PARAMETER MISSION_CODE IS "CSA-19".      // Mission identifier for console telemetry
-DECLARE PARAMETER PAYLOAD_NAME IS "CoroltSat-1I". // Payload identifier for console telemetry
+DECLARE PARAMETER MISSION_CODE IS "CSA-20".      // Mission identifier for console telemetry
+DECLARE PARAMETER PAYLOAD_NAME IS "CoroltSat-1J". // Payload identifier for console telemetry
 
 
 CLEARSCREEN.
