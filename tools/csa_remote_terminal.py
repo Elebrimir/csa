@@ -182,9 +182,9 @@ def send_kos_command(raw_cmd, wait_ack=True, auto_tail=False):
     elif cmd.lower().startswith("go "):
         parts = cmd.split()
         ut_val = float(parts[1]) if len(parts) > 1 else 0
-        slot_val = float(parts[2]) if len(parts) > 2 else 120.0
-        m_code = parts[3].upper() if len(parts) > 3 else "CSA-19"
-        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1I"
+        slot_val = float(parts[2]) if len(parts) > 2 else 240.0
+        m_code = parts[3].upper() if len(parts) > 3 else "CSA-20"
+        p_name = parts[4] if len(parts) > 4 else "CoroltSat-1J"
         ref_sat = parts[5] if len(parts) > 5 else "CoroltSat-1F"
         alt_km = float(parts[6]) if len(parts) > 6 else 600.0
         cmd = f'RUNPATH("0:/csa/universal_guided_ascent.ks", {alt_km:.1f}, {ut_val:.1f}, {slot_val:.1f}, "{ref_sat}", "{m_code}", "{p_name}").'
