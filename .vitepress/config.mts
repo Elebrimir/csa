@@ -68,6 +68,7 @@ export default defineConfig({
           { text: "CSA-16: CoroltNet-MKO Inauguration & 600 km Anchor", link: "/missions/csa-16" },
           { text: "CSA-17: +59.96° Direct MKO Slot Lock & CoroltSat-1G", link: "/missions/csa-17" },
           { text: "CSA-18: +120.22° Direct MKO Slot Lock & CoroltSat-1H", link: "/missions/csa-18" },
+          { text: "CSA-19: +179.69° Antipodal MKO Lock & CoroltSat-1I", link: "/missions/csa-19" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -93,6 +94,7 @@ export default defineConfig({
           { text: "CSA-16 Release", link: "/social_media/csa-16_post" },
           { text: "CSA-17 Release", link: "/social_media/csa-17_post" },
           { text: "CSA-18 Release", link: "/social_media/csa-18_post" },
+          { text: "CSA-19 Release", link: "/social_media/csa-19_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }
