@@ -1,12 +1,12 @@
-# 🌐 CoroltNet-LEO: Equatorial Satellite Constellation
+# 🌐 CoroltNet: Dual-Ring Equatorial Satellite Constellation
 
-The **CoroltNet-LEO** system is the flagship orbital telecommunications and science relay infrastructure of the Corolt Space Agency (CSA). Operating in a circular Low Kerbin Orbit (LEO) at **300 km altitude**, the network provides continuous, low-latency, inter-satellite cross-links and direct high-bandwidth communications to the Kerbal Space Center (KSC) and planetary ground stations.
+The **CoroltNet** system is the flagship orbital telecommunications and science relay infrastructure of the Corolt Space Agency (CSA). Operating across two synchronized equatorial rings (**LEO at 300 km** and **MKO at 600 km**), the network currently comprises **9 active relay satellites** providing continuous inter-satellite cross-links and deep-space communications to the Kerbal Space Center (KSC).
 
 ---
 
-## 🛰️ Orbital Architecture & Live Constellation Map
+## 🛰️ Live Interactive Orbital Tracker
 
-![CoroltNet-LEO 9-Slot Constellation Map](../assets/coroltnet_constellation_map.svg)
+<ConstellationVisualizer />
 
 ---
 
@@ -14,14 +14,16 @@ The **CoroltNet-LEO** system is the flagship orbital telecommunications and scie
 
 | Spacecraft | Launch Mission | Status | Altitude ($Ap \times Pe$) | Orbital Period | Relative Phase | Relay Antenna | CommNet Channel |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CorolSat-1B** | [CSA-12](/missions/csa-12) | 🟢 **ACTIVE** | 311.5 × 300.0 km | 2,882.09 s (48.03 min) | 0.0° (Slot 0 Anchor) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1D** | [CSA-14](/missions/csa-14) | 🟢 **ACTIVE** | 308.3 × 303.2 km | 2,882.25 s (48.04 min) | +39.9° (Slot 1 // 617 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1C** | [CSA-13](/missions/csa-13) | 🟢 **ACTIVE** | 308.8 × 302.7 km | 2,881.92 s (48.03 min) | +121.9° (Slot 3) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1E** | [CSA-15](/missions/csa-15) | 🟢 **ACTIVE** | 302.7 × 299.6 km | 2,860.0 s (47.67 min) | +78.3° (Slot 2 // 579 km) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
-| **CoroltSat-1F** | [CSA-16](/missions/csa-16) | 🟢 **ACTIVE** | 601.15 × 598.88 km | 4,395.16 s (73.25 min) | 0.0° (Node 0 MKO Anchor) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
-| **CoroltSat-1G** | [CSA-17](/missions/csa-17) | 🟢 **ACTIVE** | 601.15 × 598.93 km | 4,395.28 s (73.25 min) | +59.7° (Node 1 // 1,195 km) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
-| **CoroltSat-1H** | [CSA-18](/missions/csa-18) | 🟢 **ACTIVE** | 601.14 × 598.90 km | 4,395.16 s (73.25 min) | +120.2° (Node 2 // 1,209 km) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
-
+| **CoroltSat-1B** | [CSA-12](/missions/csa-12) | 🟢 **ACTIVE** | 311.49 × 300.02 km | 2,882.093 s (48.03 min) | 0.00° (LEO Slot 0 Anchor) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1D** | [CSA-14](/missions/csa-14) | 🟢 **ACTIVE** | 308.33 × 303.24 km | 2,882.251 s (48.04 min) | +34.57° (LEO Slot 1) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1E** | [CSA-15](/missions/csa-15) | 🟢 **ACTIVE** | 302.62 × 299.59 km | 2,859.949 s (47.67 min) | -9.73° (LEO Slot 2) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1C** | [CSA-13](/missions/csa-13) | 🟢 **ACTIVE** | 308.79 × 302.65 km | 2,881.922 s (48.03 min) | +129.00° (LEO Slot 3) | Codac-A23 (650 km Relay) | `CoroltSat-LEO` (100) |
+| **CoroltSat-1F** | [CSA-16](/missions/csa-16) | 🟢 **ACTIVE** | 601.15 × 598.88 km | 4,395.164 s (73.25 min) | 0.00° (MKO Node 0 Anchor) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1G** | [CSA-17](/missions/csa-17) | 🟢 **ACTIVE** | 601.15 × 598.93 km | 4,395.282 s (73.25 min) | +59.16° (MKO Node 1) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1H** | [CSA-18](/missions/csa-18) | 🟢 **ACTIVE** | 601.14 × 598.89 km | 4,395.165 s (73.25 min) | +120.08° (MKO Node 2) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1I** | [CSA-19](/missions/csa-19) | 🟢 **ACTIVE** | 601.16 × 598.88 km | 4,395.178 s (73.25 min) | +179.46° (MKO Node 3 Antipode) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1J** | [CSA-20](/missions/csa-20) | 🟢 **ACTIVE** | 601.15 × 598.90 km | 4,395.204 s (73.25 min) | +239.92° (MKO Node 4 Record) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
+| **CoroltSat-1K** | *CSA-21* | ⏳ **QUEUED** | 600.00 × 600.00 km | 4,395.164 s (Target) | +300.00° (MKO Node 5) | 3x Codac-A23 (1,327 km Array) | `CoroltNet-MKO` (101) |
 ---
 
 ## 🌐 CoroltNet-MKO: Medium Kerbin Orbit Backbone (600 km)

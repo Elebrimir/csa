@@ -10,44 +10,65 @@ hero:
     alt: Corolt Space Agency Flag
   actions:
     - theme: brand
-      text: 🚀 View Flight CSA-14
-      link: /missions/csa-14
+      text: 🚀 View Flight CSA-20
+      link: /missions/csa-20
     - theme: alt
-      text: 🌐 Satellite Constellation
+      text: 🌐 Live Constellation
       link: /constellations/
     - theme: alt
       text: 🛰️ Corolt-IV Fleet
       link: /vehicles/corolt-4
 
 features:
-  - title: 🌐 COROLTNET-LEO SATELLITE MESH
-    details: Operational 9-slot equatorial constellation at 300 km. Three active nodes (CorolSat-1B, 1D & 1C) synchronized within 0.16s period match with direct 40º mesh cross-links.
-  - title: 🔬 KERBALISM REALISM & LIFE SUPPORT
-    details: High-rate telemetry streaming, component reliability management, Van Allen radiation boundary, and strict power budgeting.
-  - title: 💻 AUTONOMOUS kOS GUIDANCE v4.5
-    details: Closed-loop gravity turn ascent, automated pad fueling servicing, universal bidirectional phasing drift, and normal-vector separation.
+  - title: 🌐 COROLTNET-MKO & LEO CONSTELLATION
+    details: Dual-ring equatorial relay network with 9 active satellites — 5/6 MKO-600 km backbone nodes (240° continuous arc, 1,327 km phased arrays) + 4 LEO-300 km mesh nodes.
+  - title: 🔬 KERBALISM & YEAR 2 «NOVA SCIENTIA»
+    details: High-rate LAN telemetry streaming, component reliability management, Van Allen radiation boundary, and deep-space comms readiness.
+  - title: 💻 AUTONOMOUS kOS GUIDANCE v5.0
+    details: Universal two-burn orbital ascent, quarter-rate pad fueling, sub-second sidereal launch windows (±0.08° record), and Zero-Debris Stage 2 deorbiting.
 ---
 
 <div class="csa-stats-grid">
   <div class="csa-stat-card">
-    <div class="csa-stat-val">308.8 km</div>
-    <div class="csa-stat-lbl">Altitude Record (Apoapsis)</div>
+    <div class="csa-stat-val">9 Nodes</div>
+    <div class="csa-stat-lbl">5 MKO-600 + 4 LEO-300</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">3 Nodes</div>
-    <div class="csa-stat-lbl">CoroltNet Mesh Fleet</div>
+    <div class="csa-stat-val">601.2 km</div>
+    <div class="csa-stat-lbl">Operational MKO Ring</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">ΔT = 0.16 s</div>
-    <div class="csa-stat-lbl">Orbital Sync Accuracy</div>
+    <div class="csa-stat-val">ΔΦ = -0.08°</div>
+    <div class="csa-stat-lbl">CSA-20 Insertion Record</div>
   </div>
   <div class="csa-stat-card">
-    <div class="csa-stat-val">kOS v4.5</div>
-    <div class="csa-stat-lbl">Autonomous Guidance</div>
+    <div class="csa-stat-val">kOS v5.0</div>
+    <div class="csa-stat-lbl">Direct Sidereal Guidance</div>
   </div>
 </div>
 
+<div class="csa-home-viz-section">
+  <h2 class="csa-home-viz-heading">🌐 LIVE COROLTNET CONSTELLATION TELEMETRY</h2>
+  <ConstellationVisualizer />
+</div>
+
 <style>
+.csa-home-viz-section {
+  max-width: 1152px;
+  margin: 2.5rem auto 1rem;
+  padding: 0 1.5rem;
+}
+
+.csa-home-viz-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #f8fafc;
+  text-align: center;
+  border-top: none !important;
+  margin-bottom: 0.5rem;
+}
 .csa-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
