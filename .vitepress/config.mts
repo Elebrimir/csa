@@ -15,8 +15,8 @@ export default defineConfig({
       { text: "Constellations", link: "/constellations/" },
       { text: "Science", link: "/science/" },
       { text: "Vehicles", link: "/vehicles/corolt-4" },
-      { text: "Missions", link: "/missions/csa-18" },
-      { text: "Press", link: "/social_media/csa-18_post" },
+      { text: "Missions", link: "/missions/csa-20" },
+      { text: "Press", link: "/social_media/csa-20_post" },
       { text: "GitHub", link: "https://github.com/Elebrimir/csa" }
     ],
     sidebar: [
@@ -69,6 +69,7 @@ export default defineConfig({
           { text: "CSA-17: +59.96° Direct MKO Slot Lock & CoroltSat-1G", link: "/missions/csa-17" },
           { text: "CSA-18: +120.22° Direct MKO Slot Lock & CoroltSat-1H", link: "/missions/csa-18" },
           { text: "CSA-19: +179.69° Antipodal MKO Lock & CoroltSat-1I", link: "/missions/csa-19" },
+          { text: "CSA-20: -0.08° Record MKO Lock & CoroltSat-1J", link: "/missions/csa-20" },
           { text: "Mission Template", link: "/missions/template_mission" },
         ]
       },
@@ -95,6 +96,7 @@ export default defineConfig({
           { text: "CSA-17 Release", link: "/social_media/csa-17_post" },
           { text: "CSA-18 Release", link: "/social_media/csa-18_post" },
           { text: "CSA-19 Release", link: "/social_media/csa-19_post" },
+          { text: "CSA-20 Release", link: "/social_media/csa-20_post" },
           { text: "Release Template", link: "/social_media/template_post" },
         ]
       }
